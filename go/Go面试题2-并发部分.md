@@ -1,4 +1,4 @@
-## Q1 无缓冲的 channel 和 有缓冲的 channel 的区别？
+## Q1、 无缓冲的 channel 和 有缓冲的 channel 的区别？
 
 <details>
 <summary>答案</summary>
@@ -120,7 +120,7 @@ func main() {
 </div>
 </details>
 
-## Q3 Go 可以限制运行时操作系统线程的数量吗？
+## Q3、 Go 可以限制运行时操作系统线程的数量吗？
 
 <details>
 <summary>答案</summary>
@@ -135,6 +135,94 @@ runtime.GOMAXPROCS(1) // 限制同时执行Go代码的操作系统线程数为 1
 ```
 
 从官方文档的解释可以看到，`GOMAXPROCS` 限制的是同时执行用户态 Go 代码的操作系统线程的数量，但是对于被系统调用阻塞的线程数量是没有限制的。`GOMAXPROCS` 的默认值等于 CPU 的逻辑核数，同一时间，一个核只能绑定一个线程，然后运行被调度的协程。因此对于 CPU 密集型的任务，若该值过大，例如设置为 CPU 逻辑核数的 2 倍，会增加线程切换的开销，降低性能。对于 I/O 密集型应用，适当地调大该值，可以提高 I/O 吞吐率。
+
+</div>
+</details>
+
+## Q4、 Go 语言中的深拷贝和浅拷贝？
+
+### Q4.1、什么是拷贝？
+
+<details>
+<summary>答案</summary>
+<div>
+当你把 a 变量赋值给 b 变量时，其实就是把 a 变量拷贝给 b 变量
+
+```go
+a := "hello"
+b := a
+```
+
+这只是拷贝最简单的一种形式，而有些形式却表现得非常的隐蔽。比如：
+
+-   你往一个函数中传参
+-   你向通道中传入对象
+
+这些其实在 Go编译器中都会进行拷贝的动作。
+
+</div>
+</details>
+
+### Q4.2、什么是深浅拷贝？
+
+<details>
+<summary>答案</summary>
+<div>
+知道了什么是拷贝，那我们再往深点开挖，聊聊深浅拷贝。
+
+不过先别急，咱先了解下数据结构的两种类型：
+
+-   **值类型** ：String，Array，Int，Struct，Float，Bool
+
+-   **引用类型**：Slice，Map
+
+这两种不同的类型在拷贝的时候，在拷贝的时候效果是完全不一样的，这对于很多新手可能是一个坑。
+
+对于值类型来说，你的每一次拷贝，Go 都会新申请一块内存空间，来存储它的值，改变其中一个变量，并不会影响另一个变量。
+
+```go
+func main() {
+	aArr := [3]int{0,1,2}
+	fmt.Printf("打印 aArr: %v \n", aArr)
+	bArr := aArr
+	aArr[0] = 88
+	fmt.Println("将 aArr 拷贝给 bArr 后，并修改 aArr[0] = 88")
+	fmt.Printf("打印 aArr: %v \n", aArr)
+	fmt.Printf("打印 bArr: %v \n", bArr)
+}
+```
+
+从输出结果来看，aArr 和 bArr 相互独立，互不干扰
+
+```go
+打印 aArr: [0 1 2] 
+将 aArr 拷贝给 bArr 后，并修改 aArr[0] = 88
+打印 aArr: [88 1 2] 
+打印 bArr: [0 1 2] 
+```
+
+对于引用类型来说，你的每一次拷贝，Go 不会申请新的内存空间，而是使用它的指针，两个变量名其实都指向同一块内存空间，改变其中一个变量，会直接影响另一个变量。
+
+```go
+func main() {
+	aslice := []int{0,1,2}
+	fmt.Printf("打印 aslice: %v \n", aslice)
+	bslice := aslice
+	aslice[0] = 88
+	fmt.Println("将 aslice 拷贝给 bslice 后，并修改 aslice[0] = 88")
+	fmt.Printf("打印 aslice: %v \n", aslice)
+	fmt.Printf("打印 bslice: %v \n", bslice)
+}
+```
+
+从输出结果来看，aslice 的更新直接反映到了 bslice 的值。
+
+```go
+打印 aslice: [0 1 2] 
+将 aslice 拷贝给 bslice 后，并修改 aslice[0] = 88
+打印 aslice: [88 1 2] 
+打印 bslice: [88 1 2] 
+```
 
 </div>
 </details>

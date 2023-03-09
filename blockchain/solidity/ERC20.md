@@ -1,19 +1,20 @@
 # ERC20代币
 
+
+
+
+
+
+
 ERC20代币的基本结构和一些重要函数来帮助您理解如何编写ERC20代币。
 
 以下是ERC20标准所需的一些基本函数：
 
 1. totalSupply()：返回代币的总供应量。
-
 2. balanceOf(address _owner)：返回特定账户拥有的代币数量。
-
 3. transfer(address _to, uint256 _value)：将代币从一个账户转移到另一个账户。
-
 4. transferFrom(address _from, address _to, uint256 _value)：允许另一个账户从您的账户中转移代币，前提是您已经授权该账户进行这样的转移。
-
 5. approve(address _spender, uint256 _value)：允许另一个账户花费您账户中的代币数量，前提是您已经授权该账户进行这样的操作。
-
 6. allowance(address _owner, address _spender)：返回允许特定账户花费其他账户的代币数量。
 
 下面是一个简单的ERC20合约的示例代码：

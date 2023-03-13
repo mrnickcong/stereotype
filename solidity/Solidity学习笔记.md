@@ -176,17 +176,17 @@ emit Xchange(oldValue,newValue);
 
 ​		整形的最大长度256，意味着以太坊虚拟机EVM是256位的机器，可以表达的精度足够高。
 
-​		Solidity低版本对整形操作，如果溢出的话会进行取模操作。uint 8   x = 255; x++;  结果是：0。使用SafeMath解决。
+​		**Solidity低版本对整形操作**，如果溢出的话会进行取模操作。uint 8   x = 255; x++;  结果是：0。使用SafeMath解决。
 
 ​					高版本：会抛出异常；SafeMath对于高版本已经没有意义。
 
-​		别名：uint 即 uint256;  int 即 int256
+​		**别名**：uint 即 uint256;  int 即 int256
 
 #### 定长数组
 
-​		bytes1到bytes32
+​		**bytes1到bytes32**
 
-​		可通过下标访问元素
+​		**可通过下标访问元素**
 
 ```
 				bytes32 array;
@@ -194,27 +194,68 @@ emit Xchange(oldValue,newValue);
 				
 ```
 
-​		可通过.length访问数组长度
+​		**可通过.length访问数组长度**
 
-​		别名：byte即bytes1
+​		**别名：**byte即bytes1
 
 #### address
 
-​	address就是账号的地址
+​	**address就是账号的地址**
 
-​	地址有两种形式
+​			账号地址主要分为外部账号地址EOA、contract合约账号
 
-​		address：保存一个20个字节的地址
+​					外部账号EOA：External Owner Account，以太坊的外部账号。
 
-​		address payable：可支付地址，有成员函数transfer和send
+​							EOA都是可以接收转账的address payable
 
-​	地址的转换
+​					合约账号有可能不能转账
+
+​							什么样的合约不能接收转账？待整理
+
+​	**地址有两种形式**
+
+​		**address：**保存一个20个字节的地址
+
+​		**address payable：**可支付地址，有成员函数transfer和send
+
+​	**地址的转换**
 
 ​		address payable 到 address 的隐式转换
 
 ​		反过来必须显式转换。
 
 ​		地址还可以显示转换为uint160、bytes20
+
+```
+function addressSimple() public view returns (bytes20) {
+	address me = msg.sender;
+	bytes20 b  = bytes20(me);
+	return b;
+}
+```
+
+
+
+#### 合约类型
+
+- ​	每一个contract定义都有他自己的类型
+- ​	合约类型可以隐式的转换为他的父合约（类似Java多态）
+- ​	合约可以显式的转换为address
+
+```
+MyContract c ;
+address addr = address(c);
+```
+
+- ​	合约类型不支持任何运算符
+- ​	声明一个合约类型的局部变量，则可以调用该合约的函数
+- ​	可以使用new关键字创建一个新合约
+
+#### 枚举类型
+
+映射（mapping）
+
+​		类比Java中的map
 
 #### 其他
 

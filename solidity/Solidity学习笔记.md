@@ -4,13 +4,15 @@ Solidity学习笔记
 
 ## 简介
 
-### 一、智能合约（不准确、待完善）
+### 一、智能合约
 
-​	智能合约在本质上是一个契约
+​	智能合约是一种特殊的协议，运行在区块链上。合约内含代码函数，可以与其他合约进行交互、决策、存储及转账等
 
-### 二、智能合约的性质（待完善）
+### 二、智能合约的性质
 
 1. 不可变性：（immutable）
+1. 可追踪
+1. 允许在没有第三方的情况下进行交易
 
 ### 三、执行机制
 
@@ -121,7 +123,7 @@ Solidity学习笔记
    }
    ```
 
-   在0.6以前，使用**合约名字**作为构造函数的名字，而不是constructor
+   在0.6以前，使用【**合约名字】**作为构造函数的名字，而不是constructor
 
 5. 函数修饰器
 
@@ -243,8 +245,8 @@ function addressSimple() public view returns (bytes20) {
 - ​	合约可以显式的转换为address
 
 ```
-MyContract c ;
-address addr = address(c);
+        MyContract c ;
+        address addr = address(c);
 ```
 
 - ​	合约类型不支持任何运算符
@@ -253,13 +255,96 @@ address addr = address(c);
 
 #### 枚举类型
 
-映射（mapping）
+- ​		枚举是一种用户自定义类型
+
+```
+		enum ActionChoices {GoLeft,GoRight} 
+```
+
+- ​		枚举的选项从0开始的无符号整形表示，底层是用无符号的8位整形表示。
+- ​		枚举类型可以与整形显式相互转换，不允许隐式转换。
+- ​		从整形显式转换枚举，会在运行时检查整数是否在枚举范围内，否则会导致异常
+- ​		枚举需要至少一个成员变量，默认值是第一个成员变量，只能多于256个成员。
+- ​		由于枚举类型不属于[ABI]的一部分，因此对于所有来自Solidity的外部调用，getChoices()方法签名会自动生成getChoices() returns (unit8)
+
+
+
+#### 映射（mapping）
 
 ​		类比Java中的map
+
+​		声明形式：mapping(_KeyType => _ValueType)
+
+​				_KeyType：可以是任务基本类型，包括bytes和string，但不包括自定义类型，比如：合约、枚举、映射、结构体
+
+​				_ValueType：任何类型，包括mapping类型本身
+
+```
+		mapping(address => uint) public balances;
+        function update (uint newBalance) public{
+        	balances[msg.sender] = newBalance;
+        }
+```
+
+​		可以作为状态变量或者函数内部的存储，也可以作为库函数的参数。但是**不可以做共有函数的参数或者返回值**
+
+​		只能做合约的成员变量，不能做合约函数的局部变量。不能在函数体中声明
+
+​		声明为public的映射，也会自动创建一个getter函数，_KeyType作为参数，_ValueType作为返回值
+
+​		mapping无法遍历
+
+​		
+
+#### 数组（待整理）
+
+#### 变长字节数据与字符串（待整理）
+
+#### 结构体（待整理）
+
+#### 数据存储的位置（待整理）
+
+#### 函数的上下文变量
+
+​		外部账号调用函数时，函数对背后对应着交易
+
+​		内部账号(即合约)调用一个合约时，也是用一个类似于transaction的数据结构去调用的，这个结构叫做message
+
+​		msg：
+
+|            |         解释          | 备注 |
+| :--------: | :-------------------: | :--: |
+|    msg     |                       |      |
+| msg.sender | 调用者，是address类型 |      |
+|  msg.data  |         数据          |      |
+| msg.value  |  用于转账的金额的值   |      |
+
+
 
 #### 其他
 
 ### 三、其他
+
+
+
+## web3js访问合约
+
+​		示例代码：
+
+```
+	function getOwner(){
+		var contractAddress = "0x";
+		var owner_abi = "xxxx应用二进制调用接口";
+		var ownercontract = new web3.eth.Contract(owner_abi,contractAddress);
+		ownercontract.methods.getOwner().call(function(err,res){
+			if(err){
+				console.log(err)
+				return
+			}
+			alert("The owner is :" + res);
+		});
+	}
+```
 
 
 

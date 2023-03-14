@@ -1,4 +1,4 @@
-Solidity学习笔记
+# Solidity学习笔记
 
 # 基础部分
 
@@ -6,7 +6,7 @@ Solidity学习笔记
 
 ### 一、智能合约
 
-​	智能合约是一种特殊的协议，运行在区块链上。合约内含代码函数，可以与其他合约进行交互、决策、存储及转账等
+​	智能合约（Smart contract ）是一种旨在以信息化方式传播、验证或执行合同的计算机协议。
 
 ### 二、智能合约的性质
 
@@ -296,13 +296,116 @@ function addressSimple() public view returns (bytes20) {
 
 ​		
 
-#### 数组（待整理）
+#### 数组
 
-#### 变长字节数据与字符串（待整理）
+- ​		数组的声明
 
-#### 结构体（待整理）
+  ```
+  	固定长度为K的元素为T的数组：T[K]
+  	动态数组：T[]
+  	使用new在内存中基于运行时创建动态长度的数组，这种数组不可以用push改变大小
+  ```
 
-#### 数据存储的位置（待整理）
+- ​		性质：
+
+  - 数组可以在声明时指定长度，也可以动态的调整长度
+
+  - 数组通过下标访问，从0开始。越界访问会导致assert异常
+
+  - 数组元素的类型可以是任何类型，包括映射或结构体。其中映射只能存储在storage中
+
+  - public的数组状态变量的getter函数，参数是下标数字
+
+  - 方法.push()、.push(value)可用于在数组末尾附加一个新元素，其中.push()函数附加一个零初始化元素并返回对他的引用（仅对storage中的数组）
+
+    
+
+```
+使用举例：
+contract Simple{
+	string[] private array;
+	
+	function arraySimple() public view {
+		array.push("hello");
+		uint length =  array.length; //结果为：1
+		string value = array[0]; //结果为：hello
+	}
+	
+	function f(uint length) public pure {
+		uint[] memory a = new uint[](7);
+		bytes memory b  = new bytes(length);
+		
+		assert(a.length==7);
+		assert(a.length==length);
+		
+		a[6] = 8;
+	}
+
+}
+
+```
+
+
+
+#### 变长字节数据与字符串（bytes与string）
+
+​		他们都是数组，不是值类型
+
+​		Solidity没有字符串操作函数，可以使用第三方库操作
+
+​		可以将string转换bytes，转换时数据内容本身不会拷贝
+
+​		bytes类似于byte[]，但是它在calldata和memory中连续存储，不会按照每32字节一个单元来存储
+
+​		
+
+#### 结构体struct
+
+​		结构体为开发者自定义结构对象，可以作为状态变量存储，也可以在函数中作为局部变量存在
+
+​		结构体类型可以作为元素用在映射和数组中，结构体的成员变量也可以是映射和数组
+
+​		使用举例：
+
+```
+	struct Person{
+		uint age;
+		string name;
+	}
+	
+	Person private _person;
+	
+	function structExample () public {
+		Person memory p = Person(18,"Nick");
+		_person = p;
+	}
+	
+	function setName(string calldata name) external {
+		_person.name = name;
+	}
+```
+
+
+
+#### 数据存储的位置
+
+​		数据存储有三种位置：内存(memory)、存储(storage)、调用数据(calldata)
+
+​		calldata是不可修改的，非持久的函数参数存储区域，效果类似memory
+
+​		calldata是external函数的参数所必须指定的位置，也可以用于其他变量
+
+​		在存储和内存之间赋值，会创建一份独立的拷贝
+
+​		在内存之间赋值只创建引用，从存储到本地之间的赋值也只创建引用。其他存储的赋值会进行拷贝
+
+​		**使用举例**
+
+```
+
+```
+
+
 
 #### 函数的上下文变量
 
@@ -325,9 +428,66 @@ function addressSimple() public view returns (bytes20) {
 
 ### 三、其他
 
+## 合约函数的性质
+
+### 一、合约函数的调用	
+
+​			合约内部调用
+
+​			合约之间直接调用
+
+​			通过接口合约调用
+
+### 二、函数签名、method ID 、函数选择器
+
+### 三、函数的重载
+
+### 四、函数的运行时上下文
+
+- 函数调用的运行时上下文环境变量主要有三个：block、transaction、message
+- 其性质分别如下：
+  - 一次外部账号对合约的调用，可能引发一系列合约之间的调用，即：外部账号EOA调用合约、合约之间的调用
+  - 一次外部账号的调用，对应着同一个block、transaction
+  - 直接被外部账号调用的合约里的函数，其block、transaction、message是相同的。
+  - 合约内部之间的函数调用，其block、transaction、message是不发生变化的。
+  - 合约之间相互调用时：block、transaction是相同的，但是会产生新的message
+  - transaction和internal transaction。前者指的是EOA的一次调用，直到结束。后者指的是合约之间的调用	
+
+- 示意图如下 processon上
+
+### 五、函数的动态调用
+
+​			Solidity函数动态调用机制只要是依靠call函数实现，起作用类似于Java语言的反射机制
+
+​			call函数
+
+​					call是address的方法，参数为 bytes calldata，其返回值为（boolean success, bytes data）
+
+​					需要校验(require、revert)call的返回值是否为TRUE，忽视返回值，程序不会终止交易，会造成严重后果
+
+​					calldata的前四个字节是函数选择器selector，剩下的是参数编码
+
+​					使用方法：可以通过abi的库函数来获取calldata
+
+​								calldata = abi.encodeWithSignature(signature,params)
+
+​			合约函数动态调用方法示例代码
+
+![](D:\space\interview\images\合约函数动态调用方法示例代码.png)
+
+合约函数动态调用方法示例代码(带返回值)
+
+![](D:\space\interview\images\合约函数动态调用方法示例代码(带返回值).png)
 
 
-## web3js访问合约
+
+fallback函数
+
+​		是一个特殊函数，
+
+# 其他部分
+
+## 一、web3js访问合约
 
 ​		示例代码：
 
@@ -344,8 +504,9 @@ function addressSimple() public view returns (bytes20) {
 			alert("The owner is :" + res);
 		});
 	}
+	
 ```
 
 
 
-# 其他部分
+# 

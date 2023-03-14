@@ -1,5 +1,23 @@
 # ERC20代币
 
+## 什么是ERC20
+
+## ERC20标准的关键要素
+
+
+
+string memory name_,
+
+string memory symbol_,
+
+address[] memory whiteAddress_
+
+uint8 public decimals = 18;    //最小单位的多少次方
+
+## 注意事项
+
+## 使用举例
+
 
 
 

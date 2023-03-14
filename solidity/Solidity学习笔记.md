@@ -471,7 +471,11 @@ contract Simple{
 
 ​								calldata = abi.encodeWithSignature(signature,params)
 
-​			合约函数动态调用方法示例代码
+​								其中calldata为solidity保留关键字，不允许声明为变量名。
+
+​								signature为函数签名，函数签名的参数不能为别名，比如：uint不行，应该是uint256
+
+​			合约函数动态调用方法示例代码**（待整理）**
 
 ![](D:\space\interview\images\合约函数动态调用方法示例代码.png)
 
@@ -484,6 +488,26 @@ contract Simple{
 fallback函数
 
 ​		是一个特殊函数，
+
+Gas
+
+​	什么是gas	（待整理）
+
+​	为什么要有gas	（照片）
+
+​	gas与gas price（照片）
+
+​	gas优化（进阶部分）
+
+转账
+
+​		合约可以存储货币
+
+​		合约与合约之间、合约与EOA之间可以转账
+
+​		多签钱包：钱存储在合约中
+
+​		转账与函数调用（照片待整理）
 
 # 其他部分
 

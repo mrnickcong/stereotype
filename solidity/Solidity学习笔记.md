@@ -158,7 +158,7 @@
 	emit Xchange(oldValue,newValue);
 ```
 
-​		事件的结构体（待补充）
+​		**事件的结构体（待补充）**
 
 
 
@@ -387,7 +387,7 @@ contract Simple{
 
 
 
-#### 数据存储的位置
+#### 数据存储的位置（待补充）
 
 ​		数据存储有三种位置：内存(memory)、存储(storage)、调用数据(calldata)
 
@@ -402,7 +402,7 @@ contract Simple{
 ​		**使用举例**
 
 ```
-
+（待补充）
 ```
 
 
@@ -415,7 +415,7 @@ contract Simple{
 
 ​		msg：
 
-|            |         解释          | 备注 |
+|  内置函数  |         解释          | 备注 |
 | :--------: | :-------------------: | :--: |
 |    msg     |                       |      |
 | msg.sender | 调用者，是address类型 |      |
@@ -448,6 +448,12 @@ contract Simple{
 
 ​			通过接口合约调用
 
+​					调用者必须持有被调用者的合约地址
+
+​					调用者自定义一个接口，其中的函数的签名signature应与被调用合约相应的函数相同
+
+​					将地址重载为接口，调用函数
+
 ### 二、函数签名、method ID 、函数选择器
 
 ### 三、函数的重载
@@ -467,9 +473,9 @@ contract Simple{
 
 ### 五、函数的动态调用
 
-​			Solidity函数动态调用机制只要是依靠call函数实现，起作用类似于Java语言的反射机制
+#### 			call函数
 
-​			call函数
+​			Solidity函数动态调用机制只要是依靠call函数实现，起作用类似于Java语言的反射机制
 
 ​					call是address的方法，参数为 bytes calldata，其返回值为（boolean success, bytes data）
 
@@ -495,19 +501,55 @@ contract Simple{
 
 
 
-fallback函数
+#### fallback函数
 
-​		是一个特殊函数，
+​		是一个特殊函数，调用一个不存在的函数的时候，会只执行fallback函数。
 
-Gas
+​		在转账功能中有重要作用（被payable修饰的fallback函数）
 
-​	什么是gas	（待整理）
+​		proxy模式代理合约中有重要作用，配合delegatecall使用，支持合约的升级
 
-​	为什么要有gas	（照片）
+​		
 
-​	gas与gas price（照片）
+```
+	//事件
+	event Log(string func, uint gas);
 
-​	gas优化（进阶部分）
+    // Fallback function must be declared as external.
+    fallback() external payable {
+        // send / transfer (forwards 2300 gas to this fallback function)
+        // call (forwards all of the gas)
+        emit Log("fallback", gasleft());
+    }
+    
+    //fallback也可以指定输入参数和返回结果
+     fallback(bytes calldata data) external payable returns (bytes memory) {
+        (bool ok, bytes memory res) = target.call{value: msg.value}(data);
+        require(ok, "call failed");
+        return res;
+    }
+
+```
+
+
+
+#### Gas
+
+##### 	什么是gas	（待整理）
+
+##### 	为什么要有gas	（待整理）
+
+​			
+
+##### 	gas与gas price
+
+- ​			实际的gas完全由执行逻辑决定，有变化的是gas价格，由transaction来决定
+
+- ​			交易发起者可以设定gas消耗的上限gasLimit，交易成功：剩余的gas返回；交易失败：已经用的gas不会返回，剩余的gas返回。
+
+- ​			合约之间的函数调用可以设置gasLimit，调用者控制gas消耗
+
+##### 	**gas优化（进阶部分）**
 
 ## 转账
 
@@ -538,6 +580,10 @@ Gas
 ​	**总结：**
 
 ​		这两种方式都有一个共同的前提：智能合约中必须定义了**`payable`**的**`fallback`**函数。但是现实中，由于各种原因，很多已经部署的智能合约没有定义`payable`的`fallback`函数，对于这种情况应该如何处理呢？本文稍后会讲到如何处理此类合约。
+
+​		使用`send`函数有许多危险的地方，如果调用堆栈的深度达到1024（参考前文讲述的调用[堆深度限制](https://xz.aliyun.com/t/3316#toc-8)）或者将gas值使用完，则send函数会返回调用失败。所以为了满足以太币转账的安全性，我们需要对send的返回值进行检查，或者我们干脆直接使用`transfer`来代替`send`函数。
+
+而我们在使用`send`或`transfer`函数的时候，需要注意定义`Fallback`函数，不定义回退函数将抛出异常并返回Ether。
 
 ### 二、转账接收
 
@@ -583,7 +629,27 @@ payable修饰函数
 
 ​		receive需要去手动实现的一个函数
 
+```
+	event Log(string func, uint gas);
+
+    // Fallback function must be declared as external.
+    fallback() external payable {
+        // send / transfer (forwards 2300 gas to this fallback function)
+        // call (forwards all of the gas)
+        emit Log("fallback", gasleft());
+    }
+
+    // Receive is a variant of fallback that is triggered when msg.data is empty
+    receive() external payable {
+        emit Log("receive", gasleft());
+    }
+```
+
 ​		指定gas(其实是gasLimit)表示超过gasLimit交易失败，如果不指定表示不设置上限gasLimit
+
+
+
+## delegatecall
 
 # 其他部分
 

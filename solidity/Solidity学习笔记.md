@@ -533,7 +533,7 @@ contract Simple{
 
 
 
-#### Gas
+### 六、Gas
 
 ##### 	什么是gas	（待整理）
 
@@ -550,6 +550,24 @@ contract Simple{
 - ​			合约之间的函数调用可以设置gasLimit，调用者控制gas消耗
 
 ##### 	**gas优化（进阶部分）**
+
+
+
+### 七、函数调用总结
+
+#### 	mapping的遍历
+
+##### 			为什么需要遍历？
+
+​					分红场景：需要知道每个账号分红的量；质押投票场景：需要知道账号的质押的量；
+
+##### 			如何遍历？
+
+​					solidity中的mapping不能遍历，如果需要遍历，需要自己手动实现
+
+
+
+
 
 ## 转账
 
@@ -649,7 +667,99 @@ payable修饰函数
 
 
 
-## delegatecall
+## 存储布局（待整理-照片）
+
+### 		什么是存储布局？
+
+​				存储布局：storage layout 。指的是智能合约的状态变量、成员变量在存储空间的分布
+
+### 		如何存储？
+
+#### 					值类型存储
+
+#### 					Mapping类型 与 动态数组 的存储
+
+#### 					array存储
+
+## delegatecall（待整理-照片）
+
+address.delegatecall(bytes calldata) 
+
+delegatecall是将另一个合约的一个函数take over拿来当作自己合约内部函数来用; 
+
+从函数执行上下文来看，形式上跨合约，实质上没有跨合约，拷贝了message，sender、 value不变，但data和gaslimit可以变化 
+
+函数按照内存布局访问变量，delegatecall的调用者和被调用者合约应该具有兼容的 storage（一模一样？） layout 
+
+思考题：delegatecall会有调用选项{gas：，value：}吗？ 
+
+注意：msg.gas被gasleft()取代 
+
+代码调试观察内部调用和delegatecall中msg.data的变化不同
+
+
+
+delegatecall调用示例图
+
+（画个图）
+
+代码示例
+
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.8;
+
+// NOTE: Deploy this contract first
+contract B {
+    // NOTE: storage layout must be the same as contract A
+    uint256 public num;
+    address public sender;
+    uint256 public value;
+    bytes public cdata;
+
+    function setVars(uint256 _num) public payable {
+        num = _num;
+        sender = msg.sender;
+        value = msg.value;
+        cdata = msg.data;
+    }
+}
+
+contract A {
+    uint256 public num;
+    address public sender;
+    uint256 public value;
+    bytes public cdata;
+
+    function setVars(address _contract, uint256 _num) public payable {
+        // A's storage is set, B is not modified.
+        (bool success, bytes memory data) = _contract.delegatecall(
+            abi.encodeWithSignature("setVars(uint256)", _num)
+        );
+    }
+
+    function setNum(uint256 _num) public payable {
+        num = _num;
+        cdata = msg.data;
+        sender = msg.sender;
+        value = msg.value;
+    }
+
+    function setNumIndirect(uint256 _num) public {
+        setNum(_num);
+    }
+
+    function setNumIndirectByCall(uint256 _num) public {
+        address(this).call(abi.encodeWithSignature("setNum(uint256)", _num));
+    }
+}
+```
+
+
+
+## 代理合约
+
+## 合约升级
 
 # 其他部分
 

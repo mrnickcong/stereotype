@@ -1,6 +1,8 @@
 # Solidity学习笔记
 
-# 基础部分
+# 第一部分：入门简介
+
+# 第二部分：基础部分
 
 ## 简介
 
@@ -509,6 +511,8 @@ contract Simple{
 
 ​		proxy模式代理合约中有重要作用，配合delegatecall使用，支持合约的升级
 
+​		fallback函数都是external的，address.call{value;}()可以出发fallback函数，但是address.send()无法触发fallback函数
+
 ​		
 
 ```
@@ -565,9 +569,33 @@ contract Simple{
 
 ​					solidity中的mapping不能遍历，如果需要遍历，需要自己手动实现
 
+​					实现思路：借助数组实现，代码示例如下
 
+```
 
+```
 
+#### pure函数不规范调用
+
+​			address.call()调用的任何函数，都会产生交易，消耗gas。即使调用的函数是pure修饰的函数。技术上是允许的，没有意义
+
+#### 合约内部函数call调用不规范调用
+
+​		合约内部函数一般直接调用即可，不会产生新的message。
+
+​		但是使用call跨合约调用函数，EVM会把他当做两个合约之间的调用。msg.sender会变化，从EOA账号变为当前合约账号。msg.data也会变化
+
+#### external和public
+
+​		external和public修饰的成员变量在可见性上是一样的
+
+​		合约内部调用external方法，需要使用this，意味着：要底层要使用call()方式执行，会产生新的上下文。
+
+​		因此需要明确的设计原则：
+
+​				1. 合约内部函数之间的调用，应避免产生新的上下文； 
+
+​				2. 如果external关键字修饰的函数需要被内部调用，应将其变为public，避免使用this关键字来调 用。
 
 ## 转账
 
@@ -583,7 +611,11 @@ contract Simple{
 |  address.transfer(amount)  |     不支持      |   默认2300   |     抛出异常，交易终止     |
 | address.call.value(amount) |       是        | 可自定义指定 | 返回FALSE，手动require处理 |
 
+​	**注意：**
 
+​			如果使用address.send(amount)、address.transfer(amount)进行转账，被调用的合约必须实现receive()函数 receive() external payable{}
+
+​			receive是专门支持上面两个函数的，但是要求gas不超过2300（设置2300，为了防止重入攻击），2300仅能支持emit一个事件，做其他操作会超出gasLimit，转账会失败。因此一般不用这种方式，一般直接mint或者fallback里mint
 
 ​	第二种转账方式：**触发合约中不存在的函数或者空方法**
 
@@ -681,6 +713,22 @@ payable修饰函数
 
 #### 					array存储
 
+### 存储位置（待整理-照片）
+
+​		声明一个memory的变量，该变量被赋值为一个storage的变量。会在memory中复制一份storage的数据，而不是直接使用引用
+
+​		mapping都是storage的
+
+​		calldata向memory拷贝数据。外部调用的参数，都是通过calldata传递过来的，如果这时将变量声明为calldata的，效率很高，不用拷贝数据
+
+​		修改memory数据不会改变合约状态，修改storage数据会改变合约状态？不知道这句话对不对，待验证
+
+
+
+
+
+
+
 ## delegatecall（待整理-照片）
 
 address.delegatecall(bytes calldata) 
@@ -755,13 +803,49 @@ contract A {
 }
 ```
 
+### 
+
 
 
 ## 代理合约
 
+升级问题：
+
+​			合约的不可变性，如果业务发生变化或者合约遭到攻击，也需要升级
+
+​			升级需要特殊技术和模式支持
+
+​			升级应不伤害去中心化和民主
+
+代理模式：
+
+​		**待整理**
+
 ## 合约升级
 
-# 其他部分
+​				接口合约到底能不能部署？待验证
+
+# 第三部分：提高部分
+
+## 一、继承
+
+继承
+
+多继承
+
+## 二、汇编
+
+## 三、重入攻击
+
+重入攻击
+
+重入攻击的防御
+
+## 四、闪贷
+
+## 五、OpenZipplin
+
+# 第四部分：其他部分
 
 ## 一、web3js访问合约
 
@@ -795,3 +879,8 @@ contract A {
     // 原理是：当msg.value大于实际转账value时，多余的ETH将会被转给合约。
 ```
 
+## 二、hardhat的使用
+
+脚本使用
+
+脚本使用的注意问题

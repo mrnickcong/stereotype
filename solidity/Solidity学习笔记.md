@@ -597,6 +597,14 @@ contract Simple{
 
 ​				2. 如果external关键字修饰的函数需要被内部调用，应将其变为public，避免使用this关键字来调 用。
 
+#### delegatecall复杂调用
+
+​		调用者A通过delegatecall调用B合约，被调用者B又通过call调用了自己B的函数，会发生什么？调用结果：交易失败
+
+​		调用者A通过call调用B合约，被调用者B又通过call调用了自己B的函数，会发生什么？调用结果：交易成功
+
+​		
+
 ## 转账
 
 ### 一、转账发起
@@ -807,7 +815,7 @@ contract A {
 
 
 
-## 代理合约
+## 代理合约（待整理）
 
 升级问题：
 
@@ -821,11 +829,41 @@ contract A {
 
 ​		**待整理**
 
-## 合约升级
+## 合约升级（待整理）
 
 ​				接口合约到底能不能部署？待验证
 
+## 库（待整理）
+
+### 什么是库函数library
+
+### using
+
+​	是一种语法糖
+
+​	让库的方法跟他所操作的第一个参数绑定，成为第一个参数的数据类型的方法（这句话不太明白）
+
+代码实例：
+
+```
+
+```
+
+### internal与public
+
+​		库函数被（待整理）
+
+### storage参数
+
+​		Library没有成员变量，可以允许参数为storage类型，但是普通合约不允许。为了让Library操作调用者的成员变量数据
+
+### Library是否可以替代代理合约？
+
+​		对Library在编译时完成，不是运行时的，无法动态升级
+
 # 第三部分：提高部分
+
+
 
 ## 一、继承
 
@@ -884,3 +922,97 @@ contract A {
 脚本使用
 
 脚本使用的注意问题
+
+## 三、可升级合约完整代码
+
+
+
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+interface ProxyInterface {
+    function inc() external;
+
+    function x() external view returns (uint256);
+}
+
+contract Proxy {
+    bytes32 private constant implementationPosition =
+        keccak256("org.zeppelinos.proxy.implementation");
+
+    function upgradeTo(address newImplementation) public {
+        address currentImplementation = implementation();
+        setImplementation(newImplementation);
+    }
+
+    function implementation() public view returns (address impl) {
+        bytes32 position = implementationPosition;
+        assembly {
+            impl := sload(position)
+        }
+    }
+
+    function setImplementation(address newImplementation) internal {
+        bytes32 position = implementationPosition;
+        assembly {
+            sstore(position, newImplementation)
+        }
+    }
+
+    function _delegate(address _imp) internal virtual {
+        assembly {
+            // calldatacopy(t, f, s)
+            // copy s bytes from calldata at position f to mem at position t
+            calldatacopy(0, 0, calldatasize())
+            // delegatecall(g, a, in, insize, out, outsize)
+            // - call contract at address a
+            // - with input mem[in…(in+insize))
+            // - providing g gas
+            // - and output area mem[out…(out+outsize))
+            // - returning 0 on error and 1 on success
+            let result := delegatecall(gas(), _imp, 0, calldatasize(), 0, 0)
+            // returndatacopy(t, f, s)
+            // copy s bytes from returndata at position f to mem at position t
+            returndatacopy(0, 0, returndatasize())
+            switch result
+            case 0 {
+                // revert(p, s)
+                // end execution, revert state changes, return data mem[p…(p+s))
+                revert(0, returndatasize())
+            }
+            default {
+                // return(p, s)
+                // end execution, return data mem[p…(p+s))
+                return(0, returndatasize())
+            }
+        }
+    }
+
+    fallback() external payable {
+        _delegate(implementation());
+    }
+}
+
+contract V1 {
+    uint256 public x;
+
+    function inc() external {
+        x += 1;
+    }
+}
+
+contract V2 {
+    uint256 public x;
+
+    function inc() external {
+        x += 1;
+    }
+
+    function dec() external {
+        x -= 1;
+    }
+}
+
+```
+

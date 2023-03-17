@@ -883,6 +883,34 @@ contract A {
 
 ## 五、OpenZipplin
 
+# 汇编
+
+## 一、EVM
+
+​				EVM是一个堆栈机，没有寄存器，所有的操作都是在堆栈上操作的。
+
+opcode：机器码
+
+#### 指令的运行环境：
+
+堆栈
+
+内存
+
+storage
+
+上下文：主要是指：block、transaction、message等上下文变量
+
+
+
+## 几个比较重要的opcode
+
+mload：把内存中一个256位的信息加载进堆栈的头部，表达式：value = memory[offset:offset+32]
+
+mstore：将值写入内存的指定位置。表达式：memory[offset:offset+32] = value
+
+
+
 # 第四部分：其他部分
 
 ## 一、web3js访问合约

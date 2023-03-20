@@ -913,9 +913,25 @@ storage
 
 上下文：主要是指：block、transaction、message等上下文变量
 
+# 继承
+
+## 基本语法
+
+is关键字
+
+多重继承中的超类顺序：most base-like 和 most derived  
+
+左侧更趋向于超类
 
 
-## 几个比较重要的opcode
+
+
+
+
+
+
+
+# 几个比较重要的opcode
 
 mload：把内存中一个256位的信息加载进堆栈的头部，表达式：value = memory[offset:offset+32]
 

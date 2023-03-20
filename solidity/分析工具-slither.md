@@ -25,3 +25,26 @@ Slither的工作方式如下：
 ————————————————
 版权声明：本文为CSDN博主「想躺平的小陈」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/weixin_44217936/article/details/123240460
+
+
+
+安装记录
+
+```
+//Python环境
+Python 3.8.8
+
+//安装编译器
+pip3 install solc-select
+solc-select install 0.8.7
+//选择编译器版本
+solc-select use 0.8.7
+//安装slither-analyzer
+pip3 install slither-analyzer
+
+
+测试 
+//要保证在hardhat.config.js的同级目录下
+ slither .\contracts\Reentrancy.sol
+```
+

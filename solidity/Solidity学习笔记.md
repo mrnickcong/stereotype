@@ -458,6 +458,18 @@ contract Simple{
 
 ### 二、函数签名、method ID 、函数选择器
 
+#### 如何获得函数选择器
+
+solidity合约内部：
+
+```
+abi.encodewithsignther()
+
+IERC721Receiver.onERC721Received.selector
+```
+
+
+
 ### 三、函数的重载
 
 ### 四、函数的运行时上下文

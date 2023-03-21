@@ -432,6 +432,10 @@ contract Simple{
 
 ​			immutable：赋值后不可改变
 
+immutable：不占用存储槽，编译的时候，嵌入字节码；
+
+constant：不占用存储槽，编译时是一个占位符，runtime执行构造函数的时候替换占位符，嵌入字节码；
+
 #### 合约的继承：is
 
 ​			相当于Java中的extend和implement
@@ -873,6 +877,12 @@ contract A {
 
 ​		对Library在编译时完成，不是运行时的，无法动态升级
 
+### 特点
+
+1、当library含有public可见性函数时，需要部署为单独的合约
+
+2、在部署合约的时候，通过linkref将library合约地址与该合约连接起来
+
 # 第三部分：提高部分
 
 
@@ -895,11 +905,23 @@ contract A {
 
 ## 五、OpenZipplin
 
+#### meta transaction
+
+#### delete（照片待整理）
+
+基本认知：EVM是栈机器，没有堆。栈配合内存形成逻辑
+
+delete只作用于memory、storage。
+
+delete作用机制：将固定长度的数值设置为其默认值，动态数据类型长度设置为0
+
+delete可以省gas
+
 # 汇编
 
 ## 一、EVM
 
-​				EVM是一个堆栈机，没有寄存器，所有的操作都是在堆栈上操作的。
+​				EVM是一个栈机，没有寄存器，所有的操作都是在栈上操作的。
 
 opcode：机器码
 

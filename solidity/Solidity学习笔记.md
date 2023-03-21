@@ -915,13 +915,124 @@ storage
 
 # 继承
 
+## 继承原则
+
+*Inheritance must be ordered from “most base-like” to “most derived”.*
+
 ## 基本语法
 
-is关键字
+is关键字  +  virtual override  ：父类virtual函数，子类override
 
-多重继承中的超类顺序：most base-like 和 most derived  
+多重继承中的超类顺序：most base-like 和 most derived 
+
+most base-like 和 most derived：  
 
 左侧更趋向于超类
+
+```
+/* Graph of inheritance
+    A
+   / \
+  B   C
+ / \ /
+F  D,E
+
+*/
+
+contract A {
+    function foo() public pure virtual returns (string memory) {
+        return "A";
+    }
+}
+
+// Contracts inherit other contracts by using the keyword 'is'.
+contract B is A {
+    // Override A.foo()
+    function foo() public pure virtual override returns (string memory) {
+        return "B";
+    }
+}
+```
+
+
+
+## 关键字
+
+### virtual
+
+可以被子类相同函数签名的函数来覆盖
+
+### override
+
+覆盖：函数的签名、可见性、函数参数列表、函数的交易属性(pure、view 、payable)、返回值参数
+
+### is
+
+is多重继承。继承层级相同的类，可以互换顺序。层级高的在左侧
+
+```
+
+
+```
+
+### super
+
+
+
+```
+contract F is A, B {
+    function foo() public pure override(A, B) returns (string memory) {
+        return super.foo();
+    }
+}
+
+//多重继承，super返回层级最低的父类
+```
+
+super在多重继承下，不是单纯意义的超类，而是C3线性化中的前驱，也就是super是调用前驱的方法。如下：（**不是太明白**）
+
+```
+/* Graph of inheritance
+    A
+   / \
+  B   C
+  \ /
+   D
+*/
+//对于上面的继承关系，C3线性化 A -> B -> C -> D
+
+contract C is A {
+    function foo() public pure override(A, B) returns (string memory) {
+    	//此处的super指的是B
+        return super.foo();
+    }
+}
+
+```
+
+## 继承中的构造函数
+
+
+
+## C3线性化
+
+C3线性化：一种遍历继承关系图的算法（是一个有向无环图）
+
+在存储布局、super调用、constructor执行顺序中启作用
+
+![](D:\space\interview\solidity\C3线性化.png)
+
+## 几个注意点
+
+### 1、成员变量
+
+子类与超类同名的成员变量：private允许，因为private只有自己合约可见；public、internal不可以，因为子类可见。
+
+函数也是一样
+
+即：子类不能声明与可见父类的成员变量的成员变量
+
+event、modify都是默认平public的，function private 不起作用。因此：子类不能声明与父类同名的成员变量，除非继承
 
 
 

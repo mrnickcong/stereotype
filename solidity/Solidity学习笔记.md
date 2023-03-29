@@ -1062,6 +1062,52 @@ event、modify都是默认平public的，function private 不起作用。因此�
 
 
 
+# 异常处理
+
+## 说明
+
+若是一筆沒有遇到 throw 的正常交易, 則會被抽走 gasUsed * gasPrice 這麼多 ether。
+
+assert revert：在历史上不一样，目前版本0.8已经一直
+
+0.4.10 之前：throw
+
+0.4.10 版之後，新增了 *require(), assert(), revert()* 三個函式。編譯器會把 *require() 以及 revert()* 編譯成 *0xfd*。把 *assert()* 編譯成 *0xfe*。 throw 處理方式跟 *require*相同，會編譯成 *0xfd*。
+
+
+
+最後，關於 assert 以及 require 等如何選用並沒有硬性規定，在合約撰寫的時候可以自行決定。不過，建議像是狀態檢查，input 檢查這些不影響合約狀態的可以用 *require()*。而 *revert() 跟 require* 相同，但當合約較複雜的時候，你會發現用 *revert* 會比較好讀。*assert ()*用在較安全性上的檢查，像是 overflow 等等。
+
+## 代码示例
+
+```
+	function testRequire(uint _i) public pure {
+        // Require should be used to validate conditions such as:
+        // - inputs
+        // - conditions before execution
+        // - return values from calls to other functions
+        require(_i > 10, "Input must be greater than 10");
+    }
+
+    function testRevert(uint _i) public pure {
+        // Revert is useful when the condition to check is complex.
+        // This code does the exact same thing as the example above
+        if (_i <= 10) {
+            revert("Input must be greater than 10");
+        }
+    }
+    
+    function testAssert() public view {
+        // Assert should only be used to test for internal errors,
+        // and to check invariants.
+
+        // Here we assert that num is always equal to 0
+        // since it is impossible to update the value of num
+        assert(num == 0);
+    }
+
+```
+
 
 
 # 几个比较重要的opcode

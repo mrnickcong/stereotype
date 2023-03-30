@@ -1,5 +1,469 @@
 
 
+# 区块链基础知识
+
+下面是一个简单的智能合约
+
+```
+// SPDX-License-Identifier: GPL-3.0   //源代码是根据GPL 3.0版本授权的
+pragma solidity ^0.4.0;           //Solidity版本0.4.0以上，最高到0.5.0，但是不包含0.5.0
+pragma solidity >=0.4.16 <0.9.0;  //告诉编译器源代码所适用的Solidity版本为>=0.4.16 及 <0.9.0
+contract SimpleStorage {
+
+	// 关键字“public”让这些变量可以从外部读取
+    address public minter;
+    mapping (address => uint) public balances;
+
+    // 轻客户端可以通过事件针对变化作出高效的反应
+    event Sent(address from, address to, uint amount);
+
+    // 这是构造函数，只有当合约创建时运行
+    constructor() {
+        minter = msg.sender;
+    }
+
+    function mint(address receiver, uint amount) public {
+        require(msg.sender == minter);
+        balances[receiver] += amount;
+    }
+
+    // Errors allow you to provide information about
+    // why an operation failed. They are returned
+    // to the caller of the function.
+    error InsufficientBalance(uint requested, uint available);
+
+
+    function send(address receiver, uint amount) public {
+        if (amount > balances[msg.sender])
+            revert InsufficientBalance({
+                requested: amount,
+                available: balances[msg.sender]
+            });
+
+        balances[msg.sender] -= amount;
+        balances[receiver] += amount;
+        emit Sent(msg.sender, receiver, amount);
+    }
+    
+}
+```
+
+## 代码解读
+
+### address
+
+`address public minter;` 
+
+这一行声明了一个可以被公开访问的 `address` 类型的状态变量。 
+
+`address` 类型是一个160位的值，且不允许任何算数操作。这种类型适合存储合约地址或外部人员的密钥对。
+
+关键字 `public` 自动生成一个函数，允许你在这个合约之外访问这个状态变量的当前值。
+
+如果没有这个关键字，其他的合约没有办法访问这个变量。
+
+由编译器生成的函数的代码大致如下所示（暂时忽略 external 和 view）：
+
+```
+function minter() external view returns (address) { return minter; }
+```
+
+### event
+
+`event Sent(address from, address to, uint amount);`
+
+这行声明了一个所谓的“事件（event）”，它会在 `send` 函数的最后一行被发出。用户界面（当然也包括服务器应用程序）可以监听区块链上正在发送的事件，而不会花费太多成本。一旦它被发出，监听该事件的listener都将收到通知。而所有的事件都包含了 `from` ， `to` 和 `amount` 三个参数，可方便追踪交易。
+
+为了监听这个事件，你可以使用如下JavaScript代码， Coin 是通过 [web3.js 创建的合约对象](https://learnblockchain.cn/docs/web3.js/web3-eth-contract.html) ， :
+
+```
+Coin.Sent().watch({}, '', function(error, result) {
+    if (!error) {
+        console.log("Coin transfer: " + result.args.amount +
+            " coins were sent from " + result.args.from +
+            " to " + result.args.to + ".");
+        console.log("Balances now:\n" +
+            "Sender: " + Coin.balances.call(result.args.from) +
+            "Receiver: " + Coin.balances.call(result.args.to));
+    }
+})
+```
+
+### error
+
+[Errors](https://learnblockchain.cn/docs/solidity/contracts.html#errors) 用来向调用者描述错误信息。Error与 [revert 语句](https://learnblockchain.cn/docs/solidity/control-structures.html#revert-statement) 一起使用。 `revert` 语句无条件地中止执行并回退所有的变化，类似于 `require` 函数，它也同样允许你提供一个错误的名称和额外的数据，这些额外数据将提供给调用者(并最终提供给前端应用程序或区块资源管理器），这样就可以更容易地调试或应对失败。
+
+任何人（已经拥有一些代币）都可以使用 `send` 函数来向其他人发送代币。如果发送者没有足够的代币可以发送， `if` 条件为真 `revert` 将触发失败，并通过 `InsufficientBalance` 向发送者提供错误细节。
+
+
+
+## 区块链基础
+
+对于程序员来说，区块链这个概念并不难理解，这是因为大多数难懂的东西 (挖矿, [哈希](https://en.wikipedia.org/wiki/Cryptographic_hash_function) ，[椭圆曲线密码学](https://en.wikipedia.org/wiki/Elliptic_curve_cryptography) ，[点对点网络（P2P）](https://en.wikipedia.org/wiki/Peer-to-peer) 等) 都只是用于提供特定的功能和承诺。你只需接受这些既有的特性功能，不必关心底层技术，比如，难道你必须知道亚马逊的 AWS 内部原理，你才能使用它吗？
+
+
+
+### 交易/事务
+
+区块链是全球共享的事务性数据库，这意味着每个人都可加入网络来阅读数据库中的记录。如果你想改变数据库中的某些东西，你必须创建一个被所有其他人所接受的事务。事务一词意味着你想做的（假设您想要同时更改两个值），要么一点没做，要么全部完成。此外，当你的事务被应用到数据库时，其他事务不能修改数据库。
+
+举个例子，设想一张表，列出电子货币中所有账户的余额。如果请求从一个账户转移到另一个账户，数据库的事务特性确保了如果从一个账户扣除金额，它总被添加到另一个账户。如果由于某些原因，无法添加金额到目标账户时，源账户也不会发生任何变化。
+
+此外，交易总是由发送人（创建者）签名。
+
+这样，就可非常简单地为数据库的特定修改增加访问保护机制。在电子货币的例子中，一个简单的检查可以确保只有持有账户密钥的人才能从中转账。
+
+
+
+### 区块
+
+在比特币中，要解决的一个主要难题，被称为“双花攻击 (double-spend attack)”：如果网络存在两笔交易，都想花光同一个账户的钱时（即所谓的冲突）会发生什么情况？交易互相冲突？
+
+简单的回答是你不必在乎此问题。网络会为你自动选择一条交易序列，并打包到所谓的“区块”中，然后它们将在所有参与节点中执行和分发。如果两笔交易互相矛盾，那么最终被确认为后发生的交易将被拒绝，不会被包含到区块中。
+
+这些块按时间形成了一个线性序列，这正是“区块链”这个词的来源。区块以一定的时间间隔添加到链上 —— 对于以太坊，这间隔大约是17秒。
+
+作为“顺序选择机制”（也就是所谓的“挖矿”）的一部分，可能有时会发生块（blocks）被回滚的情况，但仅在链的“末端”。末端增加的块越多，其发生回滚的概率越小。因此你的交易被回滚甚至从区块链中抹除，这是可能的，但等待的时间越长，这种情况发生的概率就越小。
+
+注解
+
+不能保证交易会包含在下一个区块或任何特定的未来区块中，因为这不是由交易的提交者决定，而是由矿工决定将交易包含在哪个区块中。
+
+如果你要安排合约的未来的时间点调用，可以使用合约自动化工具或类似的oracle服务。
+
+
+
+
+
+# 以太坊虚拟机
+
+### 概述
+
+以太坊虚拟机 EVM 是智能合约的运行环境。它不仅是沙盒封装的，而且是完全隔离的，也就是说在 EVM 中运行代码是无法访问网络、文件系统和其他进程的。甚至智能合约之间的访问也是受限的。
+
+
+
+### 账户
+
+以太坊中有两类账户（它们共用同一个地址空间）： **外部账户** 由公钥-私钥对（也就是人）控制； **合约账户** 由和账户一起存储的代码控制.
+
+外部账户的地址是由公钥决定的，而合约账户的地址是在创建该合约时确定的（这个地址通过合约创建者的地址和从该地址发出过的交易数量计算得到的，也就是所谓的“nonce”）
+
+无论帐户是否存储代码，这两类账户对 EVM 来说是一样的。
+
+每个账户都有一个键值对形式的持久化存储。其中 key 和 value 的长度都是256位，我们称之为 **存储** 。
+
+此外，每个账户有一个以太币余额（ **balance** ）（单位是“Wei”, `1 ether` 是 `10**18 wei`），余额会因为发送包含以太币的交易而改变。
+
+
+
+### 交易
+
+交易可以看作是从一个帐户发送到另一个帐户的消息（这里的账户，可能是相同的或特殊的零帐户，请参阅下文）。它能包含一个二进制数据（合约负载）和以太币。
+
+如果目标账户含有代码，此代码会被执行，并以 payload 作为入参。
+
+如果目标账户是零账户（账户地址为 `0` )，此交易将创建一个 **新合约** 。 如前文所述，合约的地址不是零地址，而是通过合约创建者的地址和从该地址发出过的交易数量计算得到的（所谓的“nonce”）。 这个用来创建合约的交易的 payload 会被转换为 EVM 字节码并执行。执行的输出将作为合约代码被永久存储。这意味着，为创建一个合约，你不需要发送实际的合约代码，而是发送能够产生合约代码的代码。
+
+注解
+
+在合约创建的过程中，它的代码还是空的。所以直到构造函数执行结束，你都不应该在其中调用合约自己函数。
+
+
+
+### Gas
+
+一经创建，每笔交易都收取一定数量的 **gas** ，必须由原始交易发起人（ `tx.orgin` ）支付。 EVM 执行交易时，gas 将按特定规则逐渐耗尽。 无论执行到什么位置，一旦 gas 被耗尽（比如降为负值），将会触发一个 out-of-gas 异常。当前调用帧（call frame）所做的所有状态修改都将被回滚。
+
+Gas机制激励了对EVM执行时间的经济使用，同时也补偿了 EVM 执行者（即矿工）的工作。 由于每个区块有一个最大的Gas数量(区块 gas limit)，它也限制了验证一个区块所需的工作量。
+
+**gas price** 是交易发送者设置的一个值，发送者账户需要预付的手续费= `gas_price * gas` 。如果交易执行后还有剩余， gas 会原路返还。 如果出现异常（exception），回退交易，已经用完的Gas就不会被退还。
+
+由于EVM执行者可以选择是否包括交易。交易发送者不能通过设置一个低的Gas价格来滥用系统。
+
+
+
+### 存储，内存和栈
+
+以太坊虚拟机有 3 个区域用来存储数据： 存储（storage）, 内存（memory） 和 栈（stack）.
+
+每个账户有一块持久化内存区称为 **存储** 。 存储是将256位字映射到256位字的键值存储区。 在合约中枚举存储是不可能的，且读存储的相对开销很高，修改存储的开销甚至更高。合约只能读写存储区内属于自己的部分。
+
+第二个内存区称为 **内存** ，合约会试图为每一次消息调用获取一块被重新擦拭干净的内存实例。 内存是线性的，可按字节级寻址，但读的长度被限制为256位，而写的长度可以是8位或256位。当访问（无论是读还是写）之前从未访问过的内存字（word）时（无论是偏移到该字内的任何位置），内存将按字进行扩展（每个字是256位）。扩容也将消耗一定的gas。 随着内存使用量的增长，其费用也会增高（以平方级别）。
+
+EVM 不是基于寄存器的，而是基于栈的，因此所有的计算都在一个被称为 **栈（stack）** 的区域执行。 	，每个元素长度是一个字（256位）。对栈的访问只限于其顶端，限制方式为：允许拷贝最顶端的16个元素中的一个到栈顶，或者是交换栈顶元素和下面16个元素中的一个。所有其他操作都只能取最顶的两个（或一个，或更多，取决于具体的操作）元素，运算后，把结果压入栈顶。当然可以把栈上的元素放到存储或内存中。但是无法只访问栈上指定深度的那个元素，除非先从栈顶移除其他元素。
+
+
+
+### 指令集
+
+EVM的指令集量应尽量少，以最大限度地避免可能导致共识问题的错误实现。所有的指令都是针对”256位的字（word）”这个基本的数据类型来进行操作。具备常用的算术、位、逻辑和比较操作。也可以做到有条件和无条件跳转。此外，合约可以访问当前区块的相关属性，比如它的编号和时间戳。
+
+
+
+### 消息调用
+
+合约可以通过消息调用的方式来调用其它合约或者发送以太币到非合约账户。消息调用和交易非常类似，它们都有一个源、目标、数据、以太币、gas和返回数据。事实上每个交易都由一个顶层消息调用组成，这个消息调用又可创建更多的消息调用。
+
+合约可以决定在其内部的消息调用中，对于剩余的 **gas** ，应发送和保留多少。如果在内部消息调用时发生了out-of-gas异常（或其他任何异常），这将由一个被压入栈顶的错误值所指明。此时，只有与该内部消息调用一起发送的gas会被消耗掉。并且，Solidity中，发起调用的合约默认会触发一个手工的异常，以便异常可以从调用栈里“冒泡出来”。 如前文所述，被调用的合约（可以和调用者是同一个合约）会获得一块刚刚清空过的内存，并可以访问调用的payload——由被称为 calldata 的独立区域所提供的数据。调用执行结束后，返回数据将被存放在调用方预先分配好的一块内存中。 调用深度被 **限制** 为 1024 ，因此对于更加复杂的操作，我们应使用循环而不是递归。
+
+
+
+### 委托调用/代码调用和库
+
+有一种特殊类型的消息调用，被称为 **委托调用(delegatecall)** 。它和一般的消息调用的区别在于，目标地址的代码将在发起调用的合约的上下文中执行，并且 `msg.sender` 和 `msg.value` 不变。 这意味着一个合约可以在运行时从另外一个地址动态加载代码。存储、当前地址和余额都指向发起调用的合约，只有代码是从被调用地址获取的。 这使得 Solidity 可以实现”库“能力：可复用的代码库可以放在一个合约的存储上，如用来实现复杂的数据结构的库。
+
+
+
+### 日志
+
+有一种特殊的可索引的数据结构，其存储的数据可以一路映射直到区块层级。这个特性被称为 **日志(logs)** ，Solidity用它来实现 **事件(events)** 。合约创建之后就无法访问日志数据，但是这些数据可以从区块链外高效的访问。因为部分日志数据被存储在 [布隆过滤器（Bloom filter)](https://en.wikipedia.org/wiki/Bloom_filter) 中，我们可以高效并且加密安全地搜索日志，所以那些没有下载整个区块链的网络节点（轻客户端）也可以找到这些日志。
+
+
+
+### 合约创建
+
+合约甚至可以通过一个特殊的指令来创建其他合约（不是简单的调用零地址）。创建合约的调用 **create calls** 和普通消息调用的唯一区别在于，负载会被执行，执行的结果被存储为合约代码，调用者/创建者在栈上得到新合约的地址。
+
+
+
+### 失效和自毁
+
+合约代码从区块链上移除的唯一方式是合约在合约地址上的执行自毁操作 `selfdestruct` 。合约账户上剩余的以太币会发送给指定的目标，然后其存储和代码从状态中被移除。移除一个合约听上去不错，但其实有潜在的危险，如果有人发送以太币到移除的合约，这些以太币将永远丢失。
+
+警告
+
+即使一个合约被 `selfdestruct` 删除，它仍然是区块链历史的一部分，可能被大多数以太坊节点保留。 因此，使用 `selfdestruct` 与从硬盘上删除数据是不同的。
+
+注解
+
+即便一个合约的代码中没有显式地调用 `selfdestruct` ，它仍然有可能通过 `delegatecall` 或 `callcode` 执行自毁操作。
+
+如果要禁用合约，可以通过修改某个内部状态让所有函数无法执行，而是直接回退，这样也可以达到返还以太的目的。
+
+
+
+### 预编译合约
+
+有一小部分合约地址是特殊的。 在 `1` 和（包括） `8` 之间的地址范围包含了 “预编译的合约（precompiled contract）”，他们可以像其他合约一样被调用 但是他们的行为（和他们的Gas消耗）并不是被存储在该地址的EVM代码所定义(预编译合约它们不包含代码)。 而是在EVM执行环境本身中实现的。
+
+不同的EVM兼容链可能使用一组不同的预编译的合约。也有可能是新的预编译合约在未来被添加到Ethereum主链中。 但你可以合理地期望它们总是在 `1` 和 [``](https://learnblockchain.cn/docs/solidity/introduction-to-smart-contracts.html#id22)0xffff``（包括）地址范围内。
+
+
+
+# 语言描述
+
+## 合约的结构
+
+每个合约中可以包含 [状态变量](https://learnblockchain.cn/docs/solidity/structure-of-a-contract.html#structure-state-variables)、 [函数](https://learnblockchain.cn/docs/solidity/structure-of-a-contract.html#structure-functions)、 [函数 ](https://learnblockchain.cn/docs/solidity/structure-of-a-contract.html#structure-function-modifiers), [事件 Event](https://learnblockchain.cn/docs/solidity/structure-of-a-contract.html#structure-events), [错误(Errors)](https://learnblockchain.cn/docs/solidity/structure-of-a-contract.html#structure-errors), [结构体](https://learnblockchain.cn/docs/solidity/structure-of-a-contract.html#structure-struct-types) 和 [枚举类型](https://learnblockchain.cn/docs/solidity/structure-of-a-contract.html#structure-enum-types) 的声明，且合约可以从其他合约继承。
+
+还有一些特殊的合约，如： [库](https://learnblockchain.cn/docs/solidity/contracts.html#libraries) 和 [接口](https://learnblockchain.cn/docs/solidity/contracts.html#interfaces).
+
+| 合约构成单元 | 名词解释                                                     | 备注                                              |
+| :----------: | ------------------------------------------------------------ | ------------------------------------------------- |
+|   状态变量   | 合约的数据，状态变量是永久地存储在合约存储中的值             |                                                   |
+|     函数     | 合约的行为                                                   |                                                   |
+|  函数修饰器  | 可以用来以声明的方式修改函数语义。                           | 相当于Java中AOP。多用拦截函数的访问控制、校验等   |
+|  事件event   | 事件是能方便地调用以太坊虚拟机日志功能的接口                 | 日志，是一种数据支持化存储                        |
+|   构造函数   | 合约初始化的时候会调用，即部署的时候                         |                                                   |
+|    结构体    | 结构体是可以将几个变量分组的自定义类型                       | `struct Voter {  uint weight; }`// 结构体         |
+|   枚举类型   | 枚举可用来创建由一定数量的“常量值”构成的自定义类型           | `enum State { Created, Locked, InValid } // 枚举` |
+|     异常     | Solidity 为应对失败，允许用户定义 `error` 来描述错误的名称和数据。 错误可以在 [revert statements](https://learnblockchain.cn/docs/solidity/control-structures.html#revert-statement) 中使用，跟用错误字符串相比， `error` 更便宜并且允许你编码额外的数据，还可以用 NatSpec 为用户去描述错误 |                                                   |
+
+```
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity ^0.8.4;
+// 没有足够的资金用于转账， 参数 `requested` 表示需要的资金，`available` 表示仅有的资金。
+error NotEnoughFunds(uint requested, uint available);
+contract Token {
+    mapping(address => uint) balances;
+    function transfer(address to, uint amount) public {
+        uint balance = balances[msg.sender];
+        if (balance < amount)
+            revert NotEnoughFunds(amount, balance);
+        balances[msg.sender] -= amount;
+        balances[to] += amount;
+        // ...
+    }
+}
+```
+
+
+
+
+
+
+
+#### 合约的账号
+
+
+
+## 特殊变量和函数
+
+在全局命名空间中已经存在了（预设了）一些特殊的变量和函数，他们主要用来提供关于区块链的信息或一些通用的工具函数。
+
+可以把这些变量和函数理解为Solidity 语言层面的（原生） API 。
+
+### 区块和交易属性
+
+- `blockhash(uint blockNumber) returns (bytes32)`：指定区块的区块哈希 —— 仅可用于最新的 256 个区块且不包括当前区块，否则返回 0 。
+- `block.basefee` (`uint`): 当前区块的基础费用，参考： ([EIP-3198](https://eips.ethereum.org/EIPS/eip-3198) 和 [EIP-1559](https://eips.ethereum.org/EIPS/eip-1559))
+- `block.chainid` (`uint`): 当前链 id
+- `block.coinbase` ( `address` ): 挖出当前区块的矿工地址
+- `block.difficulty` ( `uint` ): 当前区块难度
+- `block.gaslimit` ( `uint` ): 当前区块 gas 限额
+- `block.number` ( `uint` ): 当前区块号
+- `block.timestamp` ( `uint`): 自 unix epoch 起始当前区块以秒计的时间戳
+- `gasleft() returns (uint256)` ：剩余的 gas
+- `msg.data` ( `bytes` ): 完整的 calldata
+- `msg.sender` ( `address` ): 消息发送者（当前调用）
+- `msg.sig` ( `bytes4` ): calldata 的前 4 字节（也就是函数标识符）
+- `msg.value` ( `uint` ): 随消息发送的 wei 的数量
+- `tx.gasprice` (`uint`): 交易的 gas 价格
+- `tx.origin` ( `address` ): 交易发起者（完全的调用链）
+
+### ABI 编码及解码函数
+
+- `abi.decode(bytes memory encodedData, (...)) returns (...)`: 对给定的数据进行ABI解码，而数据的类型在括号中第二个参数给出 。 例如: `(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))`
+- `abi.encode(...) returns (bytes)`： [ABI](https://learnblockchain.cn/docs/solidity/abi-spec.html#abi) - 对给定参数进行编码
+- `abi.encodePacked(...) returns (bytes)`：对给定参数执行 [紧打包编码](https://learnblockchain.cn/docs/solidity/abi-spec.html#abi-packed-mode) ，注意，可以不明确打包编码。
+- `abi.encodeWithSelector(bytes4 selector, ...) returns (bytes)`： [ABI](https://learnblockchain.cn/docs/solidity/abi-spec.html#abi) - 对给定第二个开始的参数进行编码，并以给定的函数选择器作为起始的 4 字节数据一起返回
+- `abi.encodeWithSignature(string signature, ...) returns (bytes)`：等价于 `abi.encodeWithSelector(bytes4(keccak256(signature), ...)`
+- `abi.encodeCall(function functionPointer, (...)) returns (bytes memory)`: 使用tuple类型参数ABI 编码调用 `functionPointer` 。执行完整的类型检查, 确保类型匹配函数签名。结果和 `abi.encodeWithSelector(functionPointer.selector, (...))` 一致。
+
+### bytes 成员函数
+
+`bytes.concat(...) returns (bytes memory)`
+
+### string 成员函数
+
+`string.concat(...) returns (string memory)`
+
+### 错误处理
+
+Solidity 使用状态恢复异常来处理错误。这种异常将撤消对当前调用（及其所有子调用）中的状态所做的所有更改，并且还向调用者标记错误。
+
+#### 用 `assert` 检查异常(Panic) 
+
+#### 用`require` 检查错误(Error)
+
+#### 用 `try/catch` 捕获异常
+
+```
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity >=0.8.1;
+
+interface DataFeed { function getData(address token) external returns (uint value); }
+
+contract FeedConsumer {
+    DataFeed feed;
+    uint errorCount;
+    function rate(address token) public returns (uint value, bool success) {
+        // 如果错误超过 10 次，永久关闭这个机制
+        require(errorCount < 10);
+        try feed.getData(token) returns (uint v) {
+            return (v, true);
+        } catch Error(string memory /*reason*/) {
+            // This is executed in case revert was called inside getData and a reason string was provided.
+            errorCount++;
+            return (0, false);
+        }  catch Panic(uint /*errorCode*/) {
+            // This is executed in case of a panic,i.e. a serious error like division by zero or overflow. 
+            // The error code can be used to determine the kind of error.
+            errorCount++;
+            return (0, false);
+        } catch (bytes memory /*lowLevelData*/) {
+            // This is executed in case revert() was used。
+            errorCount++;
+            return (0, false);
+        }
+    }
+}
+```
+
+`try` 关键词后面必须有一个表达式，代表外部函数调用或合约创建（ `new ContractName()`）
+
+Solidity 根据错误的类型，支持不同种类的捕获代码块：
+
+- `catch Error(string memory reason) { ... }`: 如果错误是由 `revert("reasonString")` 或 `require(false, "reasonString")` （或导致这种异常的内部错误）引起的，则执行这个catch子句。
+- `catch Panic(uint errorCode) { ... }`: 如果错误是由 panic 引起的（如： `assert` 失败，除以0，无效的数组访问，算术溢出等将执行这个catch子句。
+- `catch (bytes memory lowLevelData) { ... }`: 如果错误签名不符合任何其他子句，如果在解码错误信息时出现了错误，或者如果异常没有一起提供错误数据。在这种情况下，子句声明的变量提供了对低级错误数据的访问。
+- `catch { ... }`: 如果你对错误数据不感兴趣，你可以直接使用 `catch { ... }` (甚至是作为唯一的catch子句) 而不是前面几个catch子句。
+
+
+
+
+
+### 地址成员
+
+### 合约相关
+
+- `this` (当前的合约类型)
+
+  当前合约，可以显示转换为 [地址类型 Address](https://learnblockchain.cn/docs/solidity/types.html#address)。
+
+- `selfdestruct(address payable recipient)`
+
+  销毁合约，并把余额发送到指定 [地址类型 Address](https://learnblockchain.cn/docs/solidity/types.html#address)。请注意， `selfdestruct` 具有从EVM继承的一些特性：
+
+ \- 接收合约的 receive 函数 不会执行。  - 合约仅在交易结束时才真正被销毁，并且 `revert` 可能会“撤消”销毁。
+
+此外，当前合约内的所有函数都可以被直接调用，包括当前函数。
+
+注解
+
+### 类型信息
+
+表达式 `type(X)` 可用于检索参数 `X` 的类型信息。 目前，此功能还比较有限( `X` 仅能是合约和整型)，但是未来应该会扩展。
+
+用于合约类型 `C` 支持以下属性:
+
+- `type(C).name`:
+
+  获得合约名
+
+- `type(C).creationCode`:
+
+  获得包含创建合约字节码的内存字节数组。它可以在内联汇编中构建自定义创建例程，尤其是使用 `create2` 操作码。 不能在合约本身或派生的合约访问此属性。 因为会引起循环引用。
+
+- `type(C).runtimeCode`
+
+  获得合约的运行时字节码的内存字节数组。这是通常由 `C` 的构造函数部署的代码。 如果 `C` 有一个使用内联汇编的构造函数，那么可能与实际部署的字节码不同。 还要注意库在部署时修改其运行时字节码以防范定期调用（guard against regular calls）。 与 `.creationCode` 有相同的限制，不能在合约本身或派生的合约访问此属性。 因为会引起循环引用。
+
+除上面的属性, 下面的属性在接口类型``I``下可使用:
+
+- `type(I).interfaceId`:
+
+  返回接口``I`` 的 `bytes4` 类型的接口 ID，接口 ID 参考： [EIP-165](https://learnblockchain.cn/docs/eips/eip-165.html) 定义的， 接口 ID 被定义为 `XOR` （异或） 接口内所有的函数的函数选择器（除继承的函数。
+
+对于整型 `T` 有下面的属性可访问：
+
+- `type(T).min`
+
+  `T` 的最小值。
+
+- `type(T).max`
+
+  `T` 的最大值。
+
+## 特别注意
+
+1、对于每一个**外部函数**调用，包括 `msg.sender` 和 `msg.value` 在内所有 `msg` 成员的值都会变化。这里包括对库函数的调用。
+
+2、当合约在链下被评估，而不是在一个区块所包含的交易的背景下被评估时，你不应该假定 block.* 和 tx.* 是指任何特定区块或交易。这些值是由执行合约的EVM实现提供的，可以是任意的。
+
+3、基于可扩展因素，区块哈希不是对所有区块都有效。你仅仅可以访问最近 256 个区块的哈希，其余的哈希均为零。
+
+# 深入语言内部
+
+
+
+
+
+
+
+
+
 
 
 继承

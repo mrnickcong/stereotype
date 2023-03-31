@@ -255,6 +255,10 @@ EVM的指令集量应尽量少，以最大限度地避免可能导致共识问�
 
 ## 合约的创建
 
+### 外部创建
+
+### 内部创建
+
 ## 合约的结构
 
 每个合约中可以包含 [状态变量](https://learnblockchain.cn/docs/solidity/structure-of-a-contract.html#structure-state-variables)、 [函数](https://learnblockchain.cn/docs/solidity/structure-of-a-contract.html#structure-functions)、 [函数 ](https://learnblockchain.cn/docs/solidity/structure-of-a-contract.html#structure-function-modifiers), [事件 Event](https://learnblockchain.cn/docs/solidity/structure-of-a-contract.html#structure-events), [错误(Errors)](https://learnblockchain.cn/docs/solidity/structure-of-a-contract.html#structure-errors), [结构体](https://learnblockchain.cn/docs/solidity/structure-of-a-contract.html#structure-struct-types) 和 [枚举类型](https://learnblockchain.cn/docs/solidity/structure-of-a-contract.html#structure-enum-types) 的声明，且合约可以从其他合约继承。
@@ -362,7 +366,7 @@ bytes和string类型的变量是特殊的数组，不允许使用 长度或者�
 
 映射类型在声明时的形式为 `mapping(KeyType => ValueType)`。 
 
-​				其中 `KeyType` 可以是任何基本类型，即可以是任何的内建类型， `bytes` 和 `string` 或合约类型、枚举类型。
+​				其中 `KeyType` 可以是任何基本类型，即可以是任何的内建类型， 可以是任务基本类型，包括bytes和string，但不包括自定义类型，比如：合约、枚举、映射、结构体
 
 ​				即除 `bytes` 和 `string` 之外的数组类型是不可以作为 `KeyType` 的类型的。
 
@@ -879,6 +883,53 @@ contract Caller {
 
 ### 函数的重载
 
+### 函数的签名
+
+### 函数选择器
+
+solidity合约内部：
+
+```
+abi.encodewithsignther()
+IERC721Receiver.onERC721Received.selector
+```
+
+
+
+## 
+
+### 函数的运行时上下文
+
+
+- 函数调用的运行时上下文环境变量主要有三个：block、transaction、message
+- 其性质分别如下：
+  - 一次外部账号对合约的调用，可能引发一系列合约之间的调用，即：外部账号EOA调用合约、合约之间的调用
+  - 一次外部账号的调用，对应着同一个block、transaction
+  - 直接被外部账号调用的合约里的函数，其block、transaction、message是相同的。
+  - 合约内部之间的函数调用，其block、transaction、message是不发生变化的。
+  - 合约之间相互调用时：block、transaction是相同的，但是会产生新的message
+  - transaction和internal transaction。前者指的是EOA的一次调用，直到结束。后者指的是合约之间的调用
+
+## 函数的调用
+
+#### **call函数**
+
+​      Solidity函数动态调用机制只要是依靠call函数实现，起作用类似于Java语言的反射机制
+
+​          call是address的方法，参数为 bytes calldata，其返回值为（boolean success, bytes data）
+
+​          需要校验(require、revert)call的返回值是否为TRUE，忽视返回值，程序不会终止交易，会造成严重后果
+
+​          calldata的前四个字节是函数选择器selector，剩下的是参数编码
+
+​          使用方法：可以通过abi的库函数来获取calldata
+
+​                calldata = abi.encodeWithSignature(signature,params)
+
+​                其中calldata为solidity保留关键字，不允许声明为变量名。
+
+​                signature为函数签名，函数签名的参数不能为别名，比如：uint不行，应该是uint256
+
 ## 特别注意
 
 1、对于每一个**外部函数**调用，包括 `msg.sender` 和 `msg.value` 在内所有 `msg` 成员的值都会变化。这里包括对库函数的调用。
@@ -888,6 +939,8 @@ contract Caller {
 3、基于可扩展因素，区块哈希不是对所有区块都有效。你仅仅可以访问最近 256 个区块的哈希，其余的哈希均为零。
 
 
+
+## 转账
 
 # 深入语言内部
 

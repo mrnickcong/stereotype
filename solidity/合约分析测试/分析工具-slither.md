@@ -27,10 +27,9 @@ Slither的工作方式如下：
 原文链接：https://blog.csdn.net/weixin_44217936/article/details/123240460
 
 
+## 安装记录
 
-安装记录
-
-```
+```text
 //Python环境
 Python 3.8.8
 
@@ -47,4 +46,3 @@ pip3 install slither-analyzer
 //要保证在hardhat.config.js的同级目录下
  slither .\contracts\Reentrancy.sol
 ```
-

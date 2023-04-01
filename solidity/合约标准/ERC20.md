@@ -1,5 +1,8 @@
 # ERC20代币标准
 
+这个文章写的好
+https://learnblockchain.cn/article/4661
+
 ## what
 
 ERC-20 标准是在2015年11月份推出的，使用这种规则的代币，表现出一种通用的和可预测的方式。
@@ -10,32 +13,32 @@ ERC-20 标准规定了各个代币的基本功能，非常方便第三方使用�
 //这是
 
 ```text
-contract ERC20 {
+// SPDX-License-Identifier: MIT
+//file IERC20.sol
+pragma solidity ^0.8.0;
 
-    //返回token的总供应量
-    uint256 public totalSupply;
+interface IERC20 {
+    // 总发行量
+    function totalSupply() external view returns (uint256);
+    // 查看地址余额
+    function balanceOf(address account) external view returns (uint256);
+    /// 从自己帐户给指定地址转账
+    function transfer(address account, uint256 amount) external returns (bool);
+    // 查看被授权人还可以使用的代币余额
+    function allowance(address owner, address spender) external view returns (uint256);
+    // 授权指定帐户使用你拥有的代币
+    function approve(address spender, uint256 amount) external returns (bool);
+    // 从一个地址转账至另一个地址，该函数只能是通过approver授权的用户可以调用
+    function transferFrom(
+        address from,
+        address to,
+        uint256 amount
+    ) external returns (bool);
 
-    //用于查询某个账户的账户余额
-    function balanceOf(address who) constant public returns (uint256);
-
-    //发送 _value 个 token 到地址 _to
-    function transfer(address to, uint256 value) public returns (bool);
-
-    //从地址 _from 发送 _value 个 token 到地址 _to
-    function transferFrom(address from, address to, uint256 value) public returns (bool);
-    
-    //允许 _spender 多次取回您的帐户，最高达 _value 金额； 如果再次调用此函数，它将用 _value 的当前值覆盖的 allowance 值。
-    function approve(address spender, uint256 value) public returns (bool);
-
-    //返回 _spender 仍然被允许从 _owner 提取的金额。
-    function allowance(address owner, address spender) constant public returns (uint256);
-
-    //当 tokens 被转移时触发。
+    /// 定义事件，发生代币转移时触发
     event Transfer(address indexed from, address indexed to, uint256 value);
-
-    //当任何成功调用 approve(address _spender, uint256 _value) 后，必须被触发。
+    /// 定义事件 授权时触发
     event Approval(address indexed owner, address indexed spender, uint256 value);
-
 }
 ```
 
@@ -50,3 +53,17 @@ contract ERC20 {
     ​     A账号 和 B账号建立一种委托关联,登录A账户执行approve(b,100)方法结果为：结果：allowance[A][B] = 100token
    在执行登录B账户执行transferFrom(A,C,100),这里的B就是委托账号发送者,gas从B扣,必须确保token数量小于allowance[A][B]
    其实就是A转入C,但是要经过B的账号来发送交易！
+
+## Q2：ERC20的approve()函数被【抢先交易攻击】
+
+值得一提的是ERC20的approve()函数存在安全隐患 (front-running attack)，并且该问题至今没有完全解决。可行的攻击场景如下：
+
+1. Alice授权Bob可以挪用100个她的Token A. (tx1)
+2. tx1被矿工确认后，Alice想把授权上限改为50个Token A. (tx2)
+3. Bob探测到tx1已经确认，同时tx2还在pending状态，他给高额gas并调用transferFrom()函数直接在tx2被确认前从Alice账户转移了100个Token A. (tx3)
+4. tx3先于tx2被确认，之后不久tx2也被确认，在Alice还没反应过来之前Bob立马再次调用transferFrom()又从Alice那转移了50个Token A。
+5. 这样Bob一共从 Alice那转移了150个Token A，虽然Alice的本意是只希望授权50个给Bob挪用。
+
+解决办法：
+
+而且正如EIP issue里一个评论所提到的，一般用户调用approve(_spender, _value)的场景多是在信任_spender的前提下才会这么调用，而_spender多为交易所的智能合约，一般不会故意想要黑用户的币。然而这个历史遗留问题估计要等到下一版标准出来才有望彻底解决了。

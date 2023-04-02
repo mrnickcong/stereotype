@@ -6,3 +6,6 @@
 2. 不可否认：发送方不能否认发送过这个消息。
 3. 完整性：消息在传输过程中无法被修改。
 
+
+
+https://solidity.tryblockchain.org/Solidity-theOptimizer-%E4%BC%98%E5%8C%96.html

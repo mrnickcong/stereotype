@@ -1,9 +1,35 @@
-web3项目准备
+# Borabora项目
 
+## 环境信息
 
+### openzepelin
 
-1、白名单签名授信
+```text
+// OpenZeppelin Contracts (last updated v4.7.0) (utils/Address.sol)
+```
+
+### bora合约源码版本
+
+```text
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.9;
+```
+
+### golang版本
+
+`0.12`
+
+### NFT tokenuri
+
+https://trade.borabora.ooo/api/ipfs/
+
+## 功能实现
+
+### 1、白名单签名授信
+
 Solidity-链下签名签名-链上验证；链下使用 Ether.js 进行签名，链上使用 OpenZeppelin ECDSA 验证。
+
+```text
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -41,11 +67,5 @@ contract Verification {
         }
     }
 }
-
-
-
-
-
-
-
+```
 

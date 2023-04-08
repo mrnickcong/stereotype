@@ -34,3 +34,4 @@ new ReferenceQueue<>());
 类动作，但是这个方式即不安全又低效
 上诉所说的几类引用，都是指对象本身的引用，而不是指Reference的四个子类的引用
 (SoftReference等)。
+

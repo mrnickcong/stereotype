@@ -35,3 +35,10 @@ new ReferenceQueue<>());
 上诉所说的几类引用，都是指对象本身的引用，而不是指Reference的四个子类的引用
 (SoftReference等)。
 
+## 类的初始化和实例初始化
+
+
+
+## 线程池
+
+##

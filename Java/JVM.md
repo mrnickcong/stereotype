@@ -50,6 +50,11 @@ Java中JMM内存模型定义了八种操作来实现同步到细节。
 类的加载过程
 
 垃圾回收算法
+ps+po
+pnew+cms
+G1
+zgc
+
 
 JMM
 happen-before是什么？

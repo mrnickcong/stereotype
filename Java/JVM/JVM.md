@@ -6,7 +6,7 @@
 
 JMM (Java Memory Model)是Java内存模型,JMM定义了程序中各个共享变量的访问规则,即在虚拟机中将变量存储到内存和从内存读取变量这样的底层细节。
 
-![JMM](./images/JMM.png)
+![JMM](../images/JMM.png)
 
 ### 为什么要设计JMM
 
@@ -36,7 +36,7 @@ Java中JMM内存模型定义了八种操作来实现同步到细节。
 - 如果一个变量事先没有被lock操作锁定，则不允许对它执行unlock操作；也不允许去unlock一个被其他线程锁定的变量。
 - 对一个变量执行unlock操作之前，必须先把此变量同步到主内存中（执行store和write操作）。
 
-![内存交互](./images/内存交互.png)
+![内存交互](..77/images/内存交互.png)
 
 ## 二、什么是双亲委派
 

@@ -351,11 +351,11 @@ redis的内存淘汰策略（默认配置：maxmemory-policy noeviction）
 - noeviction：不会驱逐任何key（默认配置）
 - volatile-ttl：删除马上要过期的key
 - allkeys-lru：对所有的key实行LRU算法进行删除（最常见）
-- volatile-lru：对设置了过期时间的key实行LRU算法进行删除
-- allkeys-random：对所有的key随机删除
-- volatile-random：对设置了过期时间的key随机删除
 - allkeys-lfu：对所有的key实行LFU算法进行删除
+- allkeys-random：对所有的key随机删除
+- volatile-lru：对设置了过期时间的key实行LRU算法进行删除
 - volatile-lfu：对设置了过期时间的key实行LFU算法进行删除
+- volatile-random：对设置了过期时间的key随机删除
 
 **LRU和LFU**
 LRU：means Least Recently Used    选择最近最久没有使用的数据予以淘汰

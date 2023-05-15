@@ -1,5 +1,7 @@
 # MVVC实现机制
 
+[文章来源](https://pdai.tech/md/db/sql-mysql/sql-mysql-mvcc.html)
+
 MVCC就是为了实现读-写冲突不加锁，通过维护数据历史版本，从而解决并发访问情况下的读一致性问题
 
 * [一、什么是MVVC](#一什么是mvvc)

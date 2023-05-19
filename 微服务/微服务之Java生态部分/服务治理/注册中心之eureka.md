@@ -158,6 +158,6 @@ Eureka Server的缓存是通过一个只读，一个读写缓存来实现的。
 ### 服务拉取
 
 1. 服务消费者，默认每30s，拉取注册表信息
-2. 从readOnlyCacheMap中获取信息，如果获取为空
-3. 从readWriteCacheMap中获取，如果还是为空
-4. 调用ClassLoader的load方法，将内存中的注册表信息加载到各级缓存中，并返回注册表信息。
+2. 从 `readOnlyCacheMap` 中获取信息，如果获取为空
+3. 从 `readWriteCacheMap` 中获取，如果还是为空
+4. 调用 `ClassLoader` 的`load` 方法，将内存中的注册表信息加载到各级缓存中，并返回注册表信息。

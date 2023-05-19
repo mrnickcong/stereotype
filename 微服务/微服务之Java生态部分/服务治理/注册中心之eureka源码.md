@@ -8,6 +8,8 @@
   - [Eureka源码剖析之五：服务下线](#eureka源码剖析之五服务下线)
   - [Eureka源码剖析之六：自我保护机制](#eureka源码剖析之六自我保护机制)
 
+https://www.sunnymaple.cn/2020/03/04/Eureka%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93/
+
 ## Eureka源码剖析之一：初始化-启动
 
 ## Eureka源码剖析之二：服务注册

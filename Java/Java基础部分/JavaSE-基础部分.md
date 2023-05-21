@@ -1,5 +1,28 @@
 # Java基础知识
 
+- [Java基础知识](#java基础知识)
+  - [一、Java中基本数据类型](#一java中基本数据类型)
+  - [二、 重载和重写的区别](#二-重载和重写的区别)
+  - [三、 equals与==的区别](#三-equals与的区别)
+  - [四、介绍下Java中的内部类](#四介绍下java中的内部类)
+  - [五、 Java的四种引用，强弱软虚](#五-java的四种引用强弱软虚)
+  - [六、HashCode的作用](#六hashcode的作用)
+  - [七、有没有可能两个不相等的对象有相同的hashcode](#七有没有可能两个不相等的对象有相同的hashcode)
+  - [八、深拷贝和浅拷贝的区别是什么?](#八深拷贝和浅拷贝的区别是什么)
+  - [九、static都有哪些用法?](#九static都有哪些用法)
+  - [十、 介绍下Object中的常用方法](#十-介绍下object中的常用方法)
+  - [十一、Java创建对象有几种方式？](#十一java创建对象有几种方式)
+  - [十二、获取一个类Class对象的方式有哪些？](#十二获取一个类class对象的方式有哪些)
+  - [十三、介绍下你对Java集合的理解](#十三介绍下你对java集合的理解)
+  - [十四、有了数组为什么还要再搞一个ArrayList呢？](#十四有了数组为什么还要再搞一个arraylist呢)
+  - [十五、说说什么是 fail-fast？](#十五说说什么是-fail-fast)
+  - [十六、HashMap 与 ConcurrentHashMap 的异同](#十六hashmap-与-concurrenthashmap-的异同)
+  - [十七、介绍下你对红黑树的理解](#十七介绍下你对红黑树的理解)
+  - [十八、OOM你遇到过哪些情况，SOF你遇到过哪些情况](#十八oom你遇到过哪些情况sof你遇到过哪些情况)
+    - [SOF（堆栈溢出StackOverflow）](#sof堆栈溢出stackoverflow)
+    - [OOM](#oom)
+  - [十九、异常处理影响性能吗](#十九异常处理影响性能吗)
+
 ## 一、Java中基本数据类型
 
 | 基本类型 | 字节大小 |    默认值    |  封装类   |
@@ -211,9 +234,11 @@ hashCode方法可以这样理解：它返回的就是根据对象的内存地址
 
 ## 九、static都有哪些用法?
 
-&emsp;&emsp;所有的人都知道static关键字这两个基本的用法:静态变量和静态方法.也就是被static所修饰的变量/
+所有的人都知道static关键字这两个基本的用法:静态变量和静态方法.也就是被static所修饰的变量
+
 方法都属于类的静态资源,类实例所共享.
-&emsp;&emsp;除了静态变量和静态方法之外,static也用于静态块,多用于初始化操作:
+
+除了静态变量和静态方法之外,static也用于静态块,多用于初始化操作:
 
 ```java
 public calss PreCache{
@@ -223,8 +248,9 @@ public calss PreCache{
 }
 ```
 
-&emsp;&emsp;此外static也多用于修饰内部类,此时称之为静态内部类.
-&emsp;&emsp;最后一种用法就是静态导包,即 import static .import static是在JDK 1.5之后引入的新特性,可以用
+此外static也多用于修饰内部类,此时称之为静态内部类.
+
+最后一种用法就是静态导包,即 import static .import static是在JDK 1.5之后引入的新特性,可以用
 来指定导入某个类中的静态资源,并且不需要使用类名,可以直接使用资源名,比如:
 
 ```
@@ -242,22 +268,23 @@ public class Test{
 ![Object中的成员方法](../images/Object的成员方法.png)
 
 **clone 方法**
-&emsp;&emsp;保护方法，实现对象的浅复制，只有实现了 Cloneable 接口才可以调用该方法，否则抛出
+保护方法，实现对象的浅复制，只有实现了 Cloneable 接口才可以调用该方法，否则抛出
 CloneNotSupportedException 异常，深拷贝也需要实现 Cloneable，同时其成员变量为引用类型
 的也需要实现 Cloneable，然后重写 clone 方法。
 
 **finalize 方法**
-&emsp;&emsp;该方法和垃圾收集器有关系，判断一个对象是否可以被回收的最后一步就是判断是否重写了此方
+该方法和垃圾收集器有关系，判断一个对象是否可以被回收的最后一步就是判断是否重写了此方
 法。
 
 **equals 方法**
-&emsp;&emsp;该方法使用频率非常高。一般 equals 和 == 是不一样的，但是在 Object 中两者是一样的。子类一
+该方法使用频率非常高。一般 equals 和 == 是不一样的，但是在 Object 中两者是一样的。子类一
 般都要重写这个方法。
 
 **hashCode 方法**
-&emsp;&emsp;该方法用于哈希查找，重写了 equals 方法一般都要重写 hashCode 方法，这个方法在一些具有哈
+该方法用于哈希查找，重写了 equals 方法一般都要重写 hashCode 方法，这个方法在一些具有哈
 希功能的 Collection 中用到。
-&emsp;&emsp;一般必须满足 obj1.equals(obj2)==true 。可以推出 obj1.hashCode()==obj2.hashCode() ，但是
+
+一般必须满足 obj1.equals(obj2)==true 。可以推出 obj1.hashCode()==obj2.hashCode() ，但是
 hashCode 相等不一定就满足 equals。不过为了提高效率，应该尽量使上面两个条件接近等价。
 
 * JDK 1.6、1.7 默认是返回随机数；
@@ -275,11 +302,11 @@ hashCode 相等不一定就满足 equals。不过为了提高效率，应该尽�
    此时该线程就可以被调度了，如果是被中断的话就抛出一个 InterruptedException 异常。
 
 **notify 方法**
-&emsp;&emsp;配合 synchronized 使用，该方法唤醒在该对象上等待队列中的某个线程（同步队列中的线程是给抢占 CPU 的线程，等待队列中的线程指的是等待唤醒的线程）。
+配合 synchronized 使用，该方法唤醒在该对象上等待队列中的某个线程（同步队列中的线程是给抢占 CPU 的线程，等待队列中的线程指的是等待唤醒的线程）。
 **notifyAll 方法**
-&emsp;&emsp;配合 synchronized 使用，该方法唤醒在该对象上等待队列中的所有线程。
+配合 synchronized 使用，该方法唤醒在该对象上等待队列中的所有线程。
 **总结**
-&emsp;&emsp;只要把上面几个方法熟悉就可以了，toString 和 getClass 方法可以不用去讨论它们。该题目考察的是对 Object 的熟悉程度，平时用的很多方法并没看其定义但是也在用，比如说：wait() 方法，equals() 方法等。
+只要把上面几个方法熟悉就可以了，toString 和 getClass 方法可以不用去讨论它们。该题目考察的是对 Object 的熟悉程度，平时用的很多方法并没看其定义但是也在用，比如说：wait() 方法，equals() 方法等。
 
 ```txt
 Class Object is the root of the class hierarchy.Every class has Object as a
@@ -293,14 +320,14 @@ superclass. All objects, including arrays, implement the methods of this class.
 java中提供了以下四种创建对象的方式:
 
 **new 关键字**
-&emsp;&emsp;平时使用的最多的创建对象方式
+平时使用的最多的创建对象方式
 
 ```java
 User user=new User();
 ```
 
 **反射方式**
-&emsp;&emsp;使用 newInstance()，但是得处理两个异常 InstantiationException、IllegalAccessException：
+使用 newInstance()，但是得处理两个异常 InstantiationException、IllegalAccessException：
 
 ```java
 User user=User.class.newInstance();
@@ -308,15 +335,13 @@ Object object=(Object)Class.forName("java.lang.Object").newInstance()
 ```
 
 **clone方法**
-&emsp;&emsp;Object对象中的clone方法来完成这个操作
+Object对象中的clone方法来完成这个操作
 
 **反序列化操作**
-&emsp;&emsp;调用 ObjectInputStream 类的 readObject() 方法。我们反序列化一个对象，JVM 会给我们创建一个单独的对象。JVM 创建对象并不会调用任何构造函数。一个对象实现了 Serializable 接口，就可以把对象写入到文中，并通过读取文件来创建对象。
+调用 ObjectInputStream 类的 readObject() 方法。我们反序列化一个对象，JVM 会给我们创建一个单独的对象。JVM 创建对象并不会调用任何构造函数。一个对象实现了 Serializable 接口，就可以把对象写入到文中，并通过读取文件来创建对象。
 
 **总结**
-&emsp;&emsp;创建对象的方式关键字：new、反射、clone 拷贝、反序列化。
-
-
+创建对象的方式关键字：new、反射、clone 拷贝、反序列化。
 
 ## 十二、获取一个类Class对象的方式有哪些？
 
@@ -431,5 +456,6 @@ Leak)还是内存溢出(Memory Overflow)。
 
 ## 十九、异常处理影响性能吗
 
-&emsp;&emsp;异常处理的性能成本非常高，每个 Java 程序员在开发时都应牢记这句话。创建一个异常非常慢，抛出一个异常又会消耗1~5ms，当一个异常在应用的多个层级之间传递时，会拖累整个应用的性能。
-&emsp;&emsp;仅在异常情况下使用异常；在可恢复的异常情况下使用异常；尽管使用异常有利于 Java 开发，但是在应用中最好不要捕获太多的调用栈，因为在很多情况下都不需要打印调用栈就知道哪里出错了。因此，异常消息应该提供恰到好处的信息。
+异常处理的性能成本非常高，每个 Java 程序员在开发时都应牢记这句话。创建一个异常非常慢，抛出一个异常又会消耗1~5ms，当一个异常在应用的多个层级之间传递时，会拖累整个应用的性能。
+
+仅在异常情况下使用异常；在可恢复的异常情况下使用异常；尽管使用异常有利于 Java 开发，但是在应用中最好不要捕获太多的调用栈，因为在很多情况下都不需要打印调用栈就知道哪里出错了。因此，异常消息应该提供恰到好处的信息。

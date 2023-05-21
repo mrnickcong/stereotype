@@ -32,7 +32,7 @@ ConcurrentHashMap 在 JDK1.7 和 JDK1.8 的实现方式是不同的。
 
 ConcurrentHashMap之Java7数据结构
 
-![ConcurrentHashMap之Java7数据结构](./../images/ConcurrentHashMap之Java7数据结构.png)
+![ConcurrentHashMap之Java7数据结构](./images/ConcurrentHashMap之Java7数据结构.png)
 
 JDK1.7 中的 ConcurrentHashMap 是由 Segment 数组结构和 HashEntry 数组结构组成，即 ConcurrentHashMap 把哈希桶数组切分成小数组（Segment ），每个小数组有 n 个 HashEntry 组成。
 
@@ -44,7 +44,7 @@ JDK1.7 中的 ConcurrentHashMap 是由 Segment 数组结构和 HashEntry 数组�
 
 ConcurrentHashMap之Java8数据结构
 
-![ConcurrentHashMap之Java8数据结构](./../images/ConcurrentHashMap之Java8数据结构.png)
+![ConcurrentHashMap之Java8数据结构](./images/ConcurrentHashMap之Java8数据结构.png)
 
 - 在数据结构上， JDK1.8 中的ConcurrentHashMap 选择了与 HashMap 相同的Node数组+链表+红黑树结构；在锁的实现上，抛弃了原有的 Segment 分段锁，采用CAS + synchronized实现更加细粒度的锁。
 - 将锁的级别控制在了更细粒度的哈希桶数组元素级别，也就是说只需要锁住这个链表头节点（红黑树的根节点），就不会影响其他的哈希桶数组元素的读写，大大提高了并发度。

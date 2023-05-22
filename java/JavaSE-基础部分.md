@@ -28,6 +28,7 @@
     - [final 用于修饰变量、方法和类](#final-用于修饰变量方法和类)
     - [finally](#finally)
     - [finalize](#finalize)
+  - [String、StringBuffer和StringBuilder的区别是什么](#stringstringbuffer和stringbuilder的区别是什么)
 
 ## 一、Java中基本数据类型
 
@@ -497,3 +498,16 @@ finally 作为异常处理的一部分，它只能在 try/catch 语句中，并�
 
 - finalize 是在 java.lang.Object 里定义的方法，也就是说每一个对象都有这么个方法，这个方法在 gc 启动，该对象被回收的时候被调用。
 - 一个对象的 finalize 方法只会被调用一次，finalize 被调用不一定会立即回收该对象，所以有可能调用 finalize 后，该对象又不需要被回收了，然后到了真正要被回收的时候，因为前面调用过一次，所以不会再次调用 finalize 了，进而产生问题，因此不推荐使用 finalize 方法。
+
+## String、StringBuffer和StringBuilder的区别是什么
+
+String是只读字符串，它并不是基本数据类型，而是一个对象。从底层源码来看是一个final类型的
+字符数组，所引用的字符串不能被改变，一经定义，无法再增删改。每次对String的操作都会生成
+新的String对象。
+每次+操作 ： 隐式在堆上new了一个跟原字符串相同的StringBuilder对象，再调用append方法 拼
+接+后面的字符。
+StringBuffer和StringBuilder他们两都继承了AbstractStringBuilder抽象类，从
+AbstractStringBuilder抽象类中我们可以看到
+他们的底层都是可变的字符数组，所以在进行频繁的字符串操作时，建议使用StringBuffer和
+StringBuilder来进行操作。 另外StringBuffer 对方法加了同步锁或者对调用的方法加了同步锁，所
+以是线程安全的。StringBuilder 并没有对方法进行加同步锁，所以是非线程安全的。

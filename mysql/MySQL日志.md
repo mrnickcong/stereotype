@@ -14,4 +14,5 @@ MySQL中有以下日志文件，分别是：
 5：慢查询日志（slow query log）
 6：一般查询日志（general log）
 7：中继日志（relay log）
+
 undolog redolog binlog

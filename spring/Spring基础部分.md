@@ -1,19 +1,31 @@
 # Spring基础部分
 
+- [Spring基础部分](#spring基础部分)
+  - [一、说下Spring的优势](#一说下spring的优势)
+  - [二、简述Spring的核心](#二简述spring的核心)
+  - [谈谈Spring IOC 的理解 ，原理与实现（未整理完成）](#谈谈spring-ioc-的理解-原理与实现未整理完成)
+  - [三、Spring框架中单例bean是线程安全的吗？](#三spring框架中单例bean是线程安全的吗)
+  - [四、Spring框架中使用了哪些设计模式及应用场景](#四spring框架中使用了哪些设计模式及应用场景)
+  - [五、简述Spring bean的声明周期](#五简述spring-bean的声明周期)
+  - [Spring 是如何解决循环依赖问题的](#spring-是如何解决循环依赖问题的)
+  - [BeanFactory 和 FactoryBean的区别](#beanfactory-和-factorybean的区别)
+  - [SpringAOP和AspectJAOP有什么区别](#springaop和aspectjaop有什么区别)
+  - [jdk代理和cglib代理区别](#jdk代理和cglib代理区别)
+
 ## 一、说下Spring的优势
 
 ![Spring的优势](./images/Spring的优势.png)
 
 ## 二、简述Spring的核心
 
-* Spring是一个开源框架，是Spring生态的基石
-* Spring为了简化企业级开发，使得开发变得优雅、简洁和高效
-* Spring是一个IOC和AOP的容器框架
-  * 容器：包含并管理应用bean对象的的生命周期。通过一系列map实现，比如三级缓存也是通过map解决
-  * IOC：控制反转。
-    * DI：依赖注入。IOC设计思想的实现
-  * AOP：面向切面编程
-    * 面向切面编程。应用举例：事务、日志等
+- Spring是一个开源框架，是Spring生态的基石
+- Spring为了简化企业级开发，使得开发变得优雅、简洁和高效
+- Spring是一个IOC和AOP的容器框架
+  - 容器：包含并管理应用bean对象的的生命周期。通过一系列map实现，比如三级缓存也是通过map解决
+  - IOC：控制反转。
+    - DI：依赖注入。IOC设计思想的实现
+  - AOP：面向切面编程
+    - 面向切面编程。应用举例：事务、日志等
 
 ## 谈谈Spring IOC 的理解 ，原理与实现（未整理完成）
 
@@ -51,13 +63,13 @@ DI：依赖注入，把对应的属性的值注入到具体的对象中，（@au
 
 ## 三、Spring框架中单例bean是线程安全的吗？
 
-* 原生bean不安全，需要自己保证安全
-  * Spring中bean对象默认是单例的，框架本身没有进行多线程封装处理
-* 如何保证bean的线程安全
-  * 最简单的办法：改变bean的作用域singleton改为prototype，这样每次请求bean对象就相当于创建新的对象保证安全
-  * 尽量不要再bean中声明任何有状态变量的实例变量或者类变量
-  * 如果必须声明，推荐使用ThreadLocal把变量编程线程私有
-  * 如果bean实例变量或者类变量需要在多个线程之间共享，那么只能使用synchronize、lock、CAS等线程同步方法来保证
+- 原生bean不安全，需要自己保证安全
+  - Spring中bean对象默认是单例的，框架本身没有进行多线程封装处理
+- 如何保证bean的线程安全
+  - 最简单的办法：改变bean的作用域singleton改为prototype，这样每次请求bean对象就相当于创建新的对象保证安全
+  - 尽量不要再bean中声明任何有状态变量的实例变量或者类变量
+  - 如果必须声明，推荐使用ThreadLocal把变量编程线程私有
+  - 如果bean实例变量或者类变量需要在多个线程之间共享，那么只能使用synchronize、lock、CAS等线程同步方法来保证
 
 ## 四、Spring框架中使用了哪些设计模式及应用场景
 
@@ -97,9 +109,14 @@ DI：依赖注入，把对应的属性的值注入到具体的对象中，（@au
 
 ## BeanFactory 和 FactoryBean的区别
 
-![BeanFactory 和 FactoryBean的区别](./images/BeanFactory 和 FactoryBean的区别.png)
-
+![BeanFactory和FactoryBean的区别](./images/BeanFactory和FactoryBean的区别.png)
 
 ## SpringAOP和AspectJAOP有什么区别
 
-## Spring是如何简化开发的
+## jdk代理和cglib代理区别
+
+区别如下：
+
+- JDK代理只能对实现接口的类生成代理；CGLib是针对类实现代理，对指定的类生成一个子类，并覆盖其中的方法，这种通过继承类的实现方式，不能代理final修饰的类。
+- JDK代理使用的是反射机制实现aop的动态代理，CGLib代理使用字节码处理框架ASM，通过修改字节码生成子类。所以jdk动态代理的方式创建代理对象效率较高，执行效率较低，CGLib创建效率较低，执行效率高。
+- JDK动态代理机制是委托机制，具体说动态实现接口类，在动态生成的实现类里面委托hanlder去调用原始实现类方法，CGLib则使用的继承机制，具体说被代理类和代理类是继承关系，所以代理类是可以赋值给被代理类的，如果被代理类有接口，那么代理类也可以赋值给接口。

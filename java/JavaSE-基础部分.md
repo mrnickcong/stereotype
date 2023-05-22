@@ -58,7 +58,7 @@ boolean: int 4个字节
 参数列表，返回类型(除过子类中方法的返回值是父类中方法返回值的子类时)都相同的情况下， 对
 方法体进行修改或重写，这就是重写。但要注意子类函数的访问修饰权限不能少于父类的。
 
-```text
+```java
 public class Main {
  public static void main(String[] args) {
  
@@ -102,7 +102,7 @@ class Son extends Father{
 同）则视为重载。同时，重载对返回类型没有要求，可以相同也可以不同，但不能通过返回类型是
 否相同来判断重载。
 
-```text
+```java
 public class Father {
  public static void main(String[] args) {
  // TODO Auto-generated method stub
@@ -149,7 +149,7 @@ equals object可能为null 则空指针
 
 在Java中，可以将一个类定义在另一个类里面或者一个方法里面，这样的类称为内部类。广泛意义上的内部类一般来说包括这三种：成员内部类、局部内部类、匿名内部类
 
-![Java内部类](../images/Java内部类.png)
+![Java内部类](./images/Java内部类.png)
 
 内部类访问外部变量需要该变量用final修饰。
 
@@ -163,7 +163,7 @@ equals object可能为null 则空指针
 
 **使用方式：**
 
-```text
+```java
 String str = new String("str");
 System.out.println(str);
 ```
@@ -177,7 +177,7 @@ System.out.println(str);
 SoftReference<String> wrf = new SoftReference<String>(new String("str"));
 ```
 
-​	**可用场景：** 创建缓存的时候，创建的对象放进缓存中，当内存不足时，JVM就会回收早先创建的对象。
+​**可用场景：** 创建缓存的时候，创建的对象放进缓存中，当内存不足时，JVM就会回收早先创建的对象。
 
 - 弱引用
 弱引用就是只要JVM垃圾回收器发现了它，就会将之回收，使用方式：
@@ -194,7 +194,7 @@ WeakReference<String> wrf = new WeakReference<String>(str);
 被用于引用销毁前的处理工作。还有就是，虚引用创建的时候，必须带有 ReferenceQueue ，
 **使用例子：**
 
-```text
+```java
 PhantomReference<String> prf = new PhantomReference<String>(new String("str"),
 new ReferenceQueue<>());
 ```
@@ -231,13 +231,13 @@ hashCode方法可以这样理解：它返回的就是根据对象的内存地址
 **浅拷贝**:被复制对象的所有变量都含有与原来的对象相同的值,而所有的对其他对象的引用仍然指
 向原来的对象.换言之,浅拷贝仅仅复制所考虑的对象,而不复制它所引用的对象.
 
-![image.png](../images/浅克隆.png)
+![image.png](./images/浅克隆.png)
 
 **深拷贝**:被复制对象的所有变量都含有与原来的对象相同的值.而那些引用其他对象的变量将指向
 被复制过的新对象.而不再是原有的那些被引用的对象.换言之.深拷贝把要复制的对象所引用的
 对象都复制了一遍
 
-![image.png](../images/深克隆.png)
+![image.png](./images/深克隆.png)
 
 ## 九、static都有哪些用法?
 
@@ -260,7 +260,7 @@ public calss PreCache{
 最后一种用法就是静态导包,即 import static .import static是在JDK 1.5之后引入的新特性,可以用
 来指定导入某个类中的静态资源,并且不需要使用类名,可以直接使用资源名,比如:
 
-```
+```java
 import static java.lang.Math.*;
 public class Test{
  public static void main(String[] args){
@@ -272,7 +272,7 @@ public class Test{
 
 ## 十、 介绍下Object中的常用方法
 
-![Object中的成员方法](../images/Object的成员方法.png)
+![Object中的成员方法](./images/Object的成员方法.png)
 
 **clone 方法**
 保护方法，实现对象的浅复制，只有实现了 Cloneable 接口才可以调用该方法，否则抛出
@@ -315,7 +315,7 @@ hashCode 相等不一定就满足 equals。不过为了提高效率，应该尽�
 **总结**
 只要把上面几个方法熟悉就可以了，toString 和 getClass 方法可以不用去讨论它们。该题目考察的是对 Object 的熟悉程度，平时用的很多方法并没看其定义但是也在用，比如说：wait() 方法，equals() 方法等。
 
-```txt
+```java
 Class Object is the root of the class hierarchy.Every class has Object as a
 superclass. All objects, including arrays, implement the methods of this class.
 ```
@@ -357,7 +357,7 @@ Object对象中的clone方法来完成这个操作
 **第一种：**通过类对象的 getClass() 方法获取，细心点的都知道，这个 getClass 是 Object 类里面的
 方法。
 
-```text
+```java
 User user=new User();
 //clazz就是一个User的类对象
 Class<?> clazz=user.getClass();
@@ -365,20 +365,20 @@ Class<?> clazz=user.getClass();
 
 **第二种：**通过类的静态成员表示，每个类都有隐含的静态成员 class。
 
-```text
+```java
 //clazz就是一个User的类对象
 Class<?> clazz=User.class;
 ```
 
 **第三种：**通过 Class 类的静态方法 forName() 方法获取。
 
-```text
+```java
 Class<?> clazz = Class.forName("com.tian.User");
 ```
 
 ## 十三、介绍下你对Java集合的理解
 
-![Java中的集合](../images/Java中的集合.png)
+![Java中的集合](./images/Java中的集合.png)
 
 TreeSet的本质是TreeMap
 
@@ -409,7 +409,7 @@ HashSet的本质是HashMap
 
 红黑树的特点：
 
-![image.png](../images/红黑树的特点.png)
+![image.png](./images/红黑树的特点.png)
 
 红黑色的本质：2-3-4树
 
@@ -466,7 +466,6 @@ Leak)还是内存溢出(Memory Overflow)。
 异常处理的性能成本非常高，每个 Java 程序员在开发时都应牢记这句话。创建一个异常非常慢，抛出一个异常又会消耗1~5ms，当一个异常在应用的多个层级之间传递时，会拖累整个应用的性能。
 
 仅在异常情况下使用异常；在可恢复的异常情况下使用异常；尽管使用异常有利于 Java 开发，但是在应用中最好不要捕获太多的调用栈，因为在很多情况下都不需要打印调用栈就知道哪里出错了。因此，异常消息应该提供恰到好处的信息。
-
 
 ## 二十、JVM、JRE和JDK的关系是什么
 

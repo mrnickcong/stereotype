@@ -23,7 +23,6 @@
 7. [获取一个类Class对象的方式有哪些](./java/JavaSE-%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86.md)
 8. [说说什么是 fail-fast](./java/JavaSE-%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86.md)
 9. [什么是字节码](./java/JavaSE-%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86.md)
-10. gf
 
 ### Java集合
 

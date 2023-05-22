@@ -2,6 +2,7 @@
 
 - [HashMap面试题](#hashmap面试题)
   - [基本知识点](#基本知识点)
+    - [HashMap概述](#hashmap概述)
     - [HashMap的内部数据结构](#hashmap的内部数据结构)
     - [HashMap的put方法的返回值是什么](#hashmap的put方法的返回值是什么)
     - [HashMap允许空键空值么](#hashmap允许空键空值么)
@@ -32,6 +33,12 @@
     - [平时在使用HashMap时一般使用什么类型的元素作为Key？](#平时在使用hashmap时一般使用什么类型的元素作为key)
 
 ## 基本知识点
+
+### HashMap概述
+
+- HashMap是基于哈希表的Map接口的非同步实现。
+- 此实现提供所有可选的映射操作，并允许使用null值和null键。
+- 此类不保证映射的顺序，特别是它不保证该顺序恒久不变。
 
 ### HashMap的内部数据结构
 

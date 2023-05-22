@@ -13,10 +13,6 @@
   - [十、 介绍下Object中的常用方法](#十-介绍下object中的常用方法)
   - [十一、Java创建对象有几种方式？](#十一java创建对象有几种方式)
   - [十二、获取一个类Class对象的方式有哪些？](#十二获取一个类class对象的方式有哪些)
-  - [十三、介绍下你对Java集合的理解](#十三介绍下你对java集合的理解)
-  - [十四、有了数组为什么还要再搞一个ArrayList呢？](#十四有了数组为什么还要再搞一个arraylist呢)
-  - [十五、说说什么是 fail-fast？](#十五说说什么是-fail-fast)
-  - [十六、HashMap 与 ConcurrentHashMap 的异同](#十六hashmap-与-concurrenthashmap-的异同)
   - [十七、介绍下你对红黑树的理解](#十七介绍下你对红黑树的理解)
   - [十八、OOM你遇到过哪些情况，SOF你遇到过哪些情况](#十八oom你遇到过哪些情况sof你遇到过哪些情况)
     - [SOF（堆栈溢出StackOverflow）](#sof堆栈溢出stackoverflow)
@@ -294,8 +290,8 @@ CloneNotSupportedException 异常，深拷贝也需要实现 Cloneable，同时�
 一般必须满足 obj1.equals(obj2)==true 。可以推出 obj1.hashCode()==obj2.hashCode() ，但是
 hashCode 相等不一定就满足 equals。不过为了提高效率，应该尽量使上面两个条件接近等价。
 
-* JDK 1.6、1.7 默认是返回随机数；
-* JDK 1.8 默认是通过和当前线程有关的一个随机数 + 三个确定值，运用 Marsaglia’s xorshift
+- JDK 1.6、1.7 默认是返回随机数；
+- JDK 1.8 默认是通过和当前线程有关的一个随机数 + 三个确定值，运用 Marsaglia’s xorshift
   scheme 随机数算法得到的一个随机数。
 
 **wait 方法**
@@ -375,35 +371,6 @@ Class<?> clazz=User.class;
 ```java
 Class<?> clazz = Class.forName("com.tian.User");
 ```
-
-## 十三、介绍下你对Java集合的理解
-
-![Java中的集合](./images/Java中的集合.png)
-
-TreeSet的本质是TreeMap
-
-HashSet的本质是HashMap
-
-## 十四、有了数组为什么还要再搞一个ArrayList呢？
-
-&emsp;&emsp;通常我们在使用的时候，如果在不明确要插入多少数据的情况下，普通数组就很尴尬了，因为你不知道需要初始化数组大小为多少，而 ArrayList 可以使用默认的大小，当元素个数到达一定程度后，会自动扩容。
-&emsp;&emsp;可以这么来理解：我们常说的数组是定死的数组，ArrayList 却是动态数组。
-
-## 十五、说说什么是 fail-fast？
-
-**&emsp;&emsp;fail-fast** 机制是 Java 集合（Collection）中的一种错误机制。当多个线程对同一个集合的内容进行操作时，就可能会产生 fail-fast 事件。
-&emsp;&emsp;例如：当某一个线程 A 通过 iterator 去遍历某集合的过程中，若该集合的内容被其他线程所改变了，那么线程 A 访问集合时，就会抛出 ConcurrentModificationException 异常，产生 fail-fast 事件。这里的操作主要是指 add、remove 和 clear，对集合元素个数进行修改。
-**&emsp;&emsp;解决办法**：建议使用“java.util.concurrent 包下的类”去取代“java.util 包下的类”。可以这么理解：在遍历之前，把 modCount 记下来 expectModCount，后面 expectModCount 去和 modCount 进行比较，如果不相等了，证明已并发了，被修改了，于是抛出ConcurrentModificationException 异常。
-
-## 十六、HashMap 与 ConcurrentHashMap 的异同
-
-1. 都是 key-value 形式的存储数据；
-2. HashMap 是线程不安全的，ConcurrentHashMap 是 JUC 下的线程安全的；
-3. HashMap 底层数据结构是数组 + 链表（JDK 1.8 之前）。JDK 1.8 之后是数组 + 链表 + 红黑
-   树。当链表中元素个数达到 8 的时候，链表的查询速度不如红黑树快，链表会转为红黑树，红黑树查询速度快；
-4. HashMap 初始数组大小为 16（默认），当出现扩容的时候，以 0.75 * 数组大小的方式进行扩容；
-5. ConcurrentHashMap 在 JDK 1.8 之前是采用分段锁来现实的 Segment + HashEntry，
-   Segment 数组大小默认是 16，2 的 n 次方；JDK 1.8 之后，采用 Node + CAS + Synchronized来保证并发安全进行实现
 
 ## 十七、介绍下你对红黑树的理解
 

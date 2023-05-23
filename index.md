@@ -22,6 +22,7 @@
     - [分布式锁](#分布式锁)
     - [分布式事务](#分布式事务)
     - [分布式架构](#分布式架构)
+  - [敏捷开发](#敏捷开发)
 
 ## [基础篇](./java/0.md)
 
@@ -162,5 +163,11 @@
 ### 分布式架构
 
 1. [如何拆分微服务](./system-design/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1.md)
-2. [怎样设计出高内聚、低耦合的微服务](./system-design/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1.md)
-3. [如何理解SaaS系统](./system-design/%E8%BD%AF%E4%BB%B6%E5%8D%B3%E6%9C%8D%E5%8A%A1saas.md)
+2. [微服务拆分策略有哪些](./system-design/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1.md)
+3. [怎样设计出高内聚、低耦合的微服务](./system-design/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1.md)
+4. [如何理解SaaS系统](./system-design/%E8%BD%AF%E4%BB%B6%E5%8D%B3%E6%9C%8D%E5%8A%A1saas.md)
+
+## 敏捷开发
+
+1. [你的项目中是怎么保证微服务敏捷开发的](./%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91.md)
+2. [微服务的链路追踪、持续集成、AB发布要怎么做](./%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91.md)

@@ -7,11 +7,14 @@
   - [多线程和高并发](#多线程和高并发)
   - [JVM篇](#jvm篇)
   - [Spring篇](#spring篇)
-  - [redis篇](#redis篇)
+  - [SpringMVC篇](#springmvc篇)
+  - [SpringBoot篇](#springboot篇)
+  - [Redis篇](#redis篇)
   - [MySQL篇](#mysql篇)
     - [MySQL原理部分](#mysql原理部分)
     - [MySQL索引部分](#mysql索引部分)
     - [MySQL集群高可用](#mysql集群高可用)
+    - [MySQL其他问题](#mysql其他问题)
   - [微服务组件](#微服务组件)
     - [注册中心](#注册中心)
     - [服务降级](#服务降级)
@@ -48,7 +51,54 @@
 
 ## Spring篇
 
-## redis篇
+1. [说下Spring的优势](./spring/Spring%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86.md)
+2. [简述Spring的核心](./spring/Spring%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86.md)
+3. [谈谈Spring IOC 的理解 ，原理与实现（未整理完成）](./spring/Spring%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86.md)
+4. [Spring框架中单例bean是线程安全的吗？](./spring/Spring%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86.md)
+5. [Spring框架中使用了哪些设计模式及应用场景](./spring/Spring%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86.md)
+6. [简述Spring bean的声明周期](./spring/Spring%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86.md)
+7. [Spring 是如何解决循环依赖问题的](./spring/Spring%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86.md)
+8. [BeanFactory 和 FactoryBean的区别](./spring/Spring%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86.md)
+9. [SpringAOP和AspectJAOP有什么区别](./spring/Spring%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86.md)
+10. [jdk代理和cglib代理区别](./spring/Spring%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86.md)
+11. [Spring事务原理](./spring/Spring%E4%BA%8B%E5%8A%A1.md)
+12. [Spring事务的隔离级别](./spring/Spring%E4%BA%8B%E5%8A%A1.md)
+13. [Spring事务失效的场景有哪些](./spring/Spring%E4%BA%8B%E5%8A%A1.md)
+
+## SpringMVC篇
+
+1. [MVC设计模式的好处](./spring/SpringMVC%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+2. [SpringMVC的请求响应流程](./spring/SpringMVC%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+
+## SpringBoot篇
+
+1. [Springboot自动装配原理](./spring/SpringBoot%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+2. [如何实现一个 Starter](./spring/SpringBoot%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+
+## Redis篇
+
+1. [Redis 的数据类型及使用场景](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+2. [使用 Redis 有哪些好处](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+3. [为什么 使用 Redis 而不是用 Memcache 呢](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+4. [为什么 Redis 单线程模型效率也能那么高](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+5. [说说 Redis 的线程模型](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+6. [Redis持久化方式以及区别](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+7. [Redis如何选择持久化方式](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+8. [说说你对Redis事务的理解](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+9. [简述Redis集群模式](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+10. [RedisCluster集群原理](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+11. [RedisCluster集群方案什么情况下会导致整个集群不可用](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+12. [缓存和数据库谁先更新呢](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+13. [怎么提高缓存命中率](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+14. [如果有大量的key需要设置同一时间过期，一般需要注意什么](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+15. [缓存雪崩、缓存穿透、缓存预热、缓存更新、缓存降级等问题](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+16. [Redis的数据淘汰策略](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+17. [简述Redis热点Key及其解决方案](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+18. [哪些操作会阻塞redis](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+19. [Redis分布式锁使用场景](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
+20. [Redis分布式锁的实现方案](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
+21. [Redis如何保证不释放别人的锁](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
+22. [Redlock](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
 
 ## MySQL篇
 
@@ -84,13 +134,22 @@
 ### MySQL集群高可用
 
 1. [MySQL主从复制原理](./mysql/MySQL%E9%9B%86%E7%BE%A4%E9%AB%98%E5%8F%AF%E7%94%A8.md)
-2. [读写分离]
+2. [读写分离](./mysql/MySQL%E9%9B%86%E7%BE%A4%E9%AB%98%E5%8F%AF%E7%94%A8.md)
+3. [分库分表原理](./mysql/MySQL%E9%9B%86%E7%BE%A4%E9%AB%98%E5%8F%AF%E7%94%A8.md)
 
+### MySQL其他问题
 
+1. [MySQL服务器CPU飙升问题]
 
 ## 微服务组件
 
 ### 注册中心
+
+1. [Eureka注册发现](./java-micro-service/Eureka%E9%9D%A2%E8%AF%95%E9%A2%98%E6%95%B4%E7%90%86.md)
+2. [Eureka自我保护](./java-micro-service/Eureka%E9%9D%A2%E8%AF%95%E9%A2%98%E6%95%B4%E7%90%86.md)
+3. [Eureka缺陷](./java-micro-service/Eureka%E9%9D%A2%E8%AF%95%E9%A2%98%E6%95%B4%E7%90%86.md)
+4. [Eureka 的多级缓存机制](./java-micro-service/Eureka%E9%9D%A2%E8%AF%95%E9%A2%98%E6%95%B4%E7%90%86.md)
+5. [nacos和eureka的异同]
 
 ### 服务降级
 

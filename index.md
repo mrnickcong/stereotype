@@ -1,6 +1,7 @@
 # 面试题索引
 
 - [面试题索引](#面试题索引)
+  - [计算机基础篇](#计算机基础篇)
   - [基础篇](#基础篇)
     - [Java语言基础](#java语言基础)
     - [Java集合](#java集合)
@@ -15,6 +16,9 @@
     - [MySQL索引部分](#mysql索引部分)
     - [MySQL集群高可用](#mysql集群高可用)
     - [MySQL其他问题](#mysql其他问题)
+  - [MyBatis](#mybatis)
+  - [消息中间件](#消息中间件)
+    - [kafka](#kafka)
   - [微服务组件](#微服务组件)
     - [注册中心](#注册中心)
     - [服务降级](#服务降级)
@@ -24,6 +28,11 @@
     - [分布式架构](#分布式架构)
   - [敏捷开发](#敏捷开发)
   - [大数据](#大数据)
+
+## 计算机基础篇
+
+1. [零拷贝原理](./computer-base/%E9%9B%B6%E6%8B%B7%E8%B4%9D%E5%8E%9F%E7%90%86.md)
+2. [多路复用模型](./computer-base/%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E6%A8%A1%E5%9E%8B.md)
 
 ## [基础篇](./java/0.md)
 
@@ -50,6 +59,15 @@
 ## 多线程和高并发
 
 ## JVM篇
+
+1. [简述JMM](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+2. [什么是双亲委派](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+3. [MinorGC与FullGC分别在什么时候发生](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+4. [怎么判断对象是否可以被回收](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+5. [说一下JVM有哪些垃圾回收算法](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+6. [十大垃圾回收器](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+7. [简述happen-before](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+8. [项目JVM调优](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
 
 ## Spring篇
 
@@ -143,6 +161,21 @@
 
 1. [MySQL服务器CPU飙升问题]
 
+## MyBatis
+
+1. [#{}和${}的区别]
+2. [MyBatis重要组件](./mybatis/MyBatis%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+3. [MyBatis层次结构](./mybatis/MyBatis%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+4. [MyBatis的执行原理](./mybatis/MyBatis%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+
+## 消息中间件
+
+### kafka
+
+1. [kafka如何消息的不丢失](./kafka/KAFKA%E9%9D%A2%E8%AF%95%E9%A2%98.md)
+2. [kafka如何保证顺序消费](./kafka/KAFKA%E9%9D%A2%E8%AF%95%E9%A2%98.md)
+3. [kafka如何保证数据幂等性](./kafka/KAFKA%E9%9D%A2%E8%AF%95%E9%A2%98.md)
+
 ## 微服务组件
 
 ### 注册中心
@@ -159,10 +192,13 @@
 
 ### 分布式锁
 
-1. [分布式锁使用场景]
-2. [分布式锁的特点]
-3. [分布式锁的实现方式]
-4. []
+1. [分布式锁使用场景](./system-design/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
+2. [分布式锁的特点](./system-design/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
+3. [分布式锁的实现方式](./system-design/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
+4. [Redis分布式锁使用场景](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
+5. [Redis分布式锁的实现方案](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
+6. [Redis分布式锁的八大坑](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
+
 ### 分布式事务
 
 ### 分布式架构

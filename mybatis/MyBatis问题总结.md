@@ -1,12 +1,25 @@
 # MyBatis问题总结
 
 - [MyBatis问题总结](#mybatis问题总结)
-  - [#{}和${}的区别](#和的区别)
+  - [`#{}和${}`的区别](#和的区别)
+  - [Mybatis延迟加载的原理](#mybatis延迟加载的原理)
   - [MyBatis重要组件](#mybatis重要组件)
   - [MyBatis层次结构](#mybatis层次结构)
   - [MyBatis框架执行流程](#mybatis框架执行流程)
 
-## #{}和${}的区别
+## `#{}和${}`的区别
+
+- `#{}`是占位符，预编译处理；`${}`是拼接符，字符串替换，没有预编译处理。
+- Mybatis在处理#{}时，#{}传入参数是以字符串传入，会将SQL中的`#{}`替换为`?`号，调用PreparedStatement的set方法来赋值。
+- `#{}` 可以有效的防止SQL注入，提高系统安全性；`${}` 不能防止SQL 注入
+- `#{}` 的变量替换是在DBMS 中；`${}` 的变量替换是在 DBMS 外
+
+## Mybatis延迟加载的原理
+
+Mybatis支持association关联对象和collection关联集合对象的延迟加载，association指的就是一对一，collection指的就是一对多查询。在Mybatis配置文件中，可以配置是否启用延迟加载lazyLoadingEnabled=true|false。
+它的原理是，使用CGLIB创建目标对象的代理对象，当调用目标方法时，进入拦截器方法，比如调用a.getB().getName()，拦截器invoke()方法发现a.getB()是null值，那么就会单独发送事先保存好的查询关联B对象的sql，把B查询上来，然后调用a.setB(b)，于是a的对象b属性就有值了，接着完成a.getB().getName()方法的调用。这就是延迟加载的基本原理。
+当然了，不光是Mybatis，几乎所有的包括Hibernate，支持延迟加载的原理都是一样的。
+#11. 如何获取生成的主键?
 
 ## MyBatis重要组件
 

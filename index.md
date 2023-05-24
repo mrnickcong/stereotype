@@ -163,7 +163,7 @@
 
 ## MyBatis
 
-1. [#{}和${}的区别]
+1. [#{}和${}的区别](./mybatis/MyBatis%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
 2. [MyBatis重要组件](./mybatis/MyBatis%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
 3. [MyBatis层次结构](./mybatis/MyBatis%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
 4. [MyBatis的执行原理](./mybatis/MyBatis%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)

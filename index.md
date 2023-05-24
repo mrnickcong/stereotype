@@ -23,6 +23,7 @@
     - [分布式事务](#分布式事务)
     - [分布式架构](#分布式架构)
   - [敏捷开发](#敏捷开发)
+  - [大数据](#大数据)
 
 ## [基础篇](./java/0.md)
 
@@ -175,3 +176,14 @@
 
 1. [你的项目中是怎么保证微服务敏捷开发的](./%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91.md)
 2. [微服务的链路追踪、持续集成、AB发布要怎么做](./%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91.md)
+
+## 大数据
+
+1. [hive内部表和外部表的区别](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+2. [Hive有索引吗](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+3. [所有的Hive任务都会有MapReduce的执行吗？](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+4. [数据建模用的哪些模型](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+5. [为什么要对数据仓库分层](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+6. [sortby和orderby的区别](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+7. [数据倾斜](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+8. [说说对Hive桶表的理解](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)

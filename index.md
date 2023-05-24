@@ -159,7 +159,8 @@
 
 ### MySQL其他问题
 
-1. [MySQL服务器CPU飙升问题]
+1. [MySQL服务器CPU飙升问题](./mysql/%E6%8F%90%E9%AB%98%E9%83%A8%E5%88%86.md)
+2. [如何进行慢查询优化](./mysql/%E6%8F%90%E9%AB%98%E9%83%A8%E5%88%86.md)
 
 ## MyBatis
 

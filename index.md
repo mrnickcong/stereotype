@@ -179,11 +179,13 @@
 
 ## 大数据
 
-1. [hive内部表和外部表的区别](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
-2. [Hive有索引吗](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
-3. [所有的Hive任务都会有MapReduce的执行吗？](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
-4. [数据建模用的哪些模型](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
-5. [为什么要对数据仓库分层](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
-6. [sortby和orderby的区别](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
-7. [数据倾斜](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
-8. [说说对Hive桶表的理解](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+1. [请谈一下Hive的特点](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+2. [Hive的HSQL转换为MapReduce的过程](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+3. [hive内部表和外部表的区别](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+4. [Hive有索引吗](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+5. [所有的Hive任务都会有MapReduce的执行吗？](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+6. [数据建模用的哪些模型](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+7. [为什么要对数据仓库分层](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+8. [sortby和orderby的区别](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+9. [数据倾斜](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+10. [说说对Hive桶表的理解](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)

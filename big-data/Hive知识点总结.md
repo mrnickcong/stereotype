@@ -1,6 +1,8 @@
 # Hive知识点总结
 
 - [Hive知识点总结](#hive知识点总结)
+  - [请谈一下Hive的特点](#请谈一下hive的特点)
+  - [Hive的HSQL转换为MapReduce的过程](#hive的hsql转换为mapreduce的过程)
   - [hive内部表和外部表的区别](#hive内部表和外部表的区别)
   - [Hive有索引吗](#hive有索引吗)
   - [所有的Hive任务都会有MapReduce的执行吗？](#所有的hive任务都会有mapreduce的执行吗)
@@ -21,6 +23,25 @@
       - [表连接时引发的数据倾斜](#表连接时引发的数据倾斜)
       - [确实无法减少数据量引发的数据倾斜](#确实无法减少数据量引发的数据倾斜)
   - [说说对Hive桶表的理解](#说说对hive桶表的理解)
+
+## 请谈一下Hive的特点
+
+- hive 是基于 Hadoop 的一个数据仓库工具，可以将结构化的数据文件映射为一张数据库表，并提供完整的 sql 查询功能，可以将 sql语句转换为MapReduce 任务进行运行。
+- 其优点是学习成本低，可以通过类 SQL 语句快速实现简单的 MapReduce 统计，不必开发专门的 MapReduce 应用，十分适合数据仓库的统计分析，
+- Hive 不支持实时查询。
+
+## Hive的HSQL转换为MapReduce的过程
+
+HiveSQL ->AST(抽象语法树) -> QB(查询块) ->OperatorTree（操作树）->优化后的操作树->mapreduce 任务树->优化后的 mapreduce 任务树
+
+过程描述如下：
+
+- SQL Parser：Antlr 定义 SQL 的语法规则，完成 SQL 词法，语法解析，将SQL 转化为抽象语法树 AST Tree；
+- Semantic Analyzer：遍历 AST Tree，抽象出查询的基本组成单元QueryBlock；
+- Logical plan：遍历 QueryBlock，翻译为执行操作树 OperatorTree；
+- Logical plan optimizer: 逻辑层优化器进行 OperatorTree 变换，合并不必要的 ReduceSinkOperator，减少 shuffle数据量；
+- Physical plan：遍历 OperatorTree，翻译为 MapReduce 任务；
+- Logical plan optimizer：物理层优化器进行 MapReduce 任务的变换，生成最终的执行计划。
 
 ## hive内部表和外部表的区别
 
@@ -85,6 +106,8 @@ sort by不是全局排序，其在数据进入reducer前完成排序. 因此，�
 ## 数据倾斜
 
 ### 什么是数据倾斜
+
+倾斜原因：map 输出数据按 key Hash 的分配到 reduce 中，由于 key 分布不均匀、业务数据本身的特、建表时考虑不周、等原因造成的 reduce 上的数据量差异过大。
 
 ### 数据倾斜的类型有哪些
 

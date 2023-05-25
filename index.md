@@ -117,13 +117,18 @@
 ## JVM篇
 
 1. [简述JMM](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
-2. [什么是双亲委派](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
-3. [MinorGC与FullGC分别在什么时候发生](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
-4. [怎么判断对象是否可以被回收](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
-5. [说一下JVM有哪些垃圾回收算法](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
-6. [十大垃圾回收器](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
-7. [简述happen-before](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
-8. [项目JVM调优](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+2. [对象的内存布局图](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+3. [运行时数据区](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+4. [对象的创建以及分配过程](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+5. [什么是双亲委派](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+6. [MinorGC与FullGC分别在什么时候发生](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+7. [怎么判断对象是否可以被回收](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+8. [说一下JVM有哪些垃圾回收算法](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+9. [十大垃圾回收器](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+10. [G1垃圾回收器的优势](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+11. [简述happen-before](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+12. [常用调优策略](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
+13. [项目JVM调优](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
 
 ## Spring篇
 

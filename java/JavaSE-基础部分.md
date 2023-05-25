@@ -16,7 +16,7 @@
   - [十七、介绍下你对红黑树的理解](#十七介绍下你对红黑树的理解)
   - [十八、OOM你遇到过哪些情况，SOF你遇到过哪些情况](#十八oom你遇到过哪些情况sof你遇到过哪些情况)
     - [SOF（堆栈溢出StackOverflow）](#sof堆栈溢出stackoverflow)
-    - [OOM](#oom)
+    - [OOM-OutOfMemoryError异常](#oom-outofmemoryerror异常)
   - [十九、异常处理影响性能吗](#十九异常处理影响性能吗)
   - [二十、JVM、JRE和JDK的关系是什么](#二十jvmjre和jdk的关系是什么)
   - [二十一、什么是字节码](#二十一什么是字节码)
@@ -393,35 +393,33 @@ Class<?> clazz = Class.forName("com.tian.User");
 
 **栈溢出的原因：**递归调用，大量循环或死循环，全局变量是否过多，数组、List、map数据过大。
 
-### OOM
+### OOM-OutOfMemoryError异常
 
 1. OutOfMemoryError异常
 除了程序计数器外，虚拟机内存的其他几个运行时区域都有发生OutOfMemoryError(OOM)异常的
 可能。
-Java Heap 溢出：
+2. Java Heap 溢出：
 一般的异常信息：java.lang.OutOfMemoryError:Java heap spacess。
 java堆用于存储对象实例，我们只要不断的创建对象，并且保证GC Roots到对象之间有可达路径来
 避免垃圾回收机制清除这些对象，就会在对象数量达到最大堆容量限制后产生内存溢出异常。
-
 出现这种异常，一般手段是先通过内存映像分析工具(如Eclipse Memory Analyzer)对dump出来的
 堆转存快照进行分析，重点是确认内存中的对象是否是必要的，先分清是因为内存泄漏(Memory
 Leak)还是内存溢出(Memory Overflow)。
 如果是内存泄漏，可进一步通过工具查看泄漏对象到GCRoots的引用链。于是就能找到泄漏对象是
 通过怎样的路径与GC Roots相关联并导致垃圾收集器无法自动回收。
 如果不存在泄漏，那就应该检查虚拟机的参数(-Xmx与-Xms)的设置是否适当。
-2. 虚拟机栈和本地方法栈溢出
+3. 虚拟机栈和本地方法栈溢出
 如果线程请求的栈深度大于虚拟机所允许的最大深度，将抛出StackOverflowError异常。
 如果虚拟机在扩展栈时无法申请到足够的内存空间，则抛出OutOfMemoryError异常
 这里需要注意当栈的大小越大可分配的线程数就越少。
-3. 运行时常量池溢出
+4. 运行时常量池溢出
 异常信息：java.lang.OutOfMemoryError:PermGenspace
 如果要向运行时常量池中添加内容，最简单的做法就是使用String.intern()这个Native方法。该方法
 的作用是：如果池中已经包含一个等于此String的字符串，则返回代表池中这个字符串的String对
 象；否则，将此String对象包含的字符串添加到常量池中，并且返回此String对象的引用。由于常量
 池分配在方法区内，我们可以通过-XX:PermSize和-XX:MaxPermSize限制方法区的大小，从而间接
 限制其中常量池的容量
-4. 方法区溢出
-
+5. 方法区溢出
 方法区用于存放Class的相关信息，如类名、访问修饰符、常量池、字段描述、方法描述等。也有可
 能是方法区中保存的class对象没有被及时回收掉或者class信息占用的内存超过了我们配置。
 异常信息：java.lang.OutOfMemoryError:PermGenspace

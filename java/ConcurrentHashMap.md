@@ -8,14 +8,15 @@
   - [ConcurrentHashMap的put方法执行逻辑是什么](#concurrenthashmap的put方法执行逻辑是什么)
     - [Java7下的put方法执行逻辑](#java7下的put方法执行逻辑)
     - [Java8下的put方法执行逻辑](#java8下的put方法执行逻辑)
-  - [ConcurrentHashMap 的 get 方法执行逻辑是什么？★★★★](#concurrenthashmap-的-get-方法执行逻辑是什么)
+  - [ConcurrentHashMap的get方法执行逻辑是什么](#concurrenthashmap的get方法执行逻辑是什么)
     - [Java7下的get方法执行逻辑](#java7下的get方法执行逻辑)
     - [Java8下的get方法执行逻辑](#java8下的get方法执行逻辑)
   - [ConcurrentHashMap 的 get 方法是否要加锁，为什么](#concurrenthashmap-的-get-方法是否要加锁为什么)
   - [get 方法不需要加锁与 volatile 修饰的哈希桶数组有关吗](#get-方法不需要加锁与-volatile-修饰的哈希桶数组有关吗)
   - [ConcurrentHashMap 不支持 key 或者 value 为 null 的原因](#concurrenthashmap-不支持-key-或者-value-为-null-的原因)
   - [ConcurrentHashMap 的并发度是什么](#concurrenthashmap-的并发度是什么)
-  - [ConcurrentHashMap 迭代器是强一致性还是弱一致性？★★](#concurrenthashmap-迭代器是强一致性还是弱一致性)
+  - [ConcurrentHashMap迭代器是强一致性还是弱一致性](#concurrenthashmap迭代器是强一致性还是弱一致性)
+  - [JDK1.7 与 JDK1.8 中ConcurrentHashMap 的区别](#jdk17-与-jdk18-中concurrenthashmap-的区别)
 
 ## ConcurrentHashMap的实现原理是什么
 
@@ -59,7 +60,7 @@ ConcurrentHashMap之Java8数据结构
 ConcurrentHashMap 在 JDK1.7 和 JDK1.8 的实现方式是不同的。
 
 - JDK1.7。先定位到相应的 Segment ，然后再进行 put 操作。
-- JDK1.8。
+- JDK1.8。定位到 Node，拿到首节点并加锁，扩容再插入
 
 ### Java7下的put方法执行逻辑
 
@@ -77,7 +78,7 @@ ConcurrentHashMap 在 JDK1.7 和 JDK1.8 的实现方式是不同的。
 - 如果为 f.hash = MOVED = -1 ，说明其他线程在扩容，参与一起扩容；
 - 如果都不满足 ，synchronized 锁住 f 节点，判断是链表还是红黑树，遍历插入
 
-## ConcurrentHashMap 的 get 方法执行逻辑是什么？★★★★
+## ConcurrentHashMap的get方法执行逻辑是什么
 
 ### Java7下的get方法执行逻辑
 
@@ -124,16 +125,20 @@ get 方法不需要加锁。
 
 在JDK1.8中，已经摒弃了Segment的概念，选择了Node数组+链表+红黑树结构，并发度大小依赖于数组的大小。
 
-## ConcurrentHashMap 迭代器是强一致性还是弱一致性？★★
-与 HashMap 迭代器是强一致性不同，ConcurrentHashMap 迭代器是弱一致性。
+## ConcurrentHashMap迭代器是强一致性还是弱一致性
+
+与HashMap迭代器是强一致性不同，ConcurrentHashMap 迭代器是弱一致性。
 
 ConcurrentHashMap 的迭代器创建后，就会按照哈希表结构遍历每个元素，但在遍历过程中，内部元素可能会发生变化，如果变化发生在已遍历过的部分，迭代器就不会反映出来，而如果变化发生在未遍历过的部分，迭代器就会发现并反映出来，这就是弱一致性。
 
-这样迭代器线程可以使用原来老的数据，而写线程也可以并发的完成改变，更重要的，这保证了多个线程并发执行的连续性和扩展性，是性能提升的关键。想要深入了解的小伙伴，可以看这篇文章：http://ifeve.com/ConcurrentHashMap-weakly-consistent/
+这样迭代器线程可以使用原来老的数据，而写线程也可以并发的完成改变，更重要的，这保证了多个线程并发执行的连续性和扩展性，是性能提升的关键。
 
-JDK1.7 与 JDK1.8 中ConcurrentHashMap 的区别？★★★★★
-数据结构：取消了 Segment 分段锁的数据结构，取而代之的是数组+链表+红黑树的结构。
-保证线程安全机制：JDK1.7 采用 Segment 的分段锁机制实现线程安全，其中 Segment 继承自 ReentrantLock 。JDK1.8 采用CAS+synchronized保证线程安全。
-锁的粒度：JDK1.7 是对需要进行数据操作的 Segment 加锁，JDK1.8 调整为对每个数组元素加锁（Node）。
-链表转化为红黑树：定位节点的 hash 算法简化会带来弊端，hash 冲突加剧，因此在链表节点数量大于 8（且数据总量大于等于 64）时，会将链表转化为红黑树进行存储。
-查询时间复杂度：从 JDK1.7的遍历链表O(n)， JDK1.8 变成遍历红黑树O(logN)。
+想要深入了解的小伙伴，可以看这篇文章：http://ifeve.com/ConcurrentHashMap-weakly-consistent/
+
+## JDK1.7 与 JDK1.8 中ConcurrentHashMap 的区别
+
+- 数据结构：取消了 Segment 分段锁的数据结构，取而代之的是数组+链表+红黑树的结构。
+- 保证线程安全机制：JDK1.7 采用 Segment 的分段锁机制实现线程安全，其中 Segment 继承自 ReentrantLock 。JDK1.8 采用CAS+synchronized保证线程安全。
+- 锁的粒度：JDK1.7 是对需要进行数据操作的 Segment 加锁，JDK1.8 调整为对每个数组元素加锁（Node）。
+- 链表转化为红黑树：定位节点的 hash 算法简化会带来弊端，hash 冲突加剧，因此在链表节点数量大于 8（且数据总量大于等于 64）时，会将链表转化为红黑树进行存储。
+- 查询时间复杂度：从 JDK1.7的遍历链表O(n)， JDK1.8 变成遍历红黑树O(logN)。

@@ -122,8 +122,9 @@ HashSet的本质是HashMap
 
 ## 有了数组为什么还要再搞一个ArrayList呢？
 
-&emsp;&emsp;通常我们在使用的时候，如果在不明确要插入多少数据的情况下，普通数组就很尴尬了，因为你不知道需要初始化数组大小为多少，而 ArrayList 可以使用默认的大小，当元素个数到达一定程度后，会自动扩容。
-&emsp;&emsp;可以这么来理解：我们常说的数组是定死的数组，ArrayList 却是动态数组。
+通常我们在使用的时候，如果在不明确要插入多少数据的情况下，普通数组就很尴尬了，因为你不知道需要初始化数组大小为多少，而 ArrayList 可以使用默认的大小，当元素个数到达一定程度后，会自动扩容。
+
+可以这么来理解：我们常说的数组是定死的数组，ArrayList 却是动态数组。
 
 ## 说说fail-fast与fail-safe机制
 
@@ -134,7 +135,7 @@ HashSet的本质是HashMap
 - 抛出 ConcurrentModificationException 异常
 - ArrayList使用fail-fast机制自然是因为它增强了数据的安全性
 
-```java
+```java 
 //抛出异常方法
 final void checkForComodification() {
         if (modCount != expectedModCount) throw new ConcurrentModificationException();
@@ -176,5 +177,6 @@ CopyOnWrite并发容器用于读多写少的并发场景。比如白名单，黑
 3. HashMap 底层数据结构是数组 + 链表（JDK 1.8 之前）。JDK 1.8 之后是数组 + 链表 + 红黑
    树。当链表中元素个数达到 8 的时候，链表的查询速度不如红黑树快，链表会转为红黑树，红黑树查询速度快；
 4. HashMap 初始数组大小为 16（默认），当出现扩容的时候，以 0.75 * 数组大小的方式进行扩容；
-5. ConcurrentHashMap 在 JDK 1.8 之前是采用分段锁来现实的 Segment + HashEntry，
-   Segment 数组大小默认是 16，2 的 n 次方；JDK 1.8 之后，采用 Node + CAS + Synchronized来保证并发安全进行实现
+5. ConcurrentHashMap 
+   1. 在 JDK 1.8 之前是采用分段锁来现实的 Segment + HashEntry，Segment 数组大小默认是 16，2 的 n 次方；
+   2. JDK 1.8 之后，采用 Node + CAS + Synchronized来保证并发安全进行实现

@@ -113,6 +113,7 @@
     6. [3.5 ConcurrentHashMap何时扩容，扩容的流程是什么？](./multithreading-high-concurrency/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E9%9D%A2%E8%AF%95%E9%A2%98.md)
     7. [3.6 ConcurrentHashMap得计数器如何实现的？](./multithreading-high-concurrency/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E9%9D%A2%E8%AF%95%E9%A2%98.md)
     8. [3.7 ConcurrentHashMap的读操作会阻塞嘛？](./multithreading-high-concurrency/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E9%9D%A2%E8%AF%95%E9%A2%98.md)
+11. [深入理解synchronized锁升级过程](./multithreading-high-concurrency/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3synchronized%E9%94%81%E5%8D%87%E7%BA%A7%E8%BF%87%E7%A8%8B.md)
 
 ## JVM篇
 

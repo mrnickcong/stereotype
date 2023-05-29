@@ -34,7 +34,7 @@
 1. 在mysql01服务器上, 创建数据库 msb_payorder_db,并创建表pay_order
 
 ```sql
-CREATE DATABASE msb_payorder_db CHARACTER SET 'utf8';
+CREATE DATABASE sj_payorder_db CHARACTER SET 'utf8';
 
 CREATE TABLE `pay_order` (
   `order_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -48,7 +48,7 @@ CREATE TABLE `pay_order` (
 2. 在mysql02服务器上, 创建数据库 msb_user_db,并创建表users
 
 ```sql
-CREATE DATABASE msb_user_db CHARACTER SET 'utf8';
+CREATE DATABASE sj_user_db CHARACTER SET 'utf8';
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,

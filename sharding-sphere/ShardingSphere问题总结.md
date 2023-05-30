@@ -94,7 +94,7 @@ Sharding-JDBC定位为轻量级Java框架，在Java的JDBC层提供的额外服�
 
 **Sharding-JDBC 内部结构**：
 
-<img src="./images/14.jpg" style="zoom:70%;" />   
+![Sharding-JDBC 内部结构](./images/14.jpg)
 
 - 图中黄色部分表示的是Sharding-JDBC的入口API，采用工厂方法的形式提供。 目前有ShardingDataSourceFactory和MasterSlaveDataSourceFactory两个工厂类。
   - ShardingDataSourceFactory支持分库分表、读写分离操作
@@ -108,7 +108,7 @@ Sharding-JDBC定位为轻量级Java框架，在Java的JDBC层提供的额外服�
 
 #### 1. 核心概念
 
-<img src="./images/17.jpg" style="zoom:50%;" />  
+![核心概念](./images/17.jpg)
 
 对于数据库的垂直拆分一般都是在数据库设计初期就会完成,因为垂直拆分与业务直接相关,而我们提到的分库分表一般是指的水平拆分,数据分片就是将原本一张数据量较大的表t_order拆分生成数个表结构完全一致的小数据量表t_order_0、t_order_1......,每张表只保存原表的部分数据.
 
@@ -150,7 +150,7 @@ Sharding-JDBC定位为轻量级Java框架，在Java的JDBC层提供的额外服�
   where o.order_id in (10,11);
   ```
 
-  <img src="./images/18.jpg" style="zoom:50%;" /> 
+![核心概念](./images/18.jpg)
 
   如果配置绑定表关系后再进行关联查询时，只要对应表分片规则一致产生的数据就会落到同一个库中，那么只需 t_order_0和 t_order_item_0 表关联即可。
 
@@ -162,7 +162,7 @@ Sharding-JDBC定位为轻量级Java框架，在Java的JDBC层提供的额外服�
   where o.order_id in (10,11);
   ```
 
-  <img src="./images/19.jpg" style="zoom:50%;" />  
+![核心概念](./images/19.jpg)
 
 - 广播表(公共表)
 

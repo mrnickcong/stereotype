@@ -207,14 +207,15 @@
 2. [MySQL索引有哪些类型](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
 3. [索引有哪些优缺点](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
 4. [InnoDB中的索引结构](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
-5. [MySQL为什么选择B+树作为索引的数据结构](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
-6. [聚簇索引与非聚簇索引的区别](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
-7. [索引失效的场景有哪些](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
-8. [回表](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
-9. [MySQL的索引覆盖](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
-10. [MySQL的索引下推（index condition pushdown，ICP）](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
-11. [索引使用遵循什么原则](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
-12. [Hash索引和B+树索引的区别](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
+5. [B树和B+树有什么区别](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
+6. [MySQL为什么选择B+树作为索引的数据结构](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
+7. [聚簇索引与非聚簇索引的区别](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
+8. [索引失效的场景有哪些](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
+9. [回表](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
+10. [MySQL的索引覆盖](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
+11. [MySQL的索引下推（index condition pushdown，ICP）](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
+12. [索引使用遵循什么原则](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
+13. [Hash索引和B+树索引的区别](./mysql/%E7%B4%A2%E5%BC%95%E9%83%A8%E5%88%86.md)
 
 ### MySQL集群高可用
 

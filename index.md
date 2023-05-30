@@ -185,6 +185,7 @@
 22. [Redis分布式锁的实现方案](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
 23. [Redis如何保证不释放别人的锁](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
 24. [Redlock](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
+25. [Redis缓存淘汰算法之LRU与LFU](./redis/Redis%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AE%97%E6%B3%95%E4%B9%8BLRU%E4%B8%8ELFU.md)
 
 ## MySQL篇
 

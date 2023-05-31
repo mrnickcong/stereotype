@@ -242,9 +242,9 @@
 
 ### kafka
 
-1. [kafka如何消息的不丢失](./kafka/KAFKA%E9%9D%A2%E8%AF%95%E9%A2%98.md)
-2. [kafka如何保证顺序消费](./kafka/KAFKA%E9%9D%A2%E8%AF%95%E9%A2%98.md)
-3. [kafka如何保证数据幂等性](./kafka/KAFKA%E9%9D%A2%E8%AF%95%E9%A2%98.md)
+1. [kafka如何消息的不丢失](./message-queue/Kafka%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+2. [kafka如何保证顺序消费](./message-queue/Kafka%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+3. [kafka如何保证数据幂等性](./message-queue/Kafka%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
 
 ## 微服务组件
 

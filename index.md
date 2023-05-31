@@ -185,7 +185,8 @@
 22. [Redis分布式锁的实现方案](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
 23. [Redis如何保证不释放别人的锁](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
 24. [Redlock](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
-25. [Redis缓存淘汰算法之LRU与LFU](./redis/Redis%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AE%97%E6%B3%95%E4%B9%8BLRU%E4%B8%8ELFU.md)
+25. [Redis缓存淘汰算法之LRU与LFU](./redis/Redis%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AE%97%E6%B3%95%E4%B9%8BLRU%E4%B8%8ELFU.md
+)
 
 ## MySQL篇
 
@@ -254,6 +255,7 @@
 3. [Eureka缺陷](./java-micro-service/Eureka%E9%9D%A2%E8%AF%95%E9%A2%98%E6%95%B4%E7%90%86.md)
 4. [Eureka 的多级缓存机制](./java-micro-service/Eureka%E9%9D%A2%E8%AF%95%E9%A2%98%E6%95%B4%E7%90%86.md)
 5. [nacos和eureka的异同]
+6. [Nacos配置中心原理](./java-micro-service/Nacos%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%8E%9F%E7%90%86.md)
 
 ### 服务降级
 

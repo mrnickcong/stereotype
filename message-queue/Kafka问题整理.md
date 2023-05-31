@@ -1,6 +1,6 @@
-# kafka总结
+# Kafka问题整理
 
-- [kafka总结](#kafka总结)
+- [Kafka问题整理](#kafka问题整理)
   - [kafka如何消息的不丢失](#kafka如何消息的不丢失)
   - [kafka如何保证顺序消费](#kafka如何保证顺序消费)
     - [方法一：一个Topic划分一个partition](#方法一一个topic划分一个partition)

@@ -167,23 +167,26 @@
 4. [为什么 Redis 单线程模型效率也能那么高](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
 5. [为什么Redis中要使用I/O多路复用这种技术](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
 6. [说说 Redis 的线程模型](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
-7. [Redis持久化方式以及区别](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
-8. [Redis如何选择持久化方式](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
-9. [说说你对Redis事务的理解](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
-10. [简述Redis集群模式](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
-11. [RedisCluster集群原理](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
-12. [RedisCluster集群方案什么情况下会导致整个集群不可用](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
-13. [缓存和数据库谁先更新呢](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
-14. [怎么提高缓存命中率](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
-15. [如果有大量的key需要设置同一时间过期，一般需要注意什么](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
-16. [缓存雪崩、缓存穿透、缓存预热、缓存更新、缓存降级等问题](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
-17. [Redis的数据淘汰策略](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
-18. [简述Redis热点Key及其解决方案](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
-19. [哪些操作会阻塞redis](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
-20. [Redis分布式锁使用场景](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
-21. [Redis分布式锁的实现方案](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
-22. [Redis如何保证不释放别人的锁](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
-23. [Redlock](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
+7. [Redis6.0新特性之多线程模型](./redis/Redis6%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8B%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B.md)
+8. [Redis持久化方式以及区别](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+9. [Redis如何选择持久化方式](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+10. [说说你对Redis事务的理解](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+11. [简述Redis集群模式](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+12. [RedisCluster集群原理](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+13. [RedisCluster集群方案什么情况下会导致整个集群不可用](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+14. [缓存和数据库谁先更新呢](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+15. [怎么提高缓存命中率](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+16. [如果有大量的key需要设置同一时间过期，一般需要注意什么](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+17. [缓存雪崩、缓存穿透、缓存预热、缓存更新、缓存降级等问题](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+18. [Redis的数据淘汰策略](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+19. [简述Redis热点Key及其解决方案](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+20. [哪些操作会阻塞redis](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+21. [Redis分布式锁使用场景](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
+22. [Redis分布式锁的实现方案](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
+23. [Redis如何保证不释放别人的锁](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
+24. [Redlock](./redis/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)
+25. [Redis缓存淘汰算法之LRU与LFU](./redis/Redis%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AE%97%E6%B3%95%E4%B9%8BLRU%E4%B8%8ELFU.md
+)
 
 ## MySQL篇
 
@@ -239,9 +242,9 @@
 
 ### kafka
 
-1. [kafka如何消息的不丢失](./kafka/KAFKA%E9%9D%A2%E8%AF%95%E9%A2%98.md)
-2. [kafka如何保证顺序消费](./kafka/KAFKA%E9%9D%A2%E8%AF%95%E9%A2%98.md)
-3. [kafka如何保证数据幂等性](./kafka/KAFKA%E9%9D%A2%E8%AF%95%E9%A2%98.md)
+1. [kafka如何消息的不丢失](./message-queue/Kafka%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+2. [kafka如何保证顺序消费](./message-queue/Kafka%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
+3. [kafka如何保证数据幂等性](./message-queue/Kafka%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
 
 ## 微服务组件
 
@@ -252,6 +255,7 @@
 3. [Eureka缺陷](./java-micro-service/Eureka%E9%9D%A2%E8%AF%95%E9%A2%98%E6%95%B4%E7%90%86.md)
 4. [Eureka 的多级缓存机制](./java-micro-service/Eureka%E9%9D%A2%E8%AF%95%E9%A2%98%E6%95%B4%E7%90%86.md)
 5. [nacos和eureka的异同]
+6. [Nacos配置中心原理](./java-micro-service/Nacos%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%8E%9F%E7%90%86.md)
 
 ### 服务降级
 

@@ -1,40 +1,43 @@
 # 八股文总结
 
 - [八股文总结](#八股文总结)
-  - [计算机基础篇](#计算机基础篇)
-  - [基础篇](#基础篇)
+  - [一、计算机基础篇](#一计算机基础篇)
+  - [二、基础篇](#二基础篇)
     - [Java语言基础](#java语言基础)
     - [Java集合](#java集合)
-  - [多线程和高并发](#多线程和高并发)
-  - [JVM篇](#jvm篇)
-  - [Spring篇](#spring篇)
-  - [SpringMVC篇](#springmvc篇)
-  - [SpringBoot篇](#springboot篇)
-  - [Redis篇](#redis篇)
-  - [MySQL篇](#mysql篇)
+  - [三、啥](#三啥)
+  - [四、多线程和高并发](#四多线程和高并发)
+  - [五、JVM篇](#五jvm篇)
+  - [六、Spring篇](#六spring篇)
+  - [七、SpringMVC篇](#七springmvc篇)
+  - [八、SpringBoot篇](#八springboot篇)
+  - [九、Redis篇](#九redis篇)
+  - [十、MySQL篇](#十mysql篇)
     - [MySQL原理部分](#mysql原理部分)
     - [MySQL索引部分](#mysql索引部分)
     - [MySQL集群高可用](#mysql集群高可用)
     - [MySQL其他问题](#mysql其他问题)
-  - [MyBatis](#mybatis)
-  - [消息中间件](#消息中间件)
+  - [十一、MyBatis](#十一mybatis)
+  - [十二、消息中间件](#十二消息中间件)
     - [kafka](#kafka)
-  - [微服务组件](#微服务组件)
+  - [十三、微服务组件](#十三微服务组件)
     - [注册中心](#注册中心)
     - [服务降级](#服务降级)
-  - [分布式系统解决方案](#分布式系统解决方案)
+  - [十四、分布式系统解决方案](#十四分布式系统解决方案)
+    - [分布式一致性算法](#分布式一致性算法)
     - [分布式锁](#分布式锁)
     - [分布式事务](#分布式事务)
     - [分布式架构](#分布式架构)
-  - [敏捷开发](#敏捷开发)
-  - [大数据](#大数据)
+  - [十五、敏捷开发](#十五敏捷开发)
+  - [十六、大数据](#十六大数据)
+    - [Hive](#hive)
 
-## 计算机基础篇
+## 一、计算机基础篇
 
 1. [零拷贝原理](./computer-base/%E9%9B%B6%E6%8B%B7%E8%B4%9D%E5%8E%9F%E7%90%86.md)
 2. [多路复用模型](./computer-base/%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E6%A8%A1%E5%9E%8B.md)
 
-## [基础篇](./java/0.md)
+## 二、[基础篇](./java/0.md)
 
 ### Java语言基础
 
@@ -56,7 +59,9 @@
 4. [HashMap](./java/HashMap.md)
 5. [ConcurrentHashMap](./java/ConcurrentHashMap.md)
 
-## 多线程和高并发
+## 三、啥
+
+## 四、多线程和高并发
 
 1. [一、原子性高频问题](./multithreading-high-concurrency/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E9%9D%A2%E8%AF%95%E9%A2%98.md)
    1. [1.1  Java中如何实现线程安全?](./multithreading-high-concurrency/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E9%9D%A2%E8%AF%95%E9%A2%98.md)
@@ -117,7 +122,7 @@
     8. [3.7 ConcurrentHashMap的读操作会阻塞嘛？](./multithreading-high-concurrency/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E9%9D%A2%E8%AF%95%E9%A2%98.md)
 11. sdf
 
-## JVM篇
+## 五、JVM篇
 
 1. [简述JMM](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
 2. [对象的内存布局图](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
@@ -133,7 +138,7 @@
 12. [常用调优策略](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
 13. [项目JVM调优](./jvm/JVM%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
 
-## Spring篇
+## 六、Spring篇
 
 1. [说下Spring的优势](./spring/Spring%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86.md)
 2. [简述Spring的核心](./spring/Spring%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86.md)
@@ -149,17 +154,17 @@
 12. [Spring事务的隔离级别](./spring/Spring%E4%BA%8B%E5%8A%A1.md)
 13. [Spring事务失效的场景有哪些](./spring/Spring%E4%BA%8B%E5%8A%A1.md)
 
-## SpringMVC篇
+## 七、SpringMVC篇
 
 1. [MVC设计模式的好处](./spring/SpringMVC%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
 2. [SpringMVC的请求响应流程](./spring/SpringMVC%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
 
-## SpringBoot篇
+## 八、SpringBoot篇
 
 1. [Springboot自动装配原理](./spring/SpringBoot%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
 2. [如何实现一个 Starter](./spring/SpringBoot%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
 
-## Redis篇
+## 九、Redis篇
 
 1. [Redis 的数据类型及使用场景](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
 2. [使用 Redis 有哪些好处](./redis/Redis%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
@@ -188,7 +193,7 @@
 25. [Redis缓存淘汰算法之LRU与LFU](./redis/Redis%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AE%97%E6%B3%95%E4%B9%8BLRU%E4%B8%8ELFU.md
 )
 
-## MySQL篇
+## 十、MySQL篇
 
 ### MySQL原理部分
 
@@ -231,14 +236,14 @@
 1. [MySQL服务器CPU飙升问题](./mysql/%E6%8F%90%E9%AB%98%E9%83%A8%E5%88%86.md)
 2. [如何进行慢查询优化](./mysql/%E6%8F%90%E9%AB%98%E9%83%A8%E5%88%86.md)
 
-## MyBatis
+## 十一、MyBatis
 
 1. [#{}和${}的区别](./mybatis/MyBatis%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
 2. [MyBatis重要组件](./mybatis/MyBatis%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
 3. [MyBatis层次结构](./mybatis/MyBatis%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
 4. [MyBatis的执行原理](./mybatis/MyBatis%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.md)
 
-## 消息中间件
+## 十二、消息中间件
 
 ### kafka
 
@@ -246,7 +251,7 @@
 2. [kafka如何保证顺序消费](./message-queue/Kafka%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
 3. [kafka如何保证数据幂等性](./message-queue/Kafka%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86.md)
 
-## 微服务组件
+## 十三、微服务组件
 
 ### 注册中心
 
@@ -259,7 +264,13 @@
 
 ### 服务降级
 
-## 分布式系统解决方案
+## 十四、分布式系统解决方案
+
+### 分布式一致性算法
+
+1. [分布式一致性算法之Paxos和Raft应用场景](./system-design/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E8%87%B4%E6%80%A7%E7%AE%97%E6%B3%95%E4%B9%8BPaxos%E5%92%8CRaft%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF.md)
+2. [Paxos算法详解](./system-design/Paxos%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3.md)
+3. [Raft算法详解](./system-design/Raft%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3.md)
 
 ### 分布式锁
 
@@ -279,12 +290,14 @@
 3. [怎样设计出高内聚、低耦合的微服务](./system-design/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1.md)
 4. [如何理解SaaS系统](./system-design/%E8%BD%AF%E4%BB%B6%E5%8D%B3%E6%9C%8D%E5%8A%A1saas.md)
 
-## 敏捷开发
+## 十五、敏捷开发
 
 1. [你的项目中是怎么保证微服务敏捷开发的](./%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91.md)
 2. [微服务的链路追踪、持续集成、AB发布要怎么做](./%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91.md)
 
-## 大数据
+## 十六、大数据
+
+### Hive
 
 1. [请谈一下Hive的特点](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
 2. [Hive的HSQL转换为MapReduce的过程](./big-data/Hive%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)

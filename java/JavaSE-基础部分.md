@@ -88,10 +88,12 @@ class Son extends Father{
 }
 ```
 
-**重写 总结：** 1.发生在父类与子类之间 2.方法名，参数列表，返回类型（除过子类中方法的返回类型
-是父类中返回类型的子类）必须相同 3.访问修饰符的限制一定要大于被重写方法的访问修饰符
-（public>protected>default>private) 4.重写方法一定不能抛出新的检查异常或者比被重写方法申
-明更加宽泛的检查型异常
+**重写 总结：**
+
+1. 发生在父类与子类之间
+2. 方法名，参数列表，返回类型（除过子类中方法的返回类型是父类中返回类型的子类）必须相同
+3. 访问修饰符的限制一定要大于被重写方法的访问修（public>protected>default>private)
+4. 重写方法一定不能抛出新的检查异常或者比被重写方法申明更加宽泛的检查型异常
 
 **重载（Overload）**：同一个Java类同名、同参、不同返回类型
 在一个类中，同名的方法如果有不同的参数列表（参数类型不同、参数个数不同甚至是参数顺序不
@@ -115,9 +117,11 @@ public class Father {
 }
 ```
 
-**重载 总结：** 1.重载Overload是一个类中多态性的一种表现 2.重载要求同名方法的参数列表不同(参
-数类型，参数个数甚至是参数顺序) 3.重载的时候，返回值类型可以相同也可以不相同。无法以返回
-型别作为重载函数的区分标准
+**重载 总结：**
+
+1. 重载Overload是一个类中多态性的一种表现
+2. 重载要求同名方法的参数列表不同(参数类型，参数个数甚至是参数顺序)
+3. 重载的时候，返回值类型可以相同也可以不相同。无法以返回型别作为重载函数的区分标准
 
 ## 三、 equals与==的区别
 
@@ -155,9 +159,9 @@ equals object可能为null 则空指针
 
 - 强引用
 
-强引用是平常中使用最多的引用，强引用在程序内存不足（OOM）的时候也不会被回收，
-
-**使用方式：**
+> 强引用是平常中使用最多的引用，强引用在程序内存不足（OOM）的时候也不会被回收，
+>
+> 使用方式：
 
 ```java
 String str = new String("str");
@@ -165,37 +169,41 @@ System.out.println(str);
 ```
 
 - 软引用
-软引用在程序内存不足时，会被回收，使用方式：
 
-```text
+> 软引用在程序内存不足时，会被回收，使用方式：
+
+```java
 // 注意：wrf这个引用也是强引用，它是指向SoftReference这个对象的，
 // 这里的软引用指的是指向new String("str")的引用，也就是SoftReference类中T
 SoftReference<String> wrf = new SoftReference<String>(new String("str"));
 ```
 
-​**可用场景：** 创建缓存的时候，创建的对象放进缓存中，当内存不足时，JVM就会回收早先创建的对象。
+> 可用场景： 创建缓存的时候，创建的对象放进缓存中，当内存不足时，JVM就会回收早先创建的对象。
 
 - 弱引用
-弱引用就是只要JVM垃圾回收器发现了它，就会将之回收，使用方式：
 
-```text
+> 弱引用就是只要JVM垃圾回收器发现了它，就会将之回收，使用方式：
+
+```java
 WeakReference<String> wrf = new WeakReference<String>(str);
 ```
 
-**可用场景：** Java源码中的 java.util.WeakHashMap 中的 key 就是使用弱引用，我的理解就是，一旦我不需要某个引用，JVM会自动帮我处理它，这样我就不需要做其它操作。
+> 可用场景：Java源码中的 java.util.WeakHashMap 中的 key 就是使用弱引用，我的理解就是，一旦我不需要某个引用，JVM会自动帮我处理它，这样我就不需要做其它操作。
 
 - 虚引用
-虚引用的回收机制跟弱引用差不多，但是它被回收之前，会被放入 ReferenceQueue 中。注意
+
+> 虚引用的回收机制跟弱引用差不多，但是它被回收之前，会被放入 ReferenceQueue 中。注意
 哦，其它引用是被JVM回收后才被传入 ReferenceQueue 中的。由于这个机制，所以虚引用大多
 被用于引用销毁前的处理工作。还有就是，虚引用创建的时候，必须带有 ReferenceQueue ，
-**使用例子：**
+>
+> 使用例子：
 
 ```java
 PhantomReference<String> prf = new PhantomReference<String>(new String("str"),
 new ReferenceQueue<>());
 ```
 
-**可用场景：** 对象销毁前的一些操作，比如说资源释放等。 Object.finalize() 虽然也可以做这类动作，但是这个方式即不安全又低效
+> 可用场景：对象销毁前的一些操作，比如说资源释放等。 Object.finalize() 虽然也可以做这类动作，但是这个方式即不安全又低效
 上诉所说的几类引用，都是指对象本身的引用，而不是指Reference的四个子类的引用(SoftReference等)
 
 ## 六、HashCode的作用
@@ -323,6 +331,7 @@ superclass. All objects, including arrays, implement the methods of this class.
 java中提供了以下四种创建对象的方式:
 
 **new 关键字**
+
 平时使用的最多的创建对象方式
 
 ```java
@@ -330,6 +339,7 @@ User user=new User();
 ```
 
 **反射方式**
+
 使用 newInstance()，但是得处理两个异常 InstantiationException、IllegalAccessException：
 
 ```java
@@ -396,10 +406,13 @@ Class<?> clazz = Class.forName("com.tian.User");
 ### OOM-OutOfMemoryError异常
 
 1. OutOfMemoryError异常
-除了程序计数器外，虚拟机内存的其他几个运行时区域都有发生OutOfMemoryError(OOM)异常的
+
+> 除了程序计数器外，虚拟机内存的其他几个运行时区域都有发生OutOfMemoryError(OOM)异常的
 可能。
+
 2. Java Heap 溢出：
-一般的异常信息：java.lang.OutOfMemoryError:Java heap spacess。
+
+> 一般的异常信息：java.lang.OutOfMemoryError:Java heap spacess。
 java堆用于存储对象实例，我们只要不断的创建对象，并且保证GC Roots到对象之间有可达路径来
 避免垃圾回收机制清除这些对象，就会在对象数量达到最大堆容量限制后产生内存溢出异常。
 出现这种异常，一般手段是先通过内存映像分析工具(如Eclipse Memory Analyzer)对dump出来的
@@ -408,21 +421,23 @@ Leak)还是内存溢出(Memory Overflow)。
 如果是内存泄漏，可进一步通过工具查看泄漏对象到GCRoots的引用链。于是就能找到泄漏对象是
 通过怎样的路径与GC Roots相关联并导致垃圾收集器无法自动回收。
 如果不存在泄漏，那就应该检查虚拟机的参数(-Xmx与-Xms)的设置是否适当。
+
 3. 虚拟机栈和本地方法栈溢出
-如果线程请求的栈深度大于虚拟机所允许的最大深度，将抛出StackOverflowError异常。
+
+> 如果线程请求的栈深度大于虚拟机所允许的最大深度，将抛出StackOverflowError异常。
 如果虚拟机在扩展栈时无法申请到足够的内存空间，则抛出OutOfMemoryError异常
 这里需要注意当栈的大小越大可分配的线程数就越少。
+
 4. 运行时常量池溢出
-异常信息：java.lang.OutOfMemoryError:PermGenspace
-如果要向运行时常量池中添加内容，最简单的做法就是使用String.intern()这个Native方法。该方法
-的作用是：如果池中已经包含一个等于此String的字符串，则返回代表池中这个字符串的String对
-象；否则，将此String对象包含的字符串添加到常量池中，并且返回此String对象的引用。由于常量
-池分配在方法区内，我们可以通过-XX:PermSize和-XX:MaxPermSize限制方法区的大小，从而间接
-限制其中常量池的容量
-5. 方法区溢出
-方法区用于存放Class的相关信息，如类名、访问修饰符、常量池、字段描述、方法描述等。也有可
-能是方法区中保存的class对象没有被及时回收掉或者class信息占用的内存超过了我们配置。
-异常信息：java.lang.OutOfMemoryError:PermGenspace
+
+> 异常信息：java.lang.OutOfMemoryError:PermGenspace
+如果要向运行时常量池中添加内容，最简单的做法就是使用String.intern()这个Native方法。该方法的作用是：如果池中已经包含一个等于此String的字符串，则返回代表池中这个字符串的String对象；否则，将此String对象包含的字符串添加到常量池中，并且返回此String对象的引用。由于常量池分配在方法区内，我们可以通过-XX:PermSize和-XX:MaxPermSize限制方法区的大小，从而间接限制其中常量池的容量
+
+1. 方法区溢出
+
+> 方法区用于存放Class的相关信息，如类名、访问修饰符、常量池、字段描述、方法描述等。也有可能是方法区中保存的class对象没有被及时回收掉或者class信息占用的内存超过了我们配置。
+> 
+> 异常信息：java.lang.OutOfMemoryError:PermGenspace
 方法区溢出也是一种常见的内存溢出异常，一个类如果要被垃圾收集器回收，判定条件是很苛刻
 的。在经常动态生成大量Class的应用中，要特别注意这点。
 
@@ -465,13 +480,10 @@ finally 作为异常处理的一部分，它只能在 try/catch 语句中，并�
 
 ## String、StringBuffer和StringBuilder的区别是什么
 
-String是只读字符串，它并不是基本数据类型，而是一个对象。从底层源码来看是一个final类型的
-字符数组，所引用的字符串不能被改变，一经定义，无法再增删改。每次对String的操作都会生成
-新的String对象。
-每次+操作 ： 隐式在堆上new了一个跟原字符串相同的StringBuilder对象，再调用append方法 拼
-接+后面的字符。
-StringBuffer和StringBuilder他们两都继承了AbstractStringBuilder抽象类，从
-AbstractStringBuilder抽象类中我们可以看到
-他们的底层都是可变的字符数组，所以在进行频繁的字符串操作时，建议使用StringBuffer和
-StringBuilder来进行操作。 另外StringBuffer 对方法加了同步锁或者对调用的方法加了同步锁，所
-以是线程安全的。StringBuilder 并没有对方法进行加同步锁，所以是非线程安全的。
+1. String是只读字符串，它并不是基本数据类型，而是一个对象。
+   1. 从底层源码来看是一个`final`类型的字符数组，所引用的字符串不能被改变，一经定义，无法再增删改。
+   2. 每次对`String`的操作都会生成新的`String`对象。
+   3. 每次+操作 ： 隐式在堆上new了一个跟原字符串相同的`StringBuilder`对象，再调用`append`方法 拼接+后面的字符。
+2. `StringBuffer`和`StringBuilder`他们两都继承了`AbstractStringBuilder`抽象类，
+   1. 从`AbstractStringBuilder`抽象类中我们可以看到他们的底层都是可变的字符数组，所以在进行频繁的字符串操作时，建议使用`StringBuffer`和`StringBuilder`来进行操作。
+3. 另外`StringBuffer` 对方法加了同步锁或者对调用的方法加了同步锁，所以是线程安全的。`StringBuilder` 并没有对方法进行加同步锁，所以是非线程安全的。

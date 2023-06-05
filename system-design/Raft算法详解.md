@@ -20,6 +20,13 @@
     - [6.1 压缩日志增加系统可用性](#61-压缩日志增加系统可用性)
     - [6.1 Snapshot包含的内容](#61-snapshot包含的内容)
   - [7. 成员变更](#7-成员变更)
+    - [7.1 成员变更问题](#71-成员变更问题)
+    - [7.2 Raft如何解决成员变更问题](#72-raft如何解决成员变更问题)
+    - [7.3 Raft两阶段成员变更过程](#73-raft两阶段成员变更过程)
+    - [7.4 异常分析](#74-异常分析)
+    - [7.5 一阶段成员变更](#75-一阶段成员变更)
+  - [8. Raft与Multi-Paxos的异同](#8-raft与multi-paxos的异同)
+  - [9. Raft算法总结](#9-raft算法总结)
 
 ## 1. Raft算法概述
 
@@ -71,13 +78,13 @@ Follower将其当前term加一然后转换为Candidate。它首先给自己投�
 
 选举出Leader后，Leader通过定期向所有Followers发送心跳信息维持其统治。若Follower一段时间未收到Leader的心跳则认为Leader可能已经挂了，再次发起Leader选举过程。
 
-Raft保证选举出的Leader上一定具有最新的已提交的日志，这一点将在[安全性](#安全性)中说明。
+Raft保证选举出的Leader上一定具有最新的已提交的日志，这一点将在[安全性](#5-安全性)中说明。
 
 ## 4. 日志同步
 
 ### 4.1 Raft日志同步过程
 
-Leader选出后，就开始接收客户端的请求。Leader把请求作为日志条目（Log entries）加入到它的日志中，然后并行的向其他服务器发起 AppendEntries RPC （RPC细节参见八、Raft算法总结）复制日志条目。当这条日志被复制到大多数服务器上，Leader将这条日志应用到它的状态机并向客户端返回执行结果。
+Leader选出后，就开始接收客户端的请求。Leader把请求作为日志条目（Log entries）加入到它的日志中，然后并行的向其他服务器发起 AppendEntries RPC （RPC细节参见[Raft算法总结](#9-raft算法总结)）复制日志条目。当这条日志被复制到大多数服务器上，Leader将这条日志应用到它的状态机并向客户端返回执行结果。
 
 ![Raft日志同步过程](./images/Raft日志同步过程.png)
 
@@ -163,6 +170,8 @@ Snapshot中包含以下内容：
 
 ## 7. 成员变更
 
+### 7.1 成员变更问题
+
 成员变更是在集群运行过程中副本发生变化，如增加/减少副本数、节点替换等。
 
 成员变更也是一个分布式一致性问题，既所有服务器对新成员达成一致。但是成员变更又有其特殊性，因为在成员变更的一致性达成的过程中，参与投票的进程会发生变化。
@@ -173,29 +182,35 @@ Snapshot中包含以下内容：
 
 成员变更不能影响服务的可用性，但是成员变更过程的某一时刻，可能出现在Cold和Cnew中同时存在两个不相交的多数派，进而可能选出两个Leader，形成不同的决议，破坏安全性。
 
+![成员变更的某一时刻Cold和Cnew中同时存在两个不相交的多数派](./images/成员变更的某一时刻Cold和Cnew中同时存在两个不相交的多数派.png)
 
-成员变更的某一时刻Cold和Cnew中同时存在两个不相交的多数派
+### 7.2 Raft如何解决成员变更问题
+
 由于成员变更的这一特殊性，成员变更不能当成一般的一致性问题去解决。
 
 为了解决这一问题，Raft提出了两阶段的成员变更方法。集群先从旧成员配置Cold切换到一个过渡成员配置，称为共同一致（joint consensus），共同一致是旧成员配置Cold和新成员配置Cnew的组合Cold U Cnew，一旦共同一致Cold U Cnew被提交，系统再切换到新成员配置Cnew。
 
+![Raft两阶段成员变更](./images/Raft两阶段成员变更.png)
 
-Raft两阶段成员变更
+### 7.3 Raft两阶段成员变更过程
+
 Raft两阶段成员变更过程如下：
 
-Leader收到成员变更请求从Cold切成Cold,new；
-Leader在本地生成一个新的log entry，其内容是Cold∪Cnew，代表当前时刻新旧成员配置共存，写入本地日志，同时将该log entry复制至Cold∪Cnew中的所有副本。在此之后新的日志同步需要保证得到Cold和Cnew两个多数派的确认；
-Follower收到Cold∪Cnew的log entry后更新本地日志，并且此时就以该配置作为自己的成员配置；
-如果Cold和Cnew中的两个多数派确认了Cold U Cnew这条日志，Leader就提交这条log entry并切换到Cnew；
-接下来Leader生成一条新的log entry，其内容是新成员配置Cnew，同样将该log entry写入本地日志，同时复制到Follower上；
-Follower收到新成员配置Cnew后，将其写入日志，并且从此刻起，就以该配置作为自己的成员配置，并且如果发现自己不在Cnew这个成员配置中会自动退出；
-Leader收到Cnew的多数派确认后，表示成员变更成功，后续的日志只要得到Cnew多数派确认即可。Leader给客户端回复成员变更执行成功。
-异常分析：
+1. Leader收到成员变更请求从Cold切成Cold,new；
+2. Leader在本地生成一个新的log entry，其内容是Cold∪Cnew，代表当前时刻新旧成员配置共存，写入本地日志，同时将该log entry复制至Cold∪Cnew中的所有副本。在此之后新的日志同步需要保证得到Cold和Cnew两个多数派的确认;
+3. Follower收到Cold∪Cnew的log entry后更新本地日志，并且此时就以该配置作为自己的成员配置
+4. 如果Cold和Cnew中的两个多数派确认了Cold U Cnew这条日志，Leader就提交这条log entry并切换到Cnew；
+5. 接下来Leader生成一条新的log entry，其内容是新成员配置Cnew，同样将该log entry写入本地日志，同时复制到Follower上；
+6. Follower收到新成员配置Cnew后，将其写入日志，并且从此刻起，就以该配置作为自己的成员配置，并且如果发现自己不在Cnew这个成员配置中会自动退出；
+7. Leader收到Cnew的多数派确认后，表示成员变更成功，后续的日志只要得到Cnew多数派确认即可。Leader给客户端回复成员变更执行成功。
 
-如果Leader的Cold U Cnew尚未推送到Follower，Leader就挂了，此后选出的新Leader并不包含这条日志，此时新Leader依然使用Cold作为自己的成员配置。
-如果Leader的Cold U Cnew推送到大部分的Follower后就挂了，此后选出的新Leader可能是Cold也可能是Cnew中的某个Follower。
-如果Leader在推送Cnew配置的过程中挂了，那么同样，新选出来的Leader可能是Cold也可能是Cnew中的某一个，此后客户端继续执行一次改变配置的命令即可。
-如果大多数的Follower确认了Cnew这个消息后，那么接下来即使Leader挂了，新选出来的Leader肯定位于Cnew中。
+### 7.4 异常分析
+
+- 如果Leader的Cold U Cnew尚未推送到Follower，Leader就挂了，此后选出的新Leader并不包含这条日志，此时新Leader依然使用Cold作为自己的成员配置。
+- 如果Leader的Cold U Cnew推送到大部分的Follower后就挂了，此后选出的新Leader可能是Cold也可能是Cnew中的某个Follower。
+- 如果Leader在推送Cnew配置的过程中挂了，那么同样，新选出来的Leader可能是Cold也可能是Cnew中的某一个，此后客户端继续执行一次改变配置的命令即可。
+- 如果大多数的Follower确认了Cnew这个消息后，那么接下来即使Leader挂了，新选出来的Leader肯定位于Cnew中。
+
 两阶段成员变更比较通用且容易理解，但是实现比较复杂，同时两阶段的变更协议也会在一定程度上影响变更过程中的服务可用性，因此我们期望增强成员变更的限制，以简化操作流程。
 
 两阶段成员变更，之所以分为两个阶段，是因为对Cold与Cnew的关系没有做任何假设，为了避免Cold和Cnew各自形成不相交的多数派选出两个Leader，才引入了两阶段方案。
@@ -206,45 +221,43 @@ Leader收到Cnew的多数派确认后，表示成员变更成功，后续的日�
 
 可从数学上严格证明，只要每次只允许增加或删除一个成员，Cold与Cnew不可能形成两个不相交的多数派。
 
-一阶段成员变更：
+### 7.5 一阶段成员变更
 
-成员变更限制每次只能增加或删除一个成员（如果要变更多个成员，连续变更多次）。
-成员变更由Leader发起，Cnew得到多数派确认后，返回客户端成员变更成功。
-一次成员变更成功前不允许开始下一次成员变更，因此新任Leader在开始提供服务前要将自己本地保存的最新成员配置重新投票形成多数派确认。
-Leader只要开始同步新成员配置，即可开始使用新的成员配置进行日志同步。
+1. 成员变更限制每次只能增加或删除一个成员（如果要变更多个成员，连续变更多次）。
+2. 成员变更由Leader发起，Cnew得到多数派确认后，返回客户端成员变更成功。
+3. 一次成员变更成功前不允许开始下一次成员变更，因此新任Leader在开始提供服务前要将自己本地保存的最新成员配置重新投票形成多数派确认。
+4. Leader只要开始同步新成员配置，即可开始使用新的成员配置进行日志同步。
 
+## 8. Raft与Multi-Paxos的异同
 
-七、Raft与Multi-Paxos的异同
 Raft与Multi-Paxos都是基于领导者的一致性算法，乍一看有很多地方相同，下面总结一下Raft与Multi-Paxos的异同。
 
 Raft与Multi-Paxos中相似的概念：
 
+![Raft与Multi-Paxos中相似的概念](./images/Raft与Multi-Paxos中相似的概念.png)
 
-Raft与Multi-Paxos中相似的概念
 Raft与Multi-Paxos的不同：
 
+![Raft与Multi-Paxos的不同](./images/Raft与Multi-Paxos的不同.png)
 
-Raft与Multi-Paxos的不同
+## 9. Raft算法总结
 
-
-八、Raft算法总结
 Raft算法各节点维护的状态：
 
+![Raft各节点维护的状态](./images/Raft各节点维护的状态.png)
 
-Raft各节点维护的状态
 Leader选举：
 
+![Leader选举](./images/Leader选举.png)
 
-Leader选举
 日志同步：
 
+![日志同步](./images/日志同步.png)
 
-日志同步
 Raft状态机：
 
+![Raft状态机](./images/Raft状态机.png)
 
-Raft状态机
 安装snapshot：
 
-
-安装snapshot
+![安装snapshot](./images/安装snapshot.png)

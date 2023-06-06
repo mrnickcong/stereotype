@@ -167,7 +167,7 @@ HashMap在并发使用时可能发生死循环，导致cpu100%
 
 HashMap之Java7头插法
 
-![HashMap之Java7头插法](./../images/HashMap之Java7头插法.png)
+![HashMap之Java7头插法](./images/HashMap之Java7头插法.png)
 
 HashMap之Java7正常扩容
 

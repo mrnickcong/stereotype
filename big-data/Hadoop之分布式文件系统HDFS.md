@@ -13,6 +13,11 @@
     - [HDFS的存储模型](#hdfs的存储模型)
     - [HDFS的结构设计](#hdfs的结构设计)
     - [Windows和Linux文件系统的差异](#windows和linux文件系统的差异)
+    - [HDFS安全模式](#hdfs安全模式)
+    - [Block的副本的放置策略](#block的副本的放置策略)
+    - [HDFS写入流程](#hdfs写入流程)
+    - [HDFS流水线写入和串行写入](#hdfs流水线写入和串行写入)
+    - [HDFS读流程](#hdfs读流程)
 
 ## 以下为听课笔记没有整理
 
@@ -100,3 +105,29 @@ Hadoop的生态主要有：
 - 角色即进程
 
 ![HDFS元数据持久化](images/HDFS元数据持久化.png)
+
+### HDFS安全模式
+
+![HDFS安全模式](images/HDFS安全模式.png)
+
+![HDFS安全模式](images/HDFS安全模式2.png)
+
+### Block的副本的放置策略
+
+![Block的副本的放置策略](images/Block的副本的放置策略.png)
+
+### HDFS写入流程
+
+![HDFS写流程-文字](images/HDFS写流程-文字.png)
+
+![HDFS文件写入的主流程](images/HDFS文件写入的主流程.png)
+
+### HDFS流水线写入和串行写入
+
+![HDFS串行数据写入](images/HDFS串行数据写入.png)
+
+![HDFS流水线数据写入](images/HDFS流水线数据写入.png)
+
+### HDFS读流程
+
+![HDFS读流程](images/HDFS读流程.png)

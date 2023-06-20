@@ -6,6 +6,9 @@
   - [为什么叫MapReduce](#为什么叫mapreduce)
   - [MapReduce执行流程](#mapreduce执行流程)
     - [小文件有哪些特征](#小文件有哪些特征)
+  - [word count](#word-count)
+  - [hadoop1.x之JobTracker](#hadoop1x之jobtracker)
+  - [yarn架构](#yarn架构)
 
 ## 以下为听课笔记没有整理
 
@@ -34,3 +37,19 @@ reduce做了什么
 ### 小文件有哪些特征
 
 内部有序，外部无序。可以使用归并排序算法
+
+## word count
+
+面向文件统计"目标词汇"，进行分组统计的计算
+
+## hadoop1.x之JobTracker
+
+![MapReduce之JobTracker](./images/MapReduce之JobTracker.png)
+
+## yarn架构
+
+![yarn架构](./images/yarn架构.png)
+
+何为yarn：资源管理
+
+yarn模型

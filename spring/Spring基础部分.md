@@ -113,6 +113,8 @@ DI：依赖注入，把对应的属性的值注入到具体的对象中，（@au
 
 ## SpringAOP和AspectJAOP有什么区别
 
+Spring AOP的运行时增强，而AspectJ是编译时增强
+
 ## jdk代理和cglib代理区别
 
 区别如下：

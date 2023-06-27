@@ -11,6 +11,7 @@
 ## 1.何为LCN
 
 - LCN是分布式事务两阶段的一个实现框架
+- 开源地址：`https://github.com/codingapi/tx-lcn`
 
 其中：
 

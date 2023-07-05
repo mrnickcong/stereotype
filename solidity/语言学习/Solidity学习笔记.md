@@ -8,7 +8,7 @@
 
 ### 一、智能合约
 
-​	智能合约（Smart contract ）是一种旨在以信息化方式传播、验证或执行合同的计算机协议。
+智能合约（Smart contract ）是一种旨在以信息化方式传播、验证或执行合同的计算机协议。
 
 ### 二、智能合约的性质
 
@@ -62,10 +62,10 @@
 
 1. 变量声明的一般形式
 
-   ```
+```go
    类型 [可见性] 变量名;
    举例：uint public x;
-   ```
+```
 
 2. 变量的可见性
 
@@ -75,17 +75,17 @@
    | private      | 对本合约可见、其他不可见                      |                                                  |
    | internal     | 对本合约及子合约可见，相当于Java中的protected | **变量默认可见性：internal**                     |
 
-​	当变量的可见性为public时，编译器编译是会为其自动生成get的同名方法。
+当变量的可见性为public时，编译器编译是会为其自动生成get的同名方法。
 
-​	合约外部：其他合约、链下的钱包地址
+合约外部：其他合约、链下的钱包地址
 
 #### 合约的函数
 
 1. 函数的一般形式
 
-   ```
+```go
    function 函数名 ([参数])[可见性][交易相关][...]returns (返回值){...}
-   ```
+```
 
 2. 函数的可见性
 
@@ -96,51 +96,51 @@
    |   internal   | 对继承子合约可见，其他不可见（类似于Java中的protected） |           双方都           |
    |   external   |         相当于public，但是其执行机制有较大区别          |                            |
 
-   ​	external和public的区别
+external和public的区别
 
-3. 交易属性
+1. 交易属性
 
-   ​	默认：什么都不写，交易默认是写操作：全网广播、共识确认。（如果不是写操作，意味着区块链状态没有变化）
+   默认：什么都不写，交易默认是写操作：全网广播、共识确认。（如果不是写操作，意味着区块链状态没有变化）
 
-   ​	view：合约状态读操作。被修饰的函数，无法进行写操作，否则IDE报错。
+   view：合约状态读操作。被修饰的函数，无法进行写操作，否则IDE报错。
 
-   ​	pure：与合约状态无关的函数。也叫纯函数（）
+   pure：与合约状态无关的函数。也叫纯函数（）
 
-   ​		纯函数：跟系统状态无关，只跟输入有关的函数
+   纯函数：跟系统状态无关，只跟输入有关的函数
 
-   ​		纯函数的作用：解决区块链的授信问题。如果交给链下存在不信任的问题
+   纯函数的作用：解决区块链的授信问题。如果交给链下存在不信任的问题
 
-   ```
+```go
    //这就是一个纯函数
    function add(uint a,uint b)internal pure returns(uint){
-   	return a+b;
+    return a+b;
    }
-   ```
+```
 
-4. 构造函数
+2. 构造函数
 
-   ```
+```go
    //可以带参数，但是没有返回值
    constructor(){
    }
-   ```
+```
 
    在0.6以前，使用【**合约名字】**作为构造函数的名字，而不是constructor
 
-5. 函数修饰器
+3. 函数修饰器
 
    1. modifier，大部分常见场景主要用来作为访问控制
 
-      ```
+```go
       modifier tooLarge(uint _x){
-      	require(_x <= 1000,"too large");  //判断条件，也可以写作：if(_x <= 1000) revert("too large");
-      	_; //执行所修饰的函数体
+        require(_x <= 1000,"too large");  //判断条件，也可以写作：if(_x <= 1000) revert("too large");
+        _; //执行所修饰的函数体
       }
       
       function setX(uint _x) public tooLarge(_x){   //tooLarge 修饰setX函数
-      	x = _x;
+        x = _x;
       }
-      ```
+ ```
 
    2. 等价使用require==revert
 
@@ -148,19 +148,19 @@
 
 #### 合约的事件event
 
-​	定义事件event
+定义事件event
 
-```
-	event Xchange(uint oldValue,uint newValue);
-```
-
-​		发出事件event
-
-```
-	emit Xchange(oldValue,newValue);
+```go
+event Xchange(uint oldValue,uint newValue);
 ```
 
-​		**事件的结构体（待补充）**
+发出事件event
+
+```go
+emit Xchange(oldValue,newValue);
+```
+
+**事件的结构体（待补充）**
 
 
 
@@ -300,7 +300,7 @@ function addressSimple() public view returns (bytes20) {
 
 #### 数组
 
-- ​		数组的声明
+- 数组的声明
 
   ```
   	固定长度为K的元素为T的数组：T[K]
@@ -308,7 +308,7 @@ function addressSimple() public view returns (bytes20) {
   	使用new在内存中基于运行时创建动态长度的数组，这种数组不可以用push改变大小
   ```
 
-- ​		性质：
+- 性质：
 
   - 数组可以在声明时指定长度，也可以动态的调整长度
 
@@ -320,9 +320,7 @@ function addressSimple() public view returns (bytes20) {
 
   - 方法.push()、.push(value)可用于在数组末尾附加一个新元素，其中.push()函数附加一个零初始化元素并返回对他的引用（仅对storage中的数组）
 
-    
-
-```
+```go
 使用举例：
 contract Simple{
 	string[] private array;
@@ -428,9 +426,9 @@ contract Simple{
 
 #### 关键字：constant、immutable（待整理）
 
-​			constant：静态变量
+constant：静态变量
 
-​			immutable：赋值后不可改变
+immutable：赋值后不可改变
 
 immutable：不占用存储槽，编译的时候，嵌入字节码；
 
@@ -438,7 +436,7 @@ constant：不占用存储槽，编译时是一个占位符，runtime执行构�
 
 #### 合约的继承：is
 
-​			相当于Java中的extend和implement
+相当于Java中的extend和implement
 
 #### 其他
 
@@ -466,7 +464,7 @@ constant：不占用存储槽，编译时是一个占位符，runtime执行构�
 
 solidity合约内部：
 
-```
+```go
 abi.encodewithsignther()
 
 IERC721Receiver.onERC721Received.selector
@@ -491,7 +489,7 @@ IERC721Receiver.onERC721Received.selector
 
 ### 五、函数的动态调用
 
-#### 			call函数
+#### call函数
 
 ​			Solidity函数动态调用机制只要是依靠call函数实现，起作用类似于Java语言的反射机制
 
@@ -511,23 +509,21 @@ IERC721Receiver.onERC721Received.selector
 
 ​			合约函数动态调用方法示例代码**（待整理）**
 
-![](D:\space\interview\images\合约函数动态调用方法示例代码.png)
+![合约函数动态调用方法示例代码](../images/合约函数动态调用方法示例代码.png)
 
 合约函数动态调用方法示例代码(带返回值)
 
-![](D:\space\interview\images\合约函数动态调用方法示例代码(带返回值).png)
-
-
+![合约函数动态调用方法示例代码](../images/合约函数动态调用方法示例代码(带返回值).png)
 
 #### fallback函数
 
-​		是一个特殊函数，调用一个不存在的函数的时候，会只执行fallback函数。
+是一个特殊函数，调用一个不存在的函数的时候，会只执行fallback函数。
 
-​		在转账功能中有重要作用（被payable修饰的fallback函数）
+在转账功能中有重要作用（被payable修饰的fallback函数）
 
-​		proxy模式代理合约中有重要作用，配合delegatecall使用，支持合约的升级
+proxy模式代理合约中有重要作用，配合delegatecall使用，支持合约的升级
 
-​		fallback函数都是external的，address.call{value;}()可以出发fallback函数，但是address.send()无法触发fallback函数
+fallback函数都是external的，address.call{value;}()可以出发fallback函数，但是address.send()无法触发fallback函数
 
 ​		
 

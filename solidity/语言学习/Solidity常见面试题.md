@@ -70,7 +70,7 @@
 
 ### 问：看看下面的代码，并解释代码的哪一部分对应于哪个内存区域
 
-```
+```go
 contract MyContract {
 // part 1
 uint count;
@@ -95,9 +95,10 @@ uint[] pointer = totalPoints;
 
 ### 问：这样做对吗
 
-    ```
+```go
     function doSomething(uint[] storage args) internal returns(uint[] storage data) {…}
-    ```
+```
+
 答：可以，可以强制将函数的参数设置为Storage存储。 在这种情况下，如果没有传递存储引用，编译器会报错。
 
 ### 问：EVM调用和非EVM调用有什么区别？
@@ -105,12 +106,11 @@ uint[] pointer = totalPoints;
 答：EVM调用是对智能合约的方法的调用。它会触发智能合约方法的执行，并需要消耗Gas。非EVM调用是对公共的值的读取。它不需要消耗Gas。
 
 ### modifier
+
 函数修改器（Modifier）类似AOP中的拦截器，提供了修改函数执行流程的机会，一般用来做验证和检查。其中“_”用来将控制流返还给被修改的函数
 几个重要的修改器：
 
-
 payable，接收以太的函数必需加上
-
 
 view或pure，表示函数不会改变以太坊状态
 

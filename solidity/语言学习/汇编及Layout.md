@@ -99,18 +99,18 @@ Expression：addr = new memory[offset:offset+length].value(value)
 
 creates a child contract with a deterministic address
 
-```
+```java
 uint8：F0
 stack input : value、offset、length、salt
 stack output : addr
-Expression：addr = new memory[offset:offset+length].value(value)	
+Expression：addr = new memory[offset:offset+length].value(value)
 ```
 
 #### 区别
 
-- ​		他们都是EVM部署的机器码
+- 他们都是EVM部署的机器码
 
-- ​		create产生的地址都是随机的，但是create2可以为合约产生固定的地址，uniswap 的 factory 部署 pair 在主网和测试网地址是一样的原因
+- create产生的地址都是随机的，但是create2可以为合约产生固定的地址，uniswap 的 factory 部署 pair 在主网和测试网地址是一样的原因
 
 
 
@@ -118,7 +118,7 @@ Expression：addr = new memory[offset:offset+length].value(value)
 
 地址：https://solidity-by-example.org/app/create2/
 
-```
+```java
 // This is the older way of doing it using assembly
 contract FactoryAssembly {
     event Deployed(address addr, uint salt);
@@ -138,7 +138,7 @@ contract FactoryAssembly {
         uint _salt
     ) public view returns (address) {
     
-    		//这就是create2固定hash地址的算法
+        //这就是create2固定hash地址的算法
         bytes32 hash = keccak256(
             abi.encodePacked(bytes1(0xff), address(this), _salt, keccak256(bytecode))
         );
@@ -172,7 +172,7 @@ contract FactoryAssembly {
                 mload(bytecode), // Load the size of code contained in the first 32 bytes
                 _salt // Salt from function arguments
             )
-						//检查运行时地址是不是0，不是0部署成功
+            //检查运行时地址是不是0，不是0部署成功
             if iszero(extcodesize(addr)) {
                 revert(0, 0)
             }
@@ -183,9 +183,6 @@ contract FactoryAssembly {
 }
 ```
 
-
-
-​		
 
 ## 其他
 
@@ -199,9 +196,9 @@ contract FactoryAssembly {
 
 合约调用的时候：有to、有data()
 
-​	EOA账户调用：数据格式同下
+EOA账户调用：数据格式同下
 
-​	合约之间调用：在message中calldata->abi.encodeWithsinger("")
+合约之间调用：在message中calldata->abi.encodeWithsinger("")
 
 
 
@@ -233,7 +230,7 @@ Function 的完整字串實際上也就是所謂的 Function Signature，而哈�
 
 示例代码：
 
-```
+```go
 方法： someFunction(uint _myUint1, address _someAddr)
 函数签名：someFunction(uint256,address)
 函数选择器：bytes4(keccak256("someFunction(uint256,address)"))
@@ -258,8 +255,3 @@ Function 的完整字串實際上也就是所謂的 Function Signature，而哈�
 了解uniswap源码和设计原则
 
 了解slither静态分析工具的使用。
-
-
-
-
-

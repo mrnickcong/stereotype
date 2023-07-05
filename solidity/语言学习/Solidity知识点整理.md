@@ -4,13 +4,13 @@
 
 下面是一个简单的智能合约
 
-```
+```go
 // SPDX-License-Identifier: GPL-3.0   //源代码是根据GPL 3.0版本授权的
 pragma solidity ^0.4.0;           //Solidity版本0.4.0以上，最高到0.5.0，但是不包含0.5.0
 pragma solidity >=0.4.16 <0.9.0;  //告诉编译器源代码所适用的Solidity版本为>=0.4.16 及 <0.9.0
 contract SimpleStorage {
 
-	// 关键字“public”让这些变量可以从外部读取
+    // 关键字“public”让这些变量可以从外部读取
     address public minter;
     mapping (address => uint) public balances;
 
@@ -52,9 +52,9 @@ contract SimpleStorage {
 
 ### address
 
-`address public minter;` 
+`address public minter;`
 
-这一行声明了一个可以被公开访问的 `address` 类型的状态变量。 
+这一行声明了一个可以被公开访问的 `address` 类型的状态变量。
 
 `address` 类型是一个160位的值，且不允许任何算数操作。这种类型适合存储合约地址或外部人员的密钥对。
 
@@ -64,8 +64,8 @@ contract SimpleStorage {
 
 由编译器生成的函数的代码大致如下所示（暂时忽略 external 和 view）：
 
-```
-function minter() external view returns (address) { return minter; }
+```go
+    function minter() external view returns (address) { return minter; }
 ```
 
 ### event
@@ -76,7 +76,7 @@ function minter() external view returns (address) { return minter; }
 
 为了监听这个事件，你可以使用如下JavaScript代码， Coin 是通过 [web3.js 创建的合约对象](https://learnblockchain.cn/docs/web3.js/web3-eth-contract.html) ， :
 
-```
+```go
 Coin.Sent().watch({}, '', function(error, result) {
     if (!error) {
         console.log("Coin transfer: " + result.args.amount +
@@ -95,13 +95,9 @@ Coin.Sent().watch({}, '', function(error, result) {
 
 任何人（已经拥有一些代币）都可以使用 `send` 函数来向其他人发送代币。如果发送者没有足够的代币可以发送， `if` 条件为真 `revert` 将触发失败，并通过 `InsufficientBalance` 向发送者提供错误细节。
 
-
-
 ## 区块链基础
 
 对于程序员来说，区块链这个概念并不难理解，这是因为大多数难懂的东西 (挖矿, [哈希](https://en.wikipedia.org/wiki/Cryptographic_hash_function) ，[椭圆曲线密码学](https://en.wikipedia.org/wiki/Elliptic_curve_cryptography) ，[点对点网络（P2P）](https://en.wikipedia.org/wiki/Peer-to-peer) 等) 都只是用于提供特定的功能和承诺。你只需接受这些既有的特性功能，不必关心底层技术，比如，难道你必须知道亚马逊的 AWS 内部原理，你才能使用它吗？
-
-
 
 ### 交易/事务
 
@@ -112,8 +108,6 @@ Coin.Sent().watch({}, '', function(error, result) {
 此外，交易总是由发送人（创建者）签名。
 
 这样，就可非常简单地为数据库的特定修改增加访问保护机制。在电子货币的例子中，一个简单的检查可以确保只有持有账户密钥的人才能从中转账。
-
-
 
 ### 区块
 
@@ -142,7 +136,6 @@ Coin.Sent().watch({}, '', function(error, result) {
 以太坊虚拟机 EVM 是智能合约的运行环境。它不仅是沙盒封装的，而且是完全隔离的，也就是说在 EVM 中运行代码是无法访问网络、文件系统和其他进程的。甚至智能合约之间的访问也是受限的。
 
 
-
 ### 账户
 
 以太坊中有两类账户（它们共用同一个地址空间）： **外部账户** 由公钥-私钥对（也就是人）控制； **合约账户** 由和账户一起存储的代码控制.
@@ -154,8 +147,6 @@ Coin.Sent().watch({}, '', function(error, result) {
 每个账户都有一个键值对形式的持久化存储。其中 key 和 value 的长度都是256位，我们称之为 **存储** 。
 
 此外，每个账户有一个以太币余额（ **balance** ）（单位是“Wei”, `1 ether` 是 `10**18 wei`），余额会因为发送包含以太币的交易而改变。
-
-
 
 ### 交易
 
@@ -169,8 +160,6 @@ Coin.Sent().watch({}, '', function(error, result) {
 
 在合约创建的过程中，它的代码还是空的。所以直到构造函数执行结束，你都不应该在其中调用合约自己函数。
 
-
-
 ### Gas
 
 一经创建，每笔交易都收取一定数量的 **gas** ，必须由原始交易发起人（ `tx.orgin` ）支付。 EVM 执行交易时，gas 将按特定规则逐渐耗尽。 无论执行到什么位置，一旦 gas 被耗尽（比如降为负值），将会触发一个 out-of-gas 异常。当前调用帧（call frame）所做的所有状态修改都将被回滚。
@@ -180,8 +169,6 @@ Gas机制激励了对EVM执行时间的经济使用，同时也补偿了 EVM 执
 **gas price** 是交易发送者设置的一个值，发送者账户需要预付的手续费= `gas_price * gas` 。如果交易执行后还有剩余， gas 会原路返还。 如果出现异常（exception），回退交易，已经用完的Gas就不会被退还。
 
 由于EVM执行者可以选择是否包括交易。交易发送者不能通过设置一个低的Gas价格来滥用系统。
-
-
 
 ### 存储，内存和栈
 
@@ -193,13 +180,9 @@ Gas机制激励了对EVM执行时间的经济使用，同时也补偿了 EVM 执
 
 EVM 不是基于寄存器的，而是基于栈的，因此所有的计算都在一个被称为 **栈（stack）** 的区域执行。 	，每个元素长度是一个字（256位）。对栈的访问只限于其顶端，限制方式为：允许拷贝最顶端的16个元素中的一个到栈顶，或者是交换栈顶元素和下面16个元素中的一个。所有其他操作都只能取最顶的两个（或一个，或更多，取决于具体的操作）元素，运算后，把结果压入栈顶。当然可以把栈上的元素放到存储或内存中。但是无法只访问栈上指定深度的那个元素，除非先从栈顶移除其他元素。
 
-
-
 ### 指令集
 
 EVM的指令集量应尽量少，以最大限度地避免可能导致共识问题的错误实现。所有的指令都是针对”256位的字（word）”这个基本的数据类型来进行操作。具备常用的算术、位、逻辑和比较操作。也可以做到有条件和无条件跳转。此外，合约可以访问当前区块的相关属性，比如它的编号和时间戳。
-
-
 
 ### 消息调用
 
@@ -207,25 +190,20 @@ EVM的指令集量应尽量少，以最大限度地避免可能导致共识问�
 
 合约可以决定在其内部的消息调用中，对于剩余的 **gas** ，应发送和保留多少。如果在内部消息调用时发生了out-of-gas异常（或其他任何异常），这将由一个被压入栈顶的错误值所指明。此时，只有与该内部消息调用一起发送的gas会被消耗掉。并且，Solidity中，发起调用的合约默认会触发一个手工的异常，以便异常可以从调用栈里“冒泡出来”。 如前文所述，被调用的合约（可以和调用者是同一个合约）会获得一块刚刚清空过的内存，并可以访问调用的payload——由被称为 calldata 的独立区域所提供的数据。调用执行结束后，返回数据将被存放在调用方预先分配好的一块内存中。 调用深度被 **限制** 为 1024 ，因此对于更加复杂的操作，我们应使用循环而不是递归。
 
-
-
 ### 委托调用/代码调用和库
 
 有一种特殊类型的消息调用，被称为 **委托调用(delegatecall)** 。它和一般的消息调用的区别在于，目标地址的代码将在发起调用的合约的上下文中执行，并且 `msg.sender` 和 `msg.value` 不变。 这意味着一个合约可以在运行时从另外一个地址动态加载代码。存储、当前地址和余额都指向发起调用的合约，只有代码是从被调用地址获取的。 这使得 Solidity 可以实现”库“能力：可复用的代码库可以放在一个合约的存储上，如用来实现复杂的数据结构的库。
 
-
-
 ### 日志
 
-有一种特殊的可索引的数据结构，其存储的数据可以一路映射直到区块层级。这个特性被称为 **日志(logs)** ，Solidity用它来实现 **事件(events)** 。合约创建之后就无法访问日志数据，但是这些数据可以从区块链外高效的访问。因为部分日志数据被存储在 [布隆过滤器（Bloom filter)](https://en.wikipedia.org/wiki/Bloom_filter) 中，我们可以高效并且加密安全地搜索日志，所以那些没有下载整个区块链的网络节点（轻客户端）也可以找到这些日志。
+有一种特殊的可索引的数据结构，其存储的数据可以一路映射直到区块层级。这个特性被称为 **日志(logs)** ，Solidity用它来实现 **事件(events)** 。
 
+合约创建之后就无法访问日志数据，但是这些数据可以从区块链外高效的访问。因为部分日志数据被存储在 [布隆过滤器（Bloom filter)](https://en.wikipedia.org/wiki/Bloom_filter) 中，我们可以高效并且加密安全地搜索日志，所以那些没有下载整个区块链的网络节点（轻客户端）也可以找到这些日志。
 
 
 ### 合约创建
 
 合约甚至可以通过一个特殊的指令来创建其他合约（不是简单的调用零地址）。创建合约的调用 **create calls** 和普通消息调用的唯一区别在于，负载会被执行，执行的结果被存储为合约代码，调用者/创建者在栈上得到新合约的地址。
-
-
 
 ### 失效和自毁
 
@@ -240,8 +218,6 @@ EVM的指令集量应尽量少，以最大限度地避免可能导致共识问�
 即便一个合约的代码中没有显式地调用 `selfdestruct` ，它仍然有可能通过 `delegatecall` 或 `callcode` 执行自毁操作。
 
 如果要禁用合约，可以通过修改某个内部状态让所有函数无法执行，而是直接回退，这样也可以达到返还以太的目的。
-
-
 
 ### 预编译合约
 
@@ -276,7 +252,7 @@ EVM的指令集量应尽量少，以最大限度地避免可能导致共识问�
 |   枚举类型   | 枚举可用来创建由一定数量的“常量值”构成的自定义类型           | `enum State { Created, Locked, InValid } // 枚举` |
 |     异常     | Solidity 为应对失败，允许用户定义 `error` 来描述错误的名称和数据。 错误可以在 [revert statements](https://learnblockchain.cn/docs/solidity/control-structures.html#revert-statement) 中使用，跟用错误字符串相比， `error` 更便宜并且允许你编码额外的数据，还可以用 NatSpec 为用户去描述错误 |                                                   |
 
-```
+```go
 以下代码remix编译通过
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
@@ -312,25 +288,25 @@ contract Token {
 
 ##### 特殊值类型
 
-​		特殊值类型：address、合约类型、枚举类型
+特殊值类型：address、合约类型、枚举类型
 
-###### 		枚举类型
+###### 枚举类型
 
-​				举例：`enum ActionChoices { GoLeft, GoRight, GoStraight, SitStill }`
+举例：`enum ActionChoices { GoLeft, GoRight, GoStraight, SitStill }`
 
-​				枚举需要至少一个成员,默认值是第一个成员，枚举不能多于 256 个成员。
+枚举需要至少一个成员,默认值是第一个成员，枚举不能多于 256 个成员。
 
-​				数据表示与C中的枚举相同：选项从“0”开始的无符号整数值表示。
+数据表示与C中的枚举相同：选项从“0”开始的无符号整数值表示。
 
-​				使用 `type(NameOfEnum).min` 和 `type(NameOfEnum).max` 你可以得到给定枚举的最小值和最大值。
+使用 `type(NameOfEnum).min` 和 `type(NameOfEnum).max` 你可以得到给定枚举的最小值和最大值。
 
-​				对于 `enum` 类型, 默认值是第一个成员。
+对于 `enum` 类型, 默认值是第一个成员。
 
-###### 		函数类型
+###### 函数类型
 
-​				举例：
+举例：
 
-​						`function (<parameter types>) {internal|external} [pure|constant|view|payable] [returns (<return types>)]`
+`function (<parameter types>) {internal|external} [pure|constant|view|payable] [returns (<return types>)]`
 
 ### 引用类型
 
@@ -350,8 +326,8 @@ bytes和string类型的变量是特殊的数组，不允许使用 长度或者�
 
 目前数组切片，仅可使用于 calldata 数组.
 
-```
-	function forward(bytes calldata payload) external {
+```go
+    function forward(bytes calldata payload) external {
         bytes4 sig = bytes4(payload[:4]);
     }
 ```
@@ -364,11 +340,10 @@ bytes和string类型的变量是特殊的数组，不允许使用 长度或者�
 
 #### 映射
 
-映射类型在声明时的形式为 `mapping(KeyType => ValueType)`。 
+映射类型在声明时的形式为 `mapping(KeyType => ValueType)`。
 
-​				其中 `KeyType` 可以是任何基本类型，即可以是任何的内建类型， 可以是任务基本类型，包括bytes和string，但不包括自定义类型，比如：合约、枚举、映射、结构体
-
-​				即除 `bytes` 和 `string` 之外的数组类型是不可以作为 `KeyType` 的类型的。
+- 其中 `KeyType` 可以是任何基本类型，即可以是任何的内建类型， 可以是任务基本类型，包括bytes和string，但不包括自定义类型，比如：合约、枚举、映射、结构体
+- 即除 `bytes` 和 `string` 之外的数组类型是不可以作为 `KeyType` 的类型的。
 
 `ValueType` 可以是包括映射类型在内的任何类型。
 
@@ -376,7 +351,7 @@ bytes和string类型的变量是特殊的数组，不允许使用 长度或者�
 
 这些限制同样适用于包含映射的数组和结构体。
 
-```
+```go
 //声明方式举例
 mapping(address => uint) public balances;
 
@@ -384,7 +359,7 @@ mapping(address => uint) public balances;
 mapping (address => mapping (address => uint256)) private _allowances;
 //ERC20中，_allowances 用来记录其他的账号，可以允许从其账号使用多少数量的币
 
-	function approve(address spender, uint256 amount) public returns (bool) {
+    function approve(address spender, uint256 amount) public returns (bool) {
         require(spender != address(0), "ERC20: approve to the zero address");
 
         _allowances[msg.sender][spender] = amount;
@@ -427,7 +402,7 @@ mapping (address => mapping (address => uint256)) private _allowances;
 
 ​				当 `a` 是引用变量时，我们可以看到这个区别， `delete a` 它只会重置 `a` 本身，而不是更改它之前引用的值。
 
-```
+```go
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.4.0 <0.9.0;
 
@@ -449,13 +424,10 @@ contract DeleteLBC {
 }
 ```
 
-
-
-
 ### 类型转换
 #### 隐士转转
 
-```
+```go
 uint8 y;
 uint16 z;
 uint32 x = y + z;
@@ -465,7 +437,7 @@ uint32 x = y + z;
 
 #### 显示转换
 
-```
+```go
 int8 y = -3;
 uint x = uint(y);
 ```
@@ -476,13 +448,9 @@ uint x = uint(y);
 
 #### 基本类型与字面常量的转转
 
-
-
 #### 类型转换注意事项
 
 只有 `bytes20` 和 `uint160` 允许显式转换为 `address` 类型
-
-
 
 ### 值类型与引用类型的区别
 
@@ -567,7 +535,7 @@ Solidity 使用状态恢复异常来处理错误。这种异常将撤消对当�
 
 #### 用 `try/catch` 捕获异常
 
-```
+```go
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.1;
 
@@ -693,7 +661,7 @@ Solidity 根据错误的类型，支持不同种类的捕获代码块：
 
 ### 函数声明
 
-```
+```go
 pragma solidity  >=0.4.16 <0.9.0;
 
 contract C {
@@ -705,7 +673,7 @@ contract C {
 
 ### 函数修改器
 
-```
+```go
 contract Mutex {
     bool locked;
     modifier noReentrancy() {
@@ -788,7 +756,7 @@ contract Mutex {
 
 函数声明：
 
-```
+```go
 receive() external payable { ... }
 ```
 
@@ -803,7 +771,7 @@ receive() external payable { ... }
 
 函数声明：
 
-```
+```go
 fallback () external [payable]
 或者
 fallback (bytes calldata input) external [payable] returns (bytes memory output)
@@ -815,9 +783,7 @@ fallback (bytes calldata input) external [payable] returns (bytes memory output)
 4. 如果使用了带参数的版本， `input` 将包含发送到合约的完整数据（等于 `msg.data` ），并且通过 `output` 返回数据。
 5. 如果回退函数在接收以太时调用，可能只有 2300 gas 可以使用
 
-
-
-```
+```go
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.6.2 <0.9.0;
 
@@ -889,7 +855,7 @@ contract Caller {
 
 solidity合约内部：
 
-```
+```go
 abi.encodewithsignther()
 IERC721Receiver.onERC721Received.selector
 ```
@@ -944,16 +910,6 @@ IERC721Receiver.onERC721Received.selector
 
 # 深入语言内部
 
-
-
-
-
-
-
-
-
-
-
 继承
 
 solidity是采用多重继承的方式构建
@@ -967,8 +923,3 @@ C3算法得名于它实现了一致性于三种重要特性：
 - 单调性原则（即子类不改变父类的方法搜索顺序）。
 
 https://zh.wikipedia.org/zh-hans/C3%E7%BA%BF%E6%80%A7%E5%8C%96
-
-
-
-
-
